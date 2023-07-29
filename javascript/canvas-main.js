@@ -8,6 +8,11 @@ $(() => {
   document.querySelector("#drawing-line").addEventListener("click", () => {
     currentFunction = new DrawingLine(contextReal);
   });
+  document
+    .querySelector("#drawing-bezier-curve")
+    .addEventListener("click", () => {
+      currentFunction = new DrawingBezierCurve(contextReal, contextDraft);
+    });
 
   /*******************************/
   /*        color-picker        */
