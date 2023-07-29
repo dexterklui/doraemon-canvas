@@ -12,19 +12,18 @@ class DrawingLine extends PaintFunction {
    * @param {CanvasRenderingContext2D} contextReal
    */
   constructor(contextReal) {
-    super();
-    this.context = contextReal;
+    super(contextReal);
   }
 
   // On mouse down, ensure that the pen has these features
   onMouseDown(coord, event) {
     // Kind of line
-    this.context.lineJoin = "round";
+    this.contextReal.lineJoin = "round";
     // Width of line
-    this.context.lineWidth = 5;
+    this.contextReal.lineWidth = 5;
     // Drawing the line here
-    this.context.beginPath();
-    this.context.moveTo(coord[0], coord[1]);
+    this.contextReal.beginPath();
+    this.contextReal.moveTo(coord[0], coord[1]);
   }
   // Clicking and removing your mouse
   onDragging(coord, event) {
@@ -42,8 +41,8 @@ class DrawingLine extends PaintFunction {
    */
   draw(x, y) {
     //
-    this.context.lineTo(x, y);
+    this.contextReal.lineTo(x, y);
     // Draw the line onto the page
-    this.context.stroke();
+    this.contextReal.stroke();
   }
 }

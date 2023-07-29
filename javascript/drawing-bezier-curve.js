@@ -11,9 +11,7 @@ class DrawingBezierCurve extends PaintFunction {
    * @param {CanvasRenderingContext2D} contextDraft
    */
   constructor(contextReal, contextDraft) {
-    super();
-    this.contextReal = contextReal;
-    this.contextDraft = contextDraft;
+    super(contextReal, contextDraft);
     /**
      * Tracks the stage of drawing bezier curve
      * @type {0|1|2} controlStage
@@ -35,12 +33,7 @@ class DrawingBezierCurve extends PaintFunction {
         this.cPt1Y = coord[1];
         break;
       case 2:
-        this.contextDraft.clearRect(
-          0,
-          0,
-          canvasDraft.width,
-          canvasDraft.height
-        );
+        this.clearDraft();
         this.contextReal.beginPath();
         this.contextReal.moveTo(this.origX, this.origY);
         this.contextReal.bezierCurveTo(
@@ -71,12 +64,7 @@ class DrawingBezierCurve extends PaintFunction {
       case 0:
         return;
       case 1:
-        this.contextDraft.clearRect(
-          0,
-          0,
-          canvasDraft.width,
-          canvasDraft.height
-        );
+        this.clearDraft();
         this.contextDraft.beginPath();
         this.contextDraft.moveTo(this.origX, this.origY);
         this.contextDraft.bezierCurveTo(
@@ -90,12 +78,7 @@ class DrawingBezierCurve extends PaintFunction {
         this.contextDraft.stroke();
         return;
       case 2:
-        this.contextDraft.clearRect(
-          0,
-          0,
-          canvasDraft.width,
-          canvasDraft.height
-        );
+        this.clearDraft();
         this.contextDraft.beginPath();
         this.contextDraft.moveTo(this.origX, this.origY);
         this.contextDraft.bezierCurveTo(
@@ -115,12 +98,7 @@ class DrawingBezierCurve extends PaintFunction {
   onMouseUp(coord) {
     switch (this.controlStage) {
       case 0:
-        this.contextDraft.clearRect(
-          0,
-          0,
-          canvasDraft.width,
-          canvasDraft.height
-        );
+        this.clearDraft();
         this.endX = coord[0];
         this.endY = coord[1];
         this.contextDraft.beginPath();

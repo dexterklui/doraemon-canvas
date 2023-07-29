@@ -52,7 +52,14 @@ canvasDraft.addEventListener("mouseenter", (e) => {
 /** # Class (all classes will have these methods) #
 /*  ====================== */
 class PaintFunction {
-  constructor() {}
+  /**
+   * @param {CanvasRenderingContext2D} contextReal
+   * @param {CanvasRenderingContext2D} contextDraft
+   */
+  constructor(contextReal, contextDraft) {
+    this.contextReal = contextReal;
+    this.contextDraft = contextDraft;
+  }
 
   /**
    * @param {Number[]} coord
@@ -89,6 +96,10 @@ class PaintFunction {
    * @param {MouseEvent} event
    */
   onMouseEnter(coord, event) {}
+
+  clearDraft() {
+    this.contextDraft.clearRect(0, 0, canvasDraft.width, canvasDraft.height);
+  }
 }
 
 /**
