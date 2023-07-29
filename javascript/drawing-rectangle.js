@@ -6,6 +6,10 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
 
 class DrawingRectangle extends PaintFunction {
+  /**
+   * @param {CanvasRenderingContext2D} contextReal
+   * @param {CanvasRenderingContext2D} contextDraft
+   */
   constructor(contextReal, contextDraft) {
     super();
     this.contextReal = contextReal;

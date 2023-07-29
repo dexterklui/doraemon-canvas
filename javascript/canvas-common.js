@@ -5,23 +5,23 @@
 
 /** @type {HTMLCanvasElement} canvas */
 const canvasReal = document.querySelector("#canvas-real");
-let contextReal = canvasReal.getContext("2d");
+const contextReal = canvasReal.getContext("2d");
 /** @type {HTMLCanvasElement} canvas */
 const canvasDraft = document.querySelector("#canvas-draft");
-let contextDraft = canvasDraft.getContext("2d");
+const contextDraft = canvasDraft.getContext("2d");
 let currentFunction;
 let dragging = false;
 
 canvasDraft.addEventListener("mousedown", (e) => {
-  let mouseX = e.offsetX;
-  let mouseY = e.offsetY;
+  const mouseX = e.offsetX;
+  const mouseY = e.offsetY;
   currentFunction?.onMouseDown([mouseX, mouseY], e);
   dragging = true;
 });
 
 canvasDraft.addEventListener("mousemove", (e) => {
-  let mouseX = e.offsetX;
-  let mouseY = e.offsetY;
+  const mouseX = e.offsetX;
+  const mouseY = e.offsetY;
   if (dragging) {
     currentFunction?.onDragging([mouseX, mouseY], e);
   }
@@ -30,21 +30,21 @@ canvasDraft.addEventListener("mousemove", (e) => {
 
 canvasDraft.addEventListener("mouseup", (e) => {
   dragging = false;
-  let mouseX = e.offsetX;
-  let mouseY = e.offsetY;
+  const mouseX = e.offsetX;
+  const mouseY = e.offsetY;
   currentFunction?.onMouseUp([mouseX, mouseY], e);
 });
 
 canvasDraft.addEventListener("mouseleave", (e) => {
   dragging = false;
-  let mouseX = e.offsetX;
-  let mouseY = e.offsetY;
+  const mouseX = e.offsetX;
+  const mouseY = e.offsetY;
   currentFunction?.onMouseLeave([mouseX, mouseY], e);
 });
 
 canvasDraft.addEventListener("mouseenter", (e) => {
-  let mouseX = e.offsetX;
-  let mouseY = e.offsetY;
+  const mouseX = e.offsetX;
+  const mouseY = e.offsetY;
   currentFunction?.onMouseEnter([mouseX, mouseY], e);
 });
 
@@ -52,10 +52,40 @@ canvasDraft.addEventListener("mouseenter", (e) => {
 /*  ====================== */
 class PaintFunction {
   constructor() {}
-  onMouseDown() {}
-  onDragging() {}
-  onMouseMove() {}
-  onMouseUp() {}
-  onMouseLeave() {}
-  onMouseEnter() {}
+
+  /**
+   * @param {Number[]} coord
+   * @param {MouseEvent} event
+   */
+  onMouseDown(coord, event) {}
+
+  /**
+   * @param {Number[]} coord
+   * @param {MouseEvent} event
+   */
+  onDragging(coord, event) {}
+
+  /**
+   * @param {Number[]} coord
+   * @param {MouseEvent} event
+   */
+  onMouseMove(coord, event) {}
+
+  /**
+   * @param {Number[]} coord
+   * @param {MouseEvent} event
+   */
+  onMouseUp(coord, event) {}
+
+  /**
+   * @param {Number[]} coord
+   * @param {MouseEvent} event
+   */
+  onMouseLeave(coord, event) {}
+
+  /**
+   * @param {Number[]} coord
+   * @param {MouseEvent} event
+   */
+  onMouseEnter(coord, event) {}
 }

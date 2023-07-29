@@ -8,6 +8,9 @@ class DrawingLine extends PaintFunction {
   // This class extends the PaintFunction class
   // You are only passing one instance here
 
+  /**
+   * @param {CanvasRenderingContext2D} contextReal
+   */
   constructor(contextReal) {
     super();
     this.context = contextReal;
@@ -35,6 +38,10 @@ class DrawingLine extends PaintFunction {
   onMouseLeave() {}
   onMouseEnter() {}
 
+  /**
+   * @param {number} x
+   * @param {number} y
+   */
   draw(x, y) {
     //
     this.context.lineTo(x, y);
