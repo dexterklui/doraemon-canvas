@@ -39,33 +39,6 @@ body {
   height: var(--btn-height);
   width: var(--btn-width);
 }
-.color-black {
-  background: black;
-}
-.color-white {
-  background: white;
-}
-.color-red {
-  background: red;
-}
-.color-orange {
-  background: orange;
-}
-.color-yellow {
-  background: yellow;
-}
-.color-green {
-  background: green;
-}
-.color-blue {
-  background: blue;
-}
-.color-purple {
-  background: purple;
-}
-.color-pink {
-  background: pink;
-}
 
 .color-indicate-container {
   display: flex;

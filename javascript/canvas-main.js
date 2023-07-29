@@ -19,40 +19,29 @@ $(() => {
   /*******************************/
   /*        color-picker        */
   /*******************************/
-  document.querySelector(".color-black").addEventListener("click", () => {
-    setStrokeStyle("black");
-    setFillStyle("black");
-  });
-  document.querySelector(".color-white").addEventListener("click", () => {
-    setStrokeStyle("white");
-    setFillStyle("white");
-  });
-  document.querySelector(".color-red").addEventListener("click", () => {
-    setStrokeStyle("red");
-    setFillStyle("red");
-  });
-  document.querySelector(".color-orange").addEventListener("click", () => {
-    setStrokeStyle("orange");
-    setFillStyle("orange");
-  });
-  document.querySelector(".color-yellow").addEventListener("click", () => {
-    setStrokeStyle("yellow");
-    setFillStyle("yellow");
-  });
-  document.querySelector(".color-green").addEventListener("click", () => {
-    setStrokeStyle("green");
-    setFillStyle("green");
-  });
-  document.querySelector(".color-blue").addEventListener("click", () => {
-    setStrokeStyle("blue");
-    setFillStyle("blue");
-  });
-  document.querySelector(".color-purple").addEventListener("click", () => {
-    setStrokeStyle("purple");
-    setFillStyle("purple");
-  });
-  document.querySelector(".color-pink").addEventListener("click", () => {
-    setStrokeStyle("pink");
-    setFillStyle("pink");
+  const colorPalette = document.querySelector(".color-palette");
+  const colors = [
+    "black",
+    "white",
+    "red",
+    "orange",
+    "yellow",
+    "green",
+    "blue",
+    "purple",
+    "pink",
+  ];
+  for (const color of colors) {
+    const colorWell = document.createElement("div");
+    colorWell.classList.add("color", `color-${color}`);
+    colorWell.setAttribute("data-color", color);
+    colorWell.style.backgroundColor = color;
+    colorPalette.append(colorWell);
+  }
+  colorPalette.addEventListener("click", (e) => {
+    // @ts-ignore
+    const color = e.target.getAttribute("data-color");
+    setStrokeStyle(color);
+    setFillStyle(color);
   });
 });
