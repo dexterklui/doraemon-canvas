@@ -3,47 +3,49 @@
  * ==================================
  ***********************************************/
 
-let canvasReal = document.getElementById("canvas-real");
+/** @type {HTMLCanvasElement} canvas */
+const canvasReal = document.querySelector("#canvas-real");
 let contextReal = canvasReal.getContext("2d");
-let canvasDraft = document.getElementById("canvas-draft");
+/** @type {HTMLCanvasElement} canvas */
+const canvasDraft = document.querySelector("#canvas-draft");
 let contextDraft = canvasDraft.getContext("2d");
 let currentFunction;
 let dragging = false;
 
-$("#canvas-draft").mousedown(function (e) {
+canvasDraft.addEventListener("mousedown", (e) => {
   let mouseX = e.offsetX;
   let mouseY = e.offsetY;
-  currentFunction.onMouseDown([mouseX, mouseY], e);
+  currentFunction?.onMouseDown([mouseX, mouseY], e);
   dragging = true;
 });
 
-$("#canvas-draft").mousemove(function (e) {
+canvasDraft.addEventListener("mousemove", (e) => {
   let mouseX = e.offsetX;
   let mouseY = e.offsetY;
   if (dragging) {
-    currentFunction.onDragging([mouseX, mouseY], e);
+    currentFunction?.onDragging([mouseX, mouseY], e);
   }
-  currentFunction.onMouseMove([mouseX, mouseY], e);
+  currentFunction?.onMouseMove([mouseX, mouseY], e);
 });
 
-$("#canvas-draft").mouseup(function (e) {
+canvasDraft.addEventListener("mouseup", (e) => {
   dragging = false;
   let mouseX = e.offsetX;
   let mouseY = e.offsetY;
-  currentFunction.onMouseUp([mouseX, mouseY], e);
+  currentFunction?.onMouseUp([mouseX, mouseY], e);
 });
 
-$("#canvas-draft").mouseleave(function (e) {
+canvasDraft.addEventListener("mouseleave", (e) => {
   dragging = false;
   let mouseX = e.offsetX;
   let mouseY = e.offsetY;
-  currentFunction.onMouseLeave([mouseX, mouseY], e);
+  currentFunction?.onMouseLeave([mouseX, mouseY], e);
 });
 
-$("#canvas-draft").mouseenter(function (e) {
+canvasDraft.addEventListener("mouseenter", (e) => {
   let mouseX = e.offsetX;
   let mouseY = e.offsetY;
-  currentFunction.onMouseEnter([mouseX, mouseY], e);
+  currentFunction?.onMouseEnter([mouseX, mouseY], e);
 });
 
 /** # Class (all classes will have these methods) #

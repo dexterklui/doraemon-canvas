@@ -1,9 +1,9 @@
 $(() => {
-  currentFunction =  new DrawingLine(contextReal)
-  $("#drawing-rectangle").click(() => {
+  currentFunction = new DrawingLine(contextReal);
+  document.querySelector("#drawing-rectangle").addEventListener("click", () => {
     currentFunction = new DrawingRectangle(contextReal, contextDraft);
   });
-  $("#drawing-line").click(() => {
+  document.querySelector("#drawing-line").addEventListener("click", () => {
     currentFunction = new DrawingLine(contextReal);
-  });  
+  });
 });
