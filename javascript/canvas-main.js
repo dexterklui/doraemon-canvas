@@ -1,11 +1,4 @@
 $(() => {
-  /*********************************/
-  /*        initial setting        */
-  /*********************************/
-  currentFunction = new DrawingLine(contextReal);
-  setStrokeStyle("black");
-  setFillStyle("black");
-
   /******************************/
   /*        canvas tools        */
   /******************************/
@@ -44,4 +37,11 @@ $(() => {
     setStrokeStyle(color);
     setFillStyle(color);
   });
+
+  /*********************************/
+  /*        initial setting        */
+  /*********************************/
+  currentFunction = new DrawingLine(contextReal);
+  setStrokeStyle("black");
+  setFillStyle("black");
 });
