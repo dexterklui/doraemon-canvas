@@ -57,7 +57,8 @@ class DrawingBezierCurve extends PaintFunction {
   }
 
   onDragging(coord) {
-    this.contextDraft.clearRect(0, 0, canvasDraft.width, canvasDraft.height);
+    if (this.controlStage) return;
+    this.clearDraft();
     this.contextDraft.beginPath();
     this.contextDraft.moveTo(this.origX, this.origY);
     this.contextDraft.lineTo(coord[0], coord[1]);
@@ -65,6 +66,7 @@ class DrawingBezierCurve extends PaintFunction {
   }
 
   onMouseMove(coord) {
+    if (dragging) return;
     switch (this.controlStage) {
       case 0:
         return;
