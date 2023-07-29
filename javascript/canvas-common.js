@@ -98,6 +98,9 @@ class PaintFunction {
 function setStrokeStyle(color) {
   contextReal.strokeStyle = color;
   contextDraft.strokeStyle = color;
+  /** @type {HTMLElement} strokeColor */
+  const strokeColor = document.querySelector("#stroke-color");
+  strokeColor.style.backgroundColor = color;
 }
 
 /**
@@ -107,4 +110,7 @@ function setStrokeStyle(color) {
 function setFillStyle(color) {
   contextReal.fillStyle = color;
   contextDraft.fillStyle = color;
+  /** @type {HTMLElement} fillColor */
+  const fillColor = document.querySelector("#fill-color");
+  fillColor.style.backgroundColor = color;
 }

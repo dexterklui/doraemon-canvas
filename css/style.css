@@ -1,3 +1,14 @@
+/***************************/
+/*        variables        */
+/***************************/
+:root {
+  --btn-height: 2.5rem;
+  --btn-width: 2.5rem;
+}
+
+/**************************/
+/*        elements        */
+/**************************/
 .canvas {
   border: 1px black dotted;
   position: absolute;
@@ -20,13 +31,13 @@ body {
 /*********************************/
 /*        color-container        */
 /*********************************/
-.color-container {
+.color-palette {
   display: flex;
-  height: 2.5rem;
+  height: var(--btn-height);
 }
 .color {
-  height: 2.5rem;
-  width: 2.5rem;
+  height: var(--btn-height);
+  width: var(--btn-width);
 }
 .color-black {
   background: black;
@@ -54,4 +65,13 @@ body {
 }
 .color-pink {
   background: pink;
+}
+
+.color-indicate-container {
+  display: flex;
+  height: var(--btn-height);
+}
+.color-indicator {
+  height: var(--btn-height);
+  width: var(--btn-width);
 }
