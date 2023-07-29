@@ -19,9 +19,25 @@ $(() => {
   /*******************************/
   /*        color-picker        */
   /*******************************/
+  document.querySelector(".color-black").addEventListener("click", () => {
+    setStrokeStyle("black");
+    setFillStyle("black");
+  });
+  document.querySelector(".color-white").addEventListener("click", () => {
+    setStrokeStyle("white");
+    setFillStyle("white");
+  });
   document.querySelector(".color-red").addEventListener("click", () => {
     setStrokeStyle("red");
     setFillStyle("red");
+  });
+  document.querySelector(".color-orange").addEventListener("click", () => {
+    setStrokeStyle("orange");
+    setFillStyle("orange");
+  });
+  document.querySelector(".color-yellow").addEventListener("click", () => {
+    setStrokeStyle("yellow");
+    setFillStyle("yellow");
   });
   document.querySelector(".color-green").addEventListener("click", () => {
     setStrokeStyle("green");
@@ -30,5 +46,13 @@ $(() => {
   document.querySelector(".color-blue").addEventListener("click", () => {
     setStrokeStyle("blue");
     setFillStyle("blue");
+  });
+  document.querySelector(".color-purple").addEventListener("click", () => {
+    setStrokeStyle("purple");
+    setFillStyle("purple");
+  });
+  document.querySelector(".color-pink").addEventListener("click", () => {
+    setStrokeStyle("pink");
+    setFillStyle("pink");
   });
 });

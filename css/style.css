@@ -22,18 +22,36 @@ body {
 /*********************************/
 .color-container {
   display: flex;
-  height: 4rem;
+  height: 2.5rem;
 }
 .color {
-  height: 4rem;
-  width: 4rem;
+  height: 2.5rem;
+  width: 2.5rem;
+}
+.color-black {
+  background: black;
+}
+.color-white {
+  background: white;
 }
 .color-red {
   background: red;
+}
+.color-orange {
+  background: orange;
+}
+.color-yellow {
+  background: yellow;
 }
 .color-green {
   background: green;
 }
 .color-blue {
   background: blue;
+}
+.color-purple {
+  background: purple;
+}
+.color-pink {
+  background: pink;
 }
