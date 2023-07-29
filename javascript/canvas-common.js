@@ -9,6 +9,7 @@ const contextReal = canvasReal.getContext("2d");
 /** @type {HTMLCanvasElement} canvas */
 const canvasDraft = document.querySelector("#canvas-draft");
 const contextDraft = canvasDraft.getContext("2d");
+/** @type {PaintFunction} currentFunction */
 let currentFunction;
 let dragging = false;
 
@@ -88,4 +89,22 @@ class PaintFunction {
    * @param {MouseEvent} event
    */
   onMouseEnter(coord, event) {}
+}
+
+/**
+ * Sets strokes style for both real and draft canvas
+ * @param {string} color
+ */
+function setStrokeStyle(color) {
+  contextReal.strokeStyle = color;
+  contextDraft.strokeStyle = color;
+}
+
+/**
+ * Sets fill style for both real and draft canvas
+ * @param {string} color
+ */
+function setFillStyle(color) {
+  contextReal.fillStyle = color;
+  contextDraft.fillStyle = color;
 }
