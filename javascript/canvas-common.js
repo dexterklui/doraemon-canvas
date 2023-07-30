@@ -125,3 +125,12 @@ function setFillStyle(color) {
   const fillColor = document.querySelector("#fill-color");
   fillColor.style.backgroundColor = color;
 }
+
+/**
+ * Sets font style for both real and draft canvas
+ * @param {string} style
+ */
+function setFontStyle(style) {
+  contextReal.font = style;
+  contextDraft.font = style;
+}

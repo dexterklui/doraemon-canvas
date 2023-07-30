@@ -8,6 +8,9 @@ $(() => {
   document.querySelector("#drawing-line").addEventListener("click", () => {
     currentFunction = new DrawingLine(contextReal);
   });
+  document.querySelector("#drawing-text").addEventListener("click", () => {
+    currentFunction = new DrawingText(contextReal, contextDraft);
+  });
 
   /*******************************/
   /*        color-picker        */
@@ -44,4 +47,5 @@ $(() => {
   currentFunction = new DrawingLine(contextReal);
   setStrokeStyle("black");
   setFillStyle("black");
+  setFontStyle("22px Arial");
 });
