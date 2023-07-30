@@ -8,6 +8,9 @@ $(() => {
   document.querySelector("#drawing-line").addEventListener("click", () => {
     currentFunction = new DrawingLine(contextReal);
   });
+  document.querySelector("#drawing-polygon").addEventListener("click", () => {
+    currentFunction = new DrawingPolygon(contextReal, contextDraft);
+  });
 
   /*******************************/
   /*        color-picker        */
