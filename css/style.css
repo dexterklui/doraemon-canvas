@@ -1,3 +1,14 @@
+/***************************/
+/*        variables        */
+/***************************/
+:root {
+  --btn-height: 2.5rem;
+  --btn-width: 2.5rem;
+}
+
+/**************************/
+/*        elements        */
+/**************************/
 .canvas {
   border: 1px black dotted;
   position: absolute;
@@ -15,4 +26,25 @@ body {
 }
 #canvas-container {
   height: 720px;
+}
+
+/*********************************/
+/*        color-container        */
+/*********************************/
+.color-palette {
+  display: flex;
+  height: var(--btn-height);
+}
+.color {
+  height: var(--btn-height);
+  width: var(--btn-width);
+}
+
+.color-indicate-container {
+  display: flex;
+  height: var(--btn-height);
+}
+.color-indicator {
+  height: var(--btn-height);
+  width: var(--btn-width);
 }
