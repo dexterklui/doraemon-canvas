@@ -40,8 +40,8 @@ function resizeDoraHead() {
   doraHeadContainer.style.width = `${canvasWidth * CONTAINER_WIDTH_RATIO}px`;
   doraHeadContainer.style.height = `${canvasHeight * CONTAINER_HEIGHT_RATIO}px`;
   [canvasReal, canvasDraft].forEach((canvas) => {
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
+    canvas.style.width = `${canvasWidth}px`;
+    canvas.style.height = `${canvasHeight}px`;
     canvas.style.clipPath = `path("${doraHeadSvgPath(canvasWidth)}")`;
   });
   doraHead.style.clipPath = `path("${doraHeadSvgPath(

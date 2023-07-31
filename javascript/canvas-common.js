@@ -9,10 +9,14 @@ const contextDraft = canvasDraft.getContext("2d");
 let currentFunction;
 let dragging = false;
 
+const scaleCoordMap = { 1: 2, 2: 1 }; // Use map so no need to calculate
 canvasDraft.addEventListener("mousedown", (e) => {
   const mouseX = e.offsetX;
   const mouseY = e.offsetY;
-  currentFunction?.onMouseDown([mouseX, mouseY], e);
+  currentFunction?.onMouseDown(
+    [mouseX * scaleCoordMap[scale], mouseY * scaleCoordMap[scale]],
+    e
+  );
   dragging = true;
 });
 
@@ -20,29 +24,44 @@ canvasDraft.addEventListener("mousemove", (e) => {
   const mouseX = e.offsetX;
   const mouseY = e.offsetY;
   if (dragging) {
-    currentFunction?.onDragging([mouseX, mouseY], e);
+    currentFunction?.onDragging(
+      [mouseX * scaleCoordMap[scale], mouseY * scaleCoordMap[scale]],
+      e
+    );
   }
-  currentFunction?.onMouseMove([mouseX, mouseY], e);
+  currentFunction?.onMouseMove(
+    [mouseX * scaleCoordMap[scale], mouseY * scaleCoordMap[scale]],
+    e
+  );
 });
 
 canvasDraft.addEventListener("mouseup", (e) => {
   dragging = false;
   const mouseX = e.offsetX;
   const mouseY = e.offsetY;
-  currentFunction?.onMouseUp([mouseX, mouseY], e);
+  currentFunction?.onMouseUp(
+    [mouseX * scaleCoordMap[scale], mouseY * scaleCoordMap[scale]],
+    e
+  );
 });
 
 canvasDraft.addEventListener("mouseleave", (e) => {
   dragging = false;
   const mouseX = e.offsetX;
   const mouseY = e.offsetY;
-  currentFunction?.onMouseLeave([mouseX, mouseY], e);
+  currentFunction?.onMouseLeave(
+    [mouseX * scaleCoordMap[scale], mouseY * scaleCoordMap[scale]],
+    e
+  );
 });
 
 canvasDraft.addEventListener("mouseenter", (e) => {
   const mouseX = e.offsetX;
   const mouseY = e.offsetY;
-  currentFunction?.onMouseEnter([mouseX, mouseY], e);
+  currentFunction?.onMouseEnter(
+    [mouseX * scaleCoordMap[scale], mouseY * scaleCoordMap[scale]],
+    e
+  );
 });
 
 /** # Class (all classes will have these methods) #
@@ -130,8 +149,6 @@ function setFillStyle(color) {
 function setScale(newScale) {
   if (!newScale) return;
   scale = newScale;
-  contextReal.scale(scale, scale);
-  contextDraft.scale(scale, scale);
   resizeDoraHead();
   return newScale;
 }

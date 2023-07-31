@@ -8,6 +8,9 @@ $(() => {
   document.querySelector("#drawing-line").addEventListener("click", () => {
     currentFunction = new DrawingLine(contextReal);
   });
+  document.querySelector("#zoom-canvas").addEventListener("click", () => {
+    setScale(scale === 1 ? 2 : 1);
+  });
 
   /*******************************/
   /*        color-picker        */
