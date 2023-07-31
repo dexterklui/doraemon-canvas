@@ -27,10 +27,17 @@ class DrawingText extends PaintFunction {
     this.draftInput.style.top = `calc(${this.origY.toString()}px - 1.2em)`;
     this.draftInput.style.zIndex = "100";
     this.contextDraft.canvas.after(this.draftInput);
+    this.draftInput.addEventListener("keydown", (e) => {
+      // "vimium" extension makes "Escape" key not registered in keydown event
+      if (e.key === "Escape") {
+        this.draftInput.remove();
+        this.draftInput = null;
+      }
+    });
     // Need to setTimeout otherwise focus() executes before the input is fully added to DOM
     setTimeout(() => {
       this.draftInput.focus();
-      this.draftInput.addEventListener("blur", () => {
+      this.draftInput.addEventListener("blur", (e) => {
         if (this.draftInput.value && this.draftInput.value !== "") {
           this.contextReal.fillText(
             this.draftInput.value,
