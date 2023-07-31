@@ -22,9 +22,9 @@ class DrawingText extends PaintFunction {
     this.draftInput = document.createElement("input");
     this.draftInput.type = "textarea";
     this.draftInput.style.position = "absolute";
-    this.draftInput.style.left = this.origX.toString() + "px";
-    this.draftInput.style.top = `calc(${this.origY.toString()}px - 1.2em)`;
+    this.draftInput.style.left = (this.origX - 3).toString() + "px";
     this.draftInput.style.fontSize = fontSize;
+    this.draftInput.style.top = `calc(${this.origY.toString()}px - 1.2em)`;
     this.draftInput.style.zIndex = "100";
     this.contextDraft.canvas.after(this.draftInput);
     // Need to setTimeout otherwise focus() executes before the input is fully added to DOM
