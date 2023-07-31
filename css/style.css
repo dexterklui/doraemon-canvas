@@ -4,28 +4,89 @@
 :root {
   --btn-height: 2.5rem;
   --btn-width: 2.5rem;
+  --color-primary: #15a9ff;
 }
 
 /**************************/
 /*        elements        */
 /**************************/
-.canvas {
-  border: 1px black dotted;
+#dora-head-container {
+  display: grid;
+  grid-template-areas: "stack";
+  align-items: end;
+  height: 732px;
+  width: 1062px;
+  padding: 0;
+  margin: 0 auto;
+}
+#doraemon-head {
+  background: var(--color-primary);
+  justify-self: center;
+  height: 100%;
+  width: 83.34%;
+  grid-area: stack;
+}
+#doraemon-eyes {
+  grid-area: stack;
+  justify-self: center;
+  align-self: start;
+  display: flex;
+  height: 31.42%;
+  width: 33.15%;
+}
+.doraemon-eye {
+  margin-top: 12%;
+  height: 100%;
+  width: 50%;
+  position: relative;
+  clip-path: ellipse(50% 50%);
+  background: #dddddd;
+}
+.doraemon-eye-white {
   position: absolute;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
+  top: 1px;
+  left: 1px;
+  height: calc(100% - 2px);
+  width: calc(100% - 2px);
+  clip-path: ellipse(50% 50%);
+  background: white;
+}
+.doraemon-eye-black {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 24%;
+  width: 18%;
+  clip-path: ellipse(50% 50%);
+  background: #3f3e39;
+  color: white;
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+}
+.doraemon-eye:first-child .doraemon-eye-black {
+  right: 10%;
+}
+.doraemon-eye:nth-child(2) .doraemon-eye-black {
+  left: 10%;
+}
+.canvas {
+  justify-self: center;
+  grid-area: stack;
 }
 
 #canvas-draft {
   background-color: transparent;
 }
-body {
-  overflow: hidden;
+#canvas-real {
+  background-color: white;
 }
-#canvas-container {
-  height: 720px;
+body.container {
+  /* overflow: hidden; */
+  background-color: lightblue;
+  height: 100vh;
+  height: 100dvh;
+  background: radial-gradient(white, var(--color-primary));
 }
 
 /*********************************/

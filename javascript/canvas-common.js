@@ -3,11 +3,7 @@
  * ==================================
  ***********************************************/
 
-/** @type {HTMLCanvasElement} canvas */
-const canvasReal = document.querySelector("#canvas-real");
 const contextReal = canvasReal.getContext("2d");
-/** @type {HTMLCanvasElement} canvas */
-const canvasDraft = document.querySelector("#canvas-draft");
 const contextDraft = canvasDraft.getContext("2d");
 /** @type {PaintFunction} currentFunction */
 let currentFunction;
@@ -124,4 +120,18 @@ function setFillStyle(color) {
   /** @type {HTMLElement} fillColor */
   const fillColor = document.querySelector("#fill-color");
   fillColor.style.backgroundColor = color;
+}
+
+/**
+ * Sets the scale of canvas
+ * @param {number} newScale
+ * @returns {number} the new scale applied or undefined if no new scaled applied
+ */
+function setScale(newScale) {
+  if (!newScale) return;
+  scale = newScale;
+  contextReal.scale(scale, scale);
+  contextDraft.scale(scale, scale);
+  resizeDoraHead();
+  return newScale;
 }

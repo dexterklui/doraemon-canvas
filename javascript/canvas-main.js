@@ -42,6 +42,7 @@ $(() => {
   /*        initial setting        */
   /*********************************/
   currentFunction = new DrawingLine(contextReal);
+  setScale(1);
   setStrokeStyle("black");
   setFillStyle("black");
 });
