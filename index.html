@@ -15,30 +15,27 @@
     />
   </head>
   <body class="container">
-    <h1>Canvas Application</h1>
-    <div id="dora-head-container">
-      <div id="doraemon-head" role="presentation"></div>
+    <div id="dora-head" class="dora-head">
+      <div class="dora-skull" role="presentation"></div>
       <canvas
-        id="canvas-real"
-        class="canvas"
+        class="dora-face canvas-real"
         width="1500px"
-        height="1240px"
+        height="1200px"
       ></canvas>
       <canvas
-        id="canvas-draft"
-        class="canvas"
+        class="dora-face canvas-draft"
         width="1500px"
-        height="1240px"
+        height="1200px"
       ></canvas>
-      <div id="doraemon-eyes" role="presentation">
-        <div role="presentation" class="doraemon-eye">
-          <div role="presentation" class="doraemon-eye-white">
-            <div class="doraemon-eye-black">+</div>
+      <div class="dora-eyes" role="presentation">
+        <div role="presentation" class="dora-eye">
+          <div role="presentation" class="dora-eye-white">
+            <div class="dora-eye-black">+</div>
           </div>
         </div>
-        <div role="presentation" class="doraemon-eye">
-          <div role="presentation" class="doraemon-eye-white">
-            <div class="doraemon-eye-black">-</div>
+        <div role="presentation" class="dora-eye">
+          <div role="presentation" class="dora-eye-white">
+            <div class="dora-eye-black">-</div>
           </div>
         </div>
       </div>
@@ -78,6 +75,7 @@
     <!------------------------------------->
     <!--        Canvas JavaScript        -->
     <!------------------------------------->
+    <script src="./javascript/zoom-scale.js" type="text/javascript"></script>
     <script src="./javascript/create-canvas.js" type="text/javascript"></script>
     <!-- The drawing functionality  -->
     <script src="./javascript/canvas-common.js" type="text/javascript"></script>

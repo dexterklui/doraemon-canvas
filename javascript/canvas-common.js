@@ -5,16 +5,18 @@
 
 const contextReal = canvasReal.getContext("2d");
 const contextDraft = canvasDraft.getContext("2d");
+const zoomScale = new ZoomScale(1, 2);
 /** @type {PaintFunction} currentFunction */
 let currentFunction;
 let dragging = false;
+let coordCoefficient = 1;
+let zoomed = false;
 
-const scaleCoordMap = { 1: 2, 2: 1 }; // Use map so no need to calculate
 canvasDraft.addEventListener("mousedown", (e) => {
   const mouseX = e.offsetX;
   const mouseY = e.offsetY;
   currentFunction?.onMouseDown(
-    [mouseX * scaleCoordMap[scale], mouseY * scaleCoordMap[scale]],
+    [mouseX * coordCoefficient, mouseY * coordCoefficient],
     e
   );
   dragging = true;
@@ -25,12 +27,12 @@ canvasDraft.addEventListener("mousemove", (e) => {
   const mouseY = e.offsetY;
   if (dragging) {
     currentFunction?.onDragging(
-      [mouseX * scaleCoordMap[scale], mouseY * scaleCoordMap[scale]],
+      [mouseX * coordCoefficient, mouseY * coordCoefficient],
       e
     );
   }
   currentFunction?.onMouseMove(
-    [mouseX * scaleCoordMap[scale], mouseY * scaleCoordMap[scale]],
+    [mouseX * coordCoefficient, mouseY * coordCoefficient],
     e
   );
 });
@@ -40,7 +42,7 @@ canvasDraft.addEventListener("mouseup", (e) => {
   const mouseX = e.offsetX;
   const mouseY = e.offsetY;
   currentFunction?.onMouseUp(
-    [mouseX * scaleCoordMap[scale], mouseY * scaleCoordMap[scale]],
+    [mouseX * coordCoefficient, mouseY * coordCoefficient],
     e
   );
 });
@@ -50,7 +52,7 @@ canvasDraft.addEventListener("mouseleave", (e) => {
   const mouseX = e.offsetX;
   const mouseY = e.offsetY;
   currentFunction?.onMouseLeave(
-    [mouseX * scaleCoordMap[scale], mouseY * scaleCoordMap[scale]],
+    [mouseX * coordCoefficient, mouseY * coordCoefficient],
     e
   );
 });
@@ -59,7 +61,7 @@ canvasDraft.addEventListener("mouseenter", (e) => {
   const mouseX = e.offsetX;
   const mouseY = e.offsetY;
   currentFunction?.onMouseEnter(
-    [mouseX * scaleCoordMap[scale], mouseY * scaleCoordMap[scale]],
+    [mouseX * coordCoefficient, mouseY * coordCoefficient],
     e
   );
 });
@@ -148,7 +150,12 @@ function setFillStyle(color) {
  */
 function setScale(newScale) {
   if (!newScale) return;
-  scale = newScale;
-  resizeDoraHead();
+  resizeDoraHead(newScale);
+  updateCoordCoefficient();
   return newScale;
+}
+
+function updateCoordCoefficient() {
+  const { width } = canvasReal.getBoundingClientRect();
+  coordCoefficient = CANVAS_WIDTH / width;
 }

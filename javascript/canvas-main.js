@@ -9,7 +9,9 @@ $(() => {
     currentFunction = new DrawingLine(contextReal);
   });
   document.querySelector("#zoom-canvas").addEventListener("click", () => {
-    setScale(scale === 1 ? 2 : 1);
+    doraHead.style.height = zoomed ? "70%" : "118%";
+    updateCoordCoefficient();
+    zoomed = !zoomed;
   });
 
   /*******************************/
@@ -45,7 +47,7 @@ $(() => {
   /*        initial setting        */
   /*********************************/
   currentFunction = new DrawingLine(contextReal);
-  setScale(1);
   setStrokeStyle("black");
   setFillStyle("black");
+  updateCoordCoefficient();
 });
