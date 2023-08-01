@@ -9,10 +9,25 @@ $(() => {
     currentFunction = new DrawingLine(contextReal);
   });
   document.querySelector("#zoom-canvas").addEventListener("click", () => {
-    doraHead.style.height = zoomed ? "100%" : "100vh";
-    updateCoordCoefficient();
+    if (zoomed) {
+      dora.style.height = "100%";
+      dora.style.transform = "none";
+    } else {
+      // -- This zooms to show exactly the full canvas --
+      // dora.style.height = "170.71%";
+      // dora.style.transform = "translateY(-11.5%)";
+      // -- This zooms even more --
+      dora.style.height = "220%";
+      dora.style.transform = "translateY(-15%)";
+    }
+    // updateCoordCoefficient(); // Needed only if no transition
     zoomed = !zoomed;
   });
+
+  /**************************************/
+  /*        Other event handlers        */
+  /**************************************/
+  dora.addEventListener("transitionend", () => updateCoordCoefficient());
 
   /*******************************/
   /*        color-picker        */

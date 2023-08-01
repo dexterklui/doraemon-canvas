@@ -15,43 +15,45 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <div id="dora-head" class="dora-head">
-      <div class="dora-skull" role="presentation"></div>
-      <canvas
-        class="dora-face canvas-real"
-        width="1500px"
-        height="1200px"
-      ></canvas>
-      <canvas
-        class="dora-face canvas-draft"
-        width="1500px"
-        height="1200px"
-      ></canvas>
-      <div class="dora-eyes" role="presentation">
-        <div role="presentation" class="dora-eye">
-          <div role="presentation" class="dora-eye-white">
-            <div class="dora-eye-black">+</div>
+    <div class="dora">
+      <div id="dora-head" class="dora-head">
+        <div class="dora-skull" role="presentation"></div>
+        <canvas
+          class="dora-face canvas-real"
+          width="1500px"
+          height="1200px"
+        ></canvas>
+        <canvas
+          class="dora-face canvas-draft"
+          width="1500px"
+          height="1200px"
+        ></canvas>
+        <div class="dora-eyes" role="presentation">
+          <div role="presentation" class="dora-eye">
+            <div role="presentation" class="dora-eye-white">
+              <div class="dora-eye-black">+</div>
+            </div>
           </div>
-        </div>
-        <div role="presentation" class="dora-eye">
-          <div role="presentation" class="dora-eye-white">
-            <div class="dora-eye-black">-</div>
+          <div role="presentation" class="dora-eye">
+            <div role="presentation" class="dora-eye-white">
+              <div class="dora-eye-black">-</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="dora-collar">
-      <div class="dora-collar-strip"></div>
-      <div class="dora-collar-bell"></div>
-    </div>
-    <div id="dora-body" class="dora-body">
-      <div class="dora-tummy">
-        <div class="dora-pocket clip-outline">
-          <div class="dora-pocket"></div>
-        </div>
+      <div class="dora-collar">
+        <div class="dora-collar-strip"></div>
+        <div class="dora-collar-bell"></div>
       </div>
-      <div class="dora-foot"></div>
-      <div class="dora-foot"></div>
+      <div id="dora-body" class="dora-body">
+        <div class="dora-tummy">
+          <div class="dora-pocket clip-outline">
+            <div class="dora-pocket"></div>
+          </div>
+        </div>
+        <div class="dora-foot"></div>
+        <div class="dora-foot"></div>
+      </div>
     </div>
     <div class="tools">
       <div class="buttons">
@@ -90,8 +92,6 @@
     <!------------------------------------->
     <!--        Canvas JavaScript        -->
     <!------------------------------------->
-    <script src="./javascript/zoom-scale.js" type="text/javascript"></script>
-    <script src="./javascript/create-canvas.js" type="text/javascript"></script>
     <!-- The drawing functionality  -->
     <script src="./javascript/canvas-common.js" type="text/javascript"></script>
     <!-- The drawing line functionality  -->

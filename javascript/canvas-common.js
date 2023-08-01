@@ -3,9 +3,22 @@
  * ==================================
  ***********************************************/
 
+/***************************************/
+/*        Variables declaration        */
+/***************************************/
+// whisker to head width ratio = 1.2; head to face ratio = 1.18
+const CANVAS_WIDTH = 1500;
+const DORA_HEAD_HEIGHT_WIDTH_RATIO = 0.8;
+/** @type {HTMLElement} doraHead */
+const doraHead = document.querySelector("#dora-head");
+/** @type {HTMLCanvasElement} canvasReal */
+const canvasReal = doraHead.querySelector(".canvas-real");
+/** @type {HTMLCanvasElement} canvasDraft */
+const canvasDraft = doraHead.querySelector(".canvas-draft");
+/** @type {HTMLElement} dora */
+const dora = document.querySelector(".dora");
 const contextReal = canvasReal.getContext("2d");
 const contextDraft = canvasDraft.getContext("2d");
-const zoomScale = new ZoomScale(1, 2);
 /** @type {PaintFunction} currentFunction */
 let currentFunction;
 let dragging = false;
