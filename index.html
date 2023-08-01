@@ -6,15 +6,15 @@
     <title>Canvas</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="css/style.css" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body class="container">
+  <body>
     <div id="dora-head" class="dora-head">
       <div class="dora-skull" role="presentation"></div>
       <canvas
@@ -40,23 +40,38 @@
         </div>
       </div>
     </div>
-    <div class="buttons">
-      <!-- The drawing rectangle button  -->
-      <span class="btn btn-primary fa fa-square" id="drawing-rectangle"
-        >Draw Rectangle</span
-      >
-      <!-- The drawing line button  -->
-      <span class="btn btn-info fa fa-paint-brush" id="drawing-line"
-        >Draw Line</span
-      >
-      <span class="btn btn-primary fa fa-paint-brush" id="zoom-canvas">
-        Zoom in/out
-      </span>
+    <div class="dora-collar">
+      <div class="dora-collar-strip"></div>
+      <div class="dora-collar-bell"></div>
     </div>
-    <div class="color-palette"></div>
-    <div class="color-indicate-container">
-      <div id="stroke-color" class="color-indicator"></div>
-      <div id="fill-color" class="color-indicator"></div>
+    <div id="dora-body" class="dora-body">
+      <div class="dora-tummy">
+        <div class="dora-pocket clip-outline">
+          <div class="dora-pocket"></div>
+        </div>
+      </div>
+      <div class="dora-foot"></div>
+      <div class="dora-foot"></div>
+    </div>
+    <div class="tools">
+      <div class="buttons">
+        <!-- The drawing rectangle button  -->
+        <span class="btn btn-primary fa fa-square" id="drawing-rectangle"
+          >Draw Rectangle</span
+        >
+        <!-- The drawing line button  -->
+        <span class="btn btn-info fa fa-paint-brush" id="drawing-line"
+          >Draw Line</span
+        >
+        <span class="btn btn-primary fa fa-paint-brush" id="zoom-canvas">
+          Zoom in/out
+        </span>
+      </div>
+      <div class="color-palette"></div>
+      <div class="color-indicate-container">
+        <div id="stroke-color" class="color-indicator"></div>
+        <div id="fill-color" class="color-indicator"></div>
+      </div>
     </div>
 
     <!---------------------------------->

@@ -9,7 +9,7 @@ $(() => {
     currentFunction = new DrawingLine(contextReal);
   });
   document.querySelector("#zoom-canvas").addEventListener("click", () => {
-    doraHead.style.height = zoomed ? "70%" : "118%";
+    doraHead.style.height = zoomed ? "100%" : "100vh";
     updateCoordCoefficient();
     zoomed = !zoomed;
   });
