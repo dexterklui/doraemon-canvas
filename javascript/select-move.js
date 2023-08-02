@@ -5,6 +5,10 @@
  ***********************************************/
 // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
 
+/**
+ * Functionality to select a rectangular area and move drawings within.
+ * @extends PaintFunction
+ */
 class SelectMove extends PaintFunction {
   /**
    * @param {CanvasRenderingContext2D} contextReal
@@ -131,7 +135,6 @@ class SelectMove extends PaintFunction {
    * @param {number} y - y coordinate of top left corner
    * @param {number} w - width of selection
    * @param {number} h - height of selection
-   * @returns {undefined}
    */
   #drawSelectionOutline(
     x = this.smallerX,
@@ -174,7 +177,6 @@ class SelectMove extends PaintFunction {
 
   /**
    * Clears drawing on real canvas inside current selection range.
-   * returns {undefined}
    */
   #clearDrawingInSelection() {
     this.contextReal.clearRect(

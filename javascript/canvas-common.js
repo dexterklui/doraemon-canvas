@@ -49,8 +49,10 @@ canvasDraft.addEventListener("mouseenter", (e) => {
   currentFunction?.onMouseEnter([mouseX, mouseY], e);
 });
 
-/** # Class (all classes will have these methods) #
-/*  ====================== */
+/**
+ * Superclass for individual canvas-painting functionalities.
+ * @class PaintFunction
+ */
 class PaintFunction {
   /**
    * @param {CanvasRenderingContext2D} contextReal
@@ -98,6 +100,9 @@ class PaintFunction {
    */
   onMouseEnter(coord, event) {}
 
+  /**
+   * Clears all drawing on draft canvas.
+   */
   clearDraft() {
     this.contextDraft.clearRect(0, 0, canvasDraft.width, canvasDraft.height);
   }
