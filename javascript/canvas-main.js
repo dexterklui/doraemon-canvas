@@ -23,6 +23,7 @@ $(() => {
     // updateCoordCoefficient(); // Needed only if no transition
     zoomed = !zoomed;
   });
+  window.addEventListener("resize", updateCoordCoefficient);
 
   /**************************************/
   /*        Other event handlers        */

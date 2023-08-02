@@ -40,6 +40,7 @@ body {
     "collar" 8.257%
     "body" 21.743%;
   transition: height 1s ease-out, transform 1s ease-out;
+  overflow: hidden;
 }
 .dora-head {
   grid-area: head;
@@ -218,7 +219,7 @@ body {
 /*********************************/
 .color-palette {
   display: flex;
-  height: var(--btn-height);
+  flex-wrap: wrap;
 }
 .color {
   height: var(--btn-height);
