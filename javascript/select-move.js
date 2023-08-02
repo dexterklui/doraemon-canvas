@@ -16,10 +16,12 @@ class SelectMove extends PaintFunction {
    */
   constructor(contextReal, contextDraft) {
     super(contextReal, contextDraft);
+    this.contextDraft.canvas.style.cursor = "crosshair";
   }
 
   destructor() {
     if (this.#drawImageData()) this.imageData = undefined;
+    this.contextDraft.canvas.style.cursor = "auto";
   }
 
   /*************************/
@@ -64,17 +66,18 @@ class SelectMove extends PaintFunction {
     if (this.#drawImageData()) this.imageData = undefined;
     this.origX = coord[0];
     this.origY = coord[1];
+    this.endX = undefined;
+    this.endY = undefined;
     this.movingFlag = false;
     this.clearDraft();
   }
 
   onDragging(coord) {
     if (this.movingFlag) {
-      const x = coord[0] - this.dx;
-      const y = coord[1] - this.dy;
+      this.#updateSelection(coord);
       this.clearDraft();
-      this.contextDraft.putImageData(this.imageData, x, y);
-      this.#drawSelectionOutline(x, y);
+      this.#draftImageData();
+      this.#drawSelectionOutline();
       return;
     }
     this.clearDraft();
@@ -85,15 +88,7 @@ class SelectMove extends PaintFunction {
 
   onMouseUp(coord) {
     if (this.movingFlag) {
-      // Need to calculate all before assign them
-      const newOrigX = coord[0] - this.dx;
-      const newOrigY = coord[1] - this.dy;
-      const newEndX = newOrigX + this.selectionWidth;
-      const newEndY = newOrigY + this.selectionHeight;
-      this.origX = newOrigX;
-      this.origY = newOrigY;
-      this.endX = newEndX;
-      this.endY = newEndY;
+      this.#updateSelection(coord);
       this.clearDraft();
       this.#draftImageData();
       this.#drawSelectionOutline();
@@ -107,6 +102,14 @@ class SelectMove extends PaintFunction {
     this.#drawSelectionOutline();
   }
 
+  onMouseMove(coord) {
+    if (this.#withinSelection(coord)) {
+      this.contextDraft.canvas.style.cursor = "move";
+    } else {
+      this.contextDraft.canvas.style.cursor = "crosshair";
+    }
+  }
+
   /********************************/
   /*        Helper methods        */
   /********************************/
@@ -117,9 +120,25 @@ class SelectMove extends PaintFunction {
    */
   #withinSelection(coord) {
     if (!this.endX || !this.origX) return false;
-    if (coord[0] < this.smallerX || coord[0] > this.largerX) return false;
-    if (coord[1] < this.smallerY || coord[1] > this.largerY) return false;
+    if (coord[0] < this.smallerX || coord[0] >= this.largerX) return false;
+    if (coord[1] < this.smallerY || coord[1] >= this.largerY) return false;
     return true;
+  }
+
+  /**
+   * Updates selection area using dx, dy and a given coord.
+   * @param {[number, number]} coord
+   */
+  #updateSelection(coord) {
+    // Need to calculate all before assigning them.
+    const newOrigX = coord[0] - this.dx;
+    const newOrigY = coord[1] - this.dy;
+    const newEndX = newOrigX + this.selectionWidth;
+    const newEndY = newOrigY + this.selectionHeight;
+    this.origX = newOrigX;
+    this.origY = newOrigY;
+    this.endX = newEndX;
+    this.endY = newEndY;
   }
 
   /**
