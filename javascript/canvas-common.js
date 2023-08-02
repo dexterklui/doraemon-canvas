@@ -17,14 +17,119 @@ const canvasReal = doraHead.querySelector(".canvas-real");
 const canvasDraft = doraHead.querySelector(".canvas-draft");
 /** @type {HTMLElement} dora */
 const dora = document.querySelector(".dora");
+/** @type {CanvasRenderingContext2D} contextReal */
 const contextReal = canvasReal.getContext("2d");
+/** @type {CanvasRenderingContext2D} contextDraft */
 const contextDraft = canvasDraft.getContext("2d");
 /** @type {PaintFunction} currentFunction */
 let currentFunction;
+/** @type {boolean} dragging */
 let dragging = false;
+/**
+ * @type {number} coordCoefficient
+ * for correcting coordinates of mouse events under different size of canvas
+ */
 let coordCoefficient = 1;
+/** @type {boolean} zoomed - tracks whether currently zoomed to dora's canvas*/
 let zoomed = false;
 
+/*************************************/
+/*        Function definition        */
+/*************************************/
+/**
+ * Sets strokes style for both real and draft canvas
+ * @param {string} color
+ */
+function setStrokeStyle(color) {
+  contextReal.strokeStyle = color;
+  contextDraft.strokeStyle = color;
+  /** @type {HTMLElement} strokeColor */
+  const strokeColor = document.querySelector("#stroke-color");
+  strokeColor.style.backgroundColor = color;
+}
+
+/**
+ * Sets fill style for both real and draft canvas
+ * @param {string} color
+ */
+function setFillStyle(color) {
+  contextReal.fillStyle = color;
+  contextDraft.fillStyle = color;
+  /** @type {HTMLElement} fillColor */
+  const fillColor = document.querySelector("#fill-color");
+  fillColor.style.backgroundColor = color;
+}
+
+function updateCoordCoefficient() {
+  const { width } = canvasReal.getBoundingClientRect();
+  coordCoefficient = CANVAS_WIDTH / width;
+}
+
+/************************************************/
+/*        Class PaintFunction definition        */
+/************************************************/
+class PaintFunction {
+  /**
+   * @param {CanvasRenderingContext2D} contextReal
+   * @param {CanvasRenderingContext2D} contextDraft
+   */
+  constructor(contextReal, contextDraft) {
+    this.contextReal = contextReal;
+    this.contextDraft = contextDraft;
+  }
+
+  /**
+   * @param {Number[]} coord
+   * @param {MouseEvent} event
+   */
+  onMouseDown(coord, event) {}
+
+  /**
+   * @param {Number[]} coord
+   * @param {MouseEvent} event
+   */
+  onDragging(coord, event) {}
+
+  /**
+   * @param {Number[]} coord
+   * @param {MouseEvent} event
+   */
+  onMouseMove(coord, event) {}
+
+  /**
+   * @param {Number[]} coord
+   * @param {MouseEvent} event
+   */
+  onMouseUp(coord, event) {}
+
+  /**
+   * @param {Number[]} coord
+   * @param {MouseEvent} event
+   */
+  onMouseLeave(coord, event) {}
+
+  /**
+   * @param {Number[]} coord
+   * @param {MouseEvent} event
+   */
+  onMouseEnter(coord, event) {}
+
+  clearDraft() {
+    this.contextDraft.clearRect(0, 0, canvasDraft.width, canvasDraft.height);
+  }
+}
+
+/************************************/
+/*        Set up canvas size        */
+/************************************/
+for (let canvas of [canvasReal, canvasDraft]) {
+  canvas.width = CANVAS_WIDTH;
+  canvas.height = CANVAS_WIDTH * DORA_HEAD_HEIGHT_WIDTH_RATIO;
+}
+
+/***************************************/
+/*        Canvas event handlers        */
+/***************************************/
 canvasDraft.addEventListener("mousedown", (e) => {
   const mouseX = e.offsetX;
   const mouseY = e.offsetY;
@@ -78,97 +183,3 @@ canvasDraft.addEventListener("mouseenter", (e) => {
     e
   );
 });
-
-/** # Class (all classes will have these methods) #
-/*  ====================== */
-class PaintFunction {
-  /**
-   * @param {CanvasRenderingContext2D} contextReal
-   * @param {CanvasRenderingContext2D} contextDraft
-   */
-  constructor(contextReal, contextDraft) {
-    this.contextReal = contextReal;
-    this.contextDraft = contextDraft;
-  }
-
-  /**
-   * @param {Number[]} coord
-   * @param {MouseEvent} event
-   */
-  onMouseDown(coord, event) {}
-
-  /**
-   * @param {Number[]} coord
-   * @param {MouseEvent} event
-   */
-  onDragging(coord, event) {}
-
-  /**
-   * @param {Number[]} coord
-   * @param {MouseEvent} event
-   */
-  onMouseMove(coord, event) {}
-
-  /**
-   * @param {Number[]} coord
-   * @param {MouseEvent} event
-   */
-  onMouseUp(coord, event) {}
-
-  /**
-   * @param {Number[]} coord
-   * @param {MouseEvent} event
-   */
-  onMouseLeave(coord, event) {}
-
-  /**
-   * @param {Number[]} coord
-   * @param {MouseEvent} event
-   */
-  onMouseEnter(coord, event) {}
-
-  clearDraft() {
-    this.contextDraft.clearRect(0, 0, canvasDraft.width, canvasDraft.height);
-  }
-}
-
-/**
- * Sets strokes style for both real and draft canvas
- * @param {string} color
- */
-function setStrokeStyle(color) {
-  contextReal.strokeStyle = color;
-  contextDraft.strokeStyle = color;
-  /** @type {HTMLElement} strokeColor */
-  const strokeColor = document.querySelector("#stroke-color");
-  strokeColor.style.backgroundColor = color;
-}
-
-/**
- * Sets fill style for both real and draft canvas
- * @param {string} color
- */
-function setFillStyle(color) {
-  contextReal.fillStyle = color;
-  contextDraft.fillStyle = color;
-  /** @type {HTMLElement} fillColor */
-  const fillColor = document.querySelector("#fill-color");
-  fillColor.style.backgroundColor = color;
-}
-
-/**
- * Sets the scale of canvas
- * @param {number} newScale
- * @returns {number} the new scale applied or undefined if no new scaled applied
- */
-function setScale(newScale) {
-  if (!newScale) return;
-  resizeDoraHead(newScale);
-  updateCoordCoefficient();
-  return newScale;
-}
-
-function updateCoordCoefficient() {
-  const { width } = canvasReal.getBoundingClientRect();
-  coordCoefficient = CANVAS_WIDTH / width;
-}
