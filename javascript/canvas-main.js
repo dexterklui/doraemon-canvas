@@ -6,7 +6,10 @@ $(() => {
     currentFunction = new DrawingRectangle(contextReal, contextDraft);
   });
   document.querySelector("#drawing-line").addEventListener("click", () => {
-    currentFunction = new DrawingLine(contextReal);
+    currentFunction = new DrawingLine(contextReal, contextDraft);
+  });
+  document.querySelector("#select-move").addEventListener("click", () => {
+    currentFunction = new SelectMove(contextReal, contextDraft);
   });
 
   /*******************************/
@@ -41,7 +44,7 @@ $(() => {
   /*********************************/
   /*        initial setting        */
   /*********************************/
-  currentFunction = new DrawingLine(contextReal);
+  currentFunction = new DrawingLine(contextReal, contextDraft);
   setStrokeStyle("black");
   setFillStyle("black");
 });

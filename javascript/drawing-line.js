@@ -11,8 +11,8 @@ class DrawingLine extends PaintFunction {
   /**
    * @param {CanvasRenderingContext2D} contextReal
    */
-  constructor(contextReal) {
-    super(contextReal);
+  constructor(contextReal, contextDraft) {
+    super(contextReal, contextDraft);
   }
 
   // On mouse down, ensure that the pen has these features

@@ -59,6 +59,7 @@ class PaintFunction {
   constructor(contextReal, contextDraft) {
     this.contextReal = contextReal;
     this.contextDraft = contextDraft;
+    this.clearDraft();
   }
 
   /**
