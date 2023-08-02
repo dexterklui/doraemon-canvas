@@ -27,30 +27,34 @@ class SelectMove extends PaintFunction {
   /*************************/
   /*        Getters        */
   /*************************/
+  // NOTE: These getters assume no undefined values
+
   get smallerX() {
-    return Math.min(this.origX, this.endX);
+    return this.origX <= this.endX ? this.origX : this.endX;
   }
 
   get largerX() {
-    return Math.max(this.origX, this.endX);
+    return this.origX > this.endX ? this.origX : this.endX;
   }
 
   get smallerY() {
-    return Math.min(this.origY, this.endY);
+    return this.origY <= this.endY ? this.origY : this.endY;
   }
 
   get largerY() {
-    return Math.max(this.origY, this.endY);
+    return this.origY > this.endY ? this.origY : this.endY;
   }
 
   get selectionWidth() {
-    if (!this.endX || !this.origX) return;
-    return this.largerX - this.smallerX;
+    return this.origX <= this.endX
+      ? this.endX - this.origX
+      : this.origX - this.endX;
   }
 
   get selectionHeight() {
-    if (!this.endY || !this.origY) return;
-    return this.largerY - this.smallerY;
+    return this.origY <= this.endY
+      ? this.endY - this.origY
+      : this.origY - this.endY;
   }
 
   /*************************************/
