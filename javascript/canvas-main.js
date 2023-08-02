@@ -23,12 +23,18 @@ $(() => {
     // updateCoordCoefficient(); // Needed only if no transition
     zoomed = !zoomed;
   });
-  window.addEventListener("resize", updateCoordCoefficient);
 
   /**************************************/
   /*        Other event handlers        */
   /**************************************/
+  window.addEventListener("resize", updateCoordCoefficient);
   dora.addEventListener("transitionend", () => updateCoordCoefficient());
+  dora.addEventListener("transitionstart", () => {
+    dora.style.pointerEvents = "none";
+  });
+  dora.addEventListener("transitionend", () => {
+    dora.style.pointerEvents = "auto";
+  });
 
   /*******************************/
   /*        color-picker        */
