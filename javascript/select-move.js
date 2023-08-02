@@ -18,6 +18,10 @@ class SelectMove extends PaintFunction {
     super(contextReal, contextDraft);
   }
 
+  destructor() {
+    if (this.#drawImageData()) this.imageData = undefined;
+  }
+
   /*************************/
   /*        Getters        */
   /*************************/
@@ -57,16 +61,7 @@ class SelectMove extends PaintFunction {
       this.dy = coord[1] - this.smallerY;
       return;
     }
-    if (this.imageData) {
-      // Can't putImageData directly, otherwise transparent pixel becomes white
-      const canvas = document.createElement("canvas");
-      canvas.width = this.selectionWidth;
-      canvas.height = this.selectionHeight;
-      const ctx = canvas.getContext("2d");
-      ctx.putImageData(this.imageData, 0, 0);
-      this.contextReal.drawImage(canvas, this.smallerX, this.smallerY);
-      this.imageData = undefined;
-    }
+    if (this.#drawImageData()) this.imageData = undefined;
     this.origX = coord[0];
     this.origY = coord[1];
     this.movingFlag = false;
@@ -100,7 +95,7 @@ class SelectMove extends PaintFunction {
       this.endX = newEndX;
       this.endY = newEndY;
       this.clearDraft();
-      this.#putImageData(this.contextDraft);
+      this.#draftImageData();
       this.#drawSelectionOutline();
       return;
     }
@@ -108,11 +103,9 @@ class SelectMove extends PaintFunction {
     this.endY = coord[1];
     if (!this.#getImageDataFromSelection()) return;
     this.#clearDrawingInSelection();
-    this.#putImageData(this.contextDraft);
+    this.#draftImageData();
     this.#drawSelectionOutline();
   }
-
-  // TODO: Prevent losing selection when changing mode
 
   /********************************/
   /*        Helper methods        */
@@ -165,13 +158,32 @@ class SelectMove extends PaintFunction {
   }
 
   /**
-   * Puts stored image data in the given context.
-   * @param {CanvasRenderingContext2D} context
+   * Puts stored image data onto draft cavas.
    * @returns {boolean} false if no stored image data, true otherwise.
    */
-  #putImageData(context) {
+  #draftImageData() {
     if (!this.imageData) return false;
-    context.putImageData(this.imageData, this.smallerX, this.smallerY);
+    this.contextDraft.putImageData(
+      this.imageData,
+      this.smallerX,
+      this.smallerY
+    );
+    return true;
+  }
+
+  /**
+   * Puts stored image data onto real canvas.
+   * @returns {boolean} false if no stored image data found, ture otherwise.
+   */
+  #drawImageData() {
+    if (!this.imageData) return false;
+    // Can't putImageData directly, otherwise transparent pixel becomes white
+    const canvas = document.createElement("canvas");
+    canvas.width = this.selectionWidth;
+    canvas.height = this.selectionHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.putImageData(this.imageData, 0, 0);
+    this.contextReal.drawImage(canvas, this.smallerX, this.smallerY);
     return true;
   }
 

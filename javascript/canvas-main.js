@@ -3,12 +3,15 @@ $(() => {
   /*        canvas tools        */
   /******************************/
   document.querySelector("#drawing-rectangle").addEventListener("click", () => {
+    currentFunction.destructor();
     currentFunction = new DrawingRectangle(contextReal, contextDraft);
   });
   document.querySelector("#drawing-line").addEventListener("click", () => {
+    currentFunction.destructor();
     currentFunction = new DrawingLine(contextReal, contextDraft);
   });
   document.querySelector("#select-move").addEventListener("click", () => {
+    currentFunction.destructor();
     currentFunction = new SelectMove(contextReal, contextDraft);
   });
 

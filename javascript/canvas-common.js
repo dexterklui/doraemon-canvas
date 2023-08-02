@@ -65,6 +65,11 @@ class PaintFunction {
   }
 
   /**
+   * Does cleaning up before the current functionality is dropped.
+   */
+  destructor() {}
+
+  /**
    * @param {Number[]} coord
    * @param {MouseEvent} event
    */
