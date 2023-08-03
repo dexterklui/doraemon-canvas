@@ -1,4 +1,4 @@
-import PaintFunction from "./paint-functions/PaintFunction.js";
+import { PaintFunction } from "../external-dependencies.js";
 
 /**
  * Allows user to paint on a given canvas under "2d" context using
@@ -6,8 +6,6 @@ import PaintFunction from "./paint-functions/PaintFunction.js";
  */
 export default class DrawingCanvas {
   /**
-   * @param {HTMLCanvasElement} canvasReal
-   * @param {HTMLCanvasElement} canvasDraft
    * @param {number} [canvasWidth=1280] - default 1280
    * @param {number} [canvasHeight=720] - default 720
    * @param {Object<string, any>} [options]
@@ -15,16 +13,14 @@ export default class DrawingCanvas {
    *        - strokeStyle: "black"
    *        - fillStyle: "black"
    */
-  constructor(
-    canvasReal,
-    canvasDraft,
-    canvasWidth = 1280,
-    canvasHeight = 720,
-    options
-  ) {
-    this.canvasReal = canvasReal;
-    // TODO: creates a draft canvas if not given
-    this.canvasDraft = canvasDraft;
+  constructor(canvasWidth = 1280, canvasHeight = 720, options) {
+    this.canvasReal = document.createElement("canvas");
+    this.canvasReal.classList.add(
+      "drawing-canvas-real",
+      "drawing-canvas-real-1"
+    );
+    this.canvasDraft = document.createElement("canvas");
+    this.canvasDraft.classList.add("drawing-canvas-draft");
     this.#setCanvasDimension(canvasWidth, canvasHeight);
     this.#ctxReal = this.canvasReal.getContext("2d");
     this.#ctxDraft = this.canvasDraft.getContext("2d");

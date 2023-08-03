@@ -25,51 +25,10 @@
       crossorigin="anonymous"
       defer
     ></script>
-    <script src="./javascript/main.js" type="module"></script>
+    <script src="./assets/doraemon-canvas/main.js" type="module"></script>
   </head>
   <body>
-    <div class="dora">
-      <div id="dora-head" class="dora-head">
-        <div class="dora-skull" role="presentation"></div>
-        <canvas class="dora-face canvas-real"></canvas>
-        <canvas class="dora-face canvas-draft"></canvas>
-        <div class="dora-eyes" role="presentation">
-          <div role="presentation" class="dora-eye">
-            <div role="presentation" class="dora-eye-white">
-              <div class="dora-eye-black">+</div>
-            </div>
-          </div>
-          <div role="presentation" class="dora-eye">
-            <div role="presentation" class="dora-eye-white">
-              <div class="dora-eye-black">-</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="dora-collar">
-        <div class="dora-collar-strip"></div>
-        <div class="dora-collar-bell"></div>
-      </div>
-      <div id="dora-body" class="dora-body">
-        <div class="dora-tummy">
-          <div class="dora-pocket clip-outline">
-            <div class="dora-pocket"></div>
-          </div>
-        </div>
-        <div class="dora-feet">
-          <div class="dora-foot">
-            <div class="dora-foot-shadow">
-              <div class="dora-foot-shadow-clip"></div>
-            </div>
-          </div>
-          <div class="dora-foot">
-            <div class="dora-foot-shadow">
-              <div class="dora-foot-shadow-clip"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div id="canvas-app"></div>
     <div class="tools">
       <div class="buttons">
         <span class="btn btn-primary fa fa-square" id="drawing-rectangle">
