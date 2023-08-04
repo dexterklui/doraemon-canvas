@@ -1,15 +1,10 @@
-/**********************************************
- * Move Drawings Within Rectangular Selection Functionality
- * ==================================
- * This class extends the PaintFunction class, which you can find in canvas-common
- ***********************************************/
-// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
+import PaintFunction from "./PaintFunction.js";
 
 /**
  * Functionality to select a rectangular area and move drawings within.
  * @extends PaintFunction
  */
-class SelectMove extends PaintFunction {
+export default class SelectMove extends PaintFunction {
   /**
    * @param {CanvasRenderingContext2D} contextReal
    * @param {CanvasRenderingContext2D} contextDraft
@@ -21,7 +16,7 @@ class SelectMove extends PaintFunction {
 
   destructor() {
     if (this.#drawImageData()) this.imageData = undefined;
-    this.contextDraft.canvas.style.cursor = "auto";
+    super.destructor();
   }
 
   /*************************/
@@ -222,3 +217,5 @@ class SelectMove extends PaintFunction {
     );
   }
 }
+
+export { SelectMove };

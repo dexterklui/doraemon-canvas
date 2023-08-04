@@ -1,11 +1,10 @@
-/**********************************************
- * Drawing Bezier Curve Functionality
- * ==================================
- * This class extends the PaintFunction class, which you can find in canvas-common
- ***********************************************/
-// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
+import PaintFunction from "./PaintFunction.js";
 
-class DrawingBezierCurve extends PaintFunction {
+/**
+ * Functionality to draw a cubic bezier curve.
+ * @extends PaintFunction
+ */
+export default class DrawingBezierCurve extends PaintFunction {
   /**
    * @param {CanvasRenderingContext2D} contextReal
    * @param {CanvasRenderingContext2D} contextDraft
@@ -20,9 +19,11 @@ class DrawingBezierCurve extends PaintFunction {
      * 2: placing 2nd control point
      */
     this.controlStage = 0;
+    this.#draggingFlag = false;
   }
 
   onMouseDown(coord) {
+    this.#draggingFlag = true;
     switch (this.controlStage) {
       case 0:
         this.origX = coord[0];
@@ -59,7 +60,7 @@ class DrawingBezierCurve extends PaintFunction {
   }
 
   onMouseMove(coord) {
-    if (dragging) return;
+    if (this.#draggingFlag) return;
     switch (this.controlStage) {
       case 0:
         return;
@@ -96,6 +97,7 @@ class DrawingBezierCurve extends PaintFunction {
 
   // Committing the element to the canvas
   onMouseUp(coord) {
+    this.#draggingFlag = false;
     switch (this.controlStage) {
       case 0:
         this.clearDraft();
@@ -115,6 +117,11 @@ class DrawingBezierCurve extends PaintFunction {
         return;
     }
   }
-  onMouseLeave() {}
-  onMouseEnter() {}
+  onMouseLeave() {
+    this.#draggingFlag = false;
+  }
+
+  #draggingFlag;
 }
+
+export { DrawingBezierCurve };

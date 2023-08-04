@@ -1,11 +1,10 @@
-/**********************************************
- * Drawing Polygon Functionality
- * ==================================
- * This class extends the PaintFunction class, which you can find in canvas-common
- ***********************************************/
-// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clearRect
+import PaintFunction from "./PaintFunction.js";
 
-class DrawingPolygon extends PaintFunction {
+/**
+ * Functionality to draw a polygon with arbitrary sides.
+ * @extends PaintFunction
+ */
+export default class DrawingPolygon extends PaintFunction {
   /**
    * @param {CanvasRenderingContext2D} contextReal
    * @param {CanvasRenderingContext2D} contextDraft
@@ -28,8 +27,6 @@ class DrawingPolygon extends PaintFunction {
     this.coords.push(coord);
     this.drawPartialPolygon(this.contextDraft);
   }
-
-  onDragging() {}
 
   onMouseMove(coord) {
     if (!this.coords.length) return;
@@ -57,3 +54,5 @@ class DrawingPolygon extends PaintFunction {
     );
   }
 }
+
+export { DrawingPolygon };

@@ -1,0 +1,223 @@
+/***************************/
+/*        variables        */
+/***************************/
+
+:root {
+  --doraemon-canvas-color-primary: #15a9ff;
+}
+
+/*********************************/
+/*        Doraemon's head        */
+/*********************************/
+
+.doraemon-canvas * {
+  justify-self: center;
+}
+.doraemon-canvas {
+  height: 100%;
+  aspect-ratio: 0.87;
+  display: grid;
+  grid-template:
+    "." 1%
+    "head" 69%
+    "collar" 8.257%
+    "body" 21.743%;
+  transition: height 1s ease-out, transform 1s ease-out;
+  overflow: hidden;
+}
+.dora-head {
+  grid-area: head;
+  grid-template-areas: "stack";
+  height: 100%;
+  aspect-ratio: 1.25;
+  display: grid;
+  align-items: end;
+}
+.dora-skull {
+  background: var(--doraemon-canvas-color-primary);
+  height: 100%;
+  width: 100%;
+  grid-area: stack;
+  clip-path: ellipse(50% 60% at 50% 60%);
+}
+.dora-face {
+  grid-area: stack;
+  width: 84.746%;
+  height: 84.746%;
+  clip-path: ellipse(50% 60% at 50% 60%);
+  background-color: white;
+  display: grid;
+  grid-template-areas: "stack";
+}
+.dora-eyes {
+  height: 30%;
+  width: 35%;
+  grid-area: stack;
+  margin-top: 5%;
+  align-self: start;
+  display: flex;
+}
+.dora-eye {
+  height: 100%;
+  width: 50%;
+  position: relative;
+  clip-path: ellipse(50% 50%);
+  background: #dddddd;
+}
+.dora-eye-white {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  height: calc(100% - 2px);
+  width: calc(100% - 2px);
+  clip-path: ellipse(50% 50%);
+  background: white;
+}
+.dora-eye-black {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 24%;
+  width: 18%;
+  clip-path: ellipse(50% 50%);
+  background: #3f3e39;
+  color: white;
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+}
+.dora-eye:first-child .dora-eye-black {
+  right: 10%;
+}
+.dora-eye:nth-child(2) .dora-eye-black {
+  left: 10%;
+}
+.dora-face > .drawing-canvas-real,
+.dora-face > .drawing-canvas-draft {
+  height: 100%;
+  width: 100%;
+  grid-area: stack;
+  background-color: transparent;
+}
+
+/***********************************/
+/*        Doraemon's collar        */
+/***********************************/
+
+.dora-collar {
+  height: 100%;
+  aspect-ratio: 8.1;
+  grid-area: collar;
+  display: grid;
+  grid-template-rows: 45% 55%;
+}
+.dora-collar-strip {
+  grid-row: 1 2;
+  height: 100%;
+  aspect-ratio: 18;
+  border-radius: 0.7rem;
+  background: #d2243d;
+}
+.dora-collar-bell {
+  grid-row: 2 3;
+  height: 100%;
+  aspect-ratio: 1.75;
+  background: #f3e82a;
+  clip-path: ellipse(50% 88% at 50% 10%);
+}
+
+/*********************************/
+/*        Doraemon's body        */
+/*********************************/
+
+.dora-body {
+  grid-area: body;
+  position: relative;
+}
+.dora-tummy {
+  height: 80%;
+  aspect-ratio: 1.22;
+  clip-path: ellipse(50% 60% at 50% 35%);
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+}
+.dora-pocket {
+  height: calc(100% - 5px);
+  width: calc(100% - 6px);
+  clip-path: ellipse(52% 120% at 50% -30%);
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  background: white;
+}
+.dora-pocket.clip-outline {
+  height: 45%;
+  width: auto;
+  aspect-ratio: 2.13;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ccc;
+  animation: dora-pocket-shaking 2.5s ease-out infinite;
+}
+.dora-feet {
+  height: 16%;
+  aspect-ratio: 14;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-between;
+}
+.dora-foot {
+  height: 100%;
+  aspect-ratio: 5.5;
+  clip-path: ellipse(57% 185% at 50% 180%);
+  background: #fff;
+  display: grid;
+  align-items: end;
+}
+.dora-foot:last-child {
+  transform: scaleX(-1);
+}
+.dora-foot-shadow {
+  height: 85%;
+  width: 30%;
+  margin-left: 6%;
+  clip-path: ellipse(250% 140% at 248% 115%);
+  justify-self: start;
+  position: relative;
+  background: #c7cbcc;
+}
+.dora-foot-shadow-clip {
+  height: 100%;
+  width: 80%;
+  clip-path: ellipse(250% 140% at 265% 120%);
+  position: absolute;
+  background: #fff;
+  right: 0;
+}
+
+/***************************/
+/*        animation        */
+/***************************/
+
+@keyframes dora-pocket-shaking {
+  80% {
+    transform: translateX(-50%);
+  }
+  85% {
+    transform: translateX(-50%) rotateZ(3deg);
+  }
+  90% {
+    transform: translateX(-50%) rotateZ(-5deg);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
