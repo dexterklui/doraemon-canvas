@@ -125,3 +125,14 @@ function setFillStyle(color) {
   const fillColor = document.querySelector("#fill-color");
   fillColor.style.backgroundColor = color;
 }
+
+/**
+ * Sets font style for both real and draft canvas
+ * @param {number} [size=22]
+ * @param {string} [family="arial"] - font family
+ */
+function setFontStyle(size = 22, family = "arial") {
+  const style = `${size.toString()}px ${family}`;
+  contextReal.font = style;
+  contextDraft.font = style;
+}

@@ -16,6 +16,17 @@ $(() => {
   document.querySelector("#drawing-polygon").addEventListener("click", () => {
     currentFunction = new DrawingPolygon(contextReal, contextDraft);
   });
+  document.querySelector("#drawing-text").addEventListener("click", (e) => {
+    if (currentFunction instanceof DrawingText) {
+      if (document.querySelector("#font-style-panel")) return;
+      const div = currentFunction.createFontStyleControl();
+      div.style.position = "absolute";
+      div.style.top = "-3em";
+      // @ts-ignore
+      e.target.after(div);
+    }
+    currentFunction = new DrawingText(contextReal, contextDraft);
+  });
 
   /*******************************/
   /*        color-picker        */
@@ -52,4 +63,5 @@ $(() => {
   currentFunction = new DrawingLine(contextReal);
   setStrokeStyle("black");
   setFillStyle("black");
+  setFontStyle();
 });

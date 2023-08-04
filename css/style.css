@@ -27,6 +27,10 @@ body {
 #canvas-container {
   height: 720px;
 }
+.buttons {
+  /* as a reference for absolute positioned child popup panel*/
+  position: relative;
+}
 
 /*********************************/
 /*        color-container        */
