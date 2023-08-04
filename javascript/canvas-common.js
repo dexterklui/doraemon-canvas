@@ -59,8 +59,6 @@ class PaintFunction {
   constructor(contextReal, contextDraft) {
     this.contextReal = contextReal;
     this.contextDraft = contextDraft;
-
-    this.#updateTextButton(this);
   }
 
   /**
@@ -101,21 +99,6 @@ class PaintFunction {
 
   clearDraft() {
     this.contextDraft.clearRect(0, 0, canvasDraft.width, canvasDraft.height);
-  }
-
-  /**
-   * Update the text button between input text and setting font style
-   * based on current mode
-   * @param {PaintFunction} mode - current drawing mode
-   * @returns the new button
-   */
-  #updateTextButton(mode) {
-    const btn = document.querySelector("#drawing-text");
-    if (mode instanceof DrawingText) {
-      btn.textContent = "Font style";
-      return;
-    }
-    btn.textContent = "Input text";
   }
 }
 
