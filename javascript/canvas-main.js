@@ -13,6 +13,9 @@ $(() => {
     .addEventListener("click", () => {
       currentFunction = new DrawingBezierCurve(contextReal, contextDraft);
     });
+  document.querySelector("#drawing-polygon").addEventListener("click", () => {
+    currentFunction = new DrawingPolygon(contextReal, contextDraft);
+  });
 
   /*******************************/
   /*        color-picker        */
