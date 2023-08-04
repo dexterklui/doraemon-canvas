@@ -17,9 +17,11 @@ $(() => {
   document
     .querySelector("#drawing-bezier-curve")
     .addEventListener("click", () => {
+      currentFunction.destructor();
       currentFunction = new DrawingBezierCurve(contextReal, contextDraft);
     });
   document.querySelector("#drawing-polygon").addEventListener("click", () => {
+    currentFunction.destructor();
     currentFunction = new DrawingPolygon(contextReal, contextDraft);
   });
   document.querySelector("#drawing-text").addEventListener("click", (e) => {
@@ -31,6 +33,7 @@ $(() => {
       // @ts-ignore
       e.target.after(div);
     }
+    currentFunction.destructor();
     currentFunction = new DrawingText(contextReal, contextDraft);
   });
   document.querySelector("#zoom-canvas").addEventListener("click", () => {
