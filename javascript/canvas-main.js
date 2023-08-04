@@ -33,6 +33,33 @@ $(() => {
     }
     currentFunction = new DrawingText(contextReal, contextDraft);
   });
+  document.querySelector("#zoom-canvas").addEventListener("click", () => {
+    if (zoomed) {
+      dora.style.height = "100%";
+      dora.style.transform = "none";
+    } else {
+      // -- This zooms to show exactly the full canvas --
+      // dora.style.height = "170.71%";
+      // dora.style.transform = "translateY(-11.5%)";
+      // -- This zooms even more --
+      dora.style.height = "220%";
+      dora.style.transform = "translateY(-15%)";
+    }
+    // updateCoordCoefficient(); // Needed only if no transition
+    zoomed = !zoomed;
+  });
+
+  /**************************************/
+  /*        Other event handlers        */
+  /**************************************/
+  window.addEventListener("resize", updateCoordCoefficient);
+  dora.addEventListener("transitionend", () => updateCoordCoefficient());
+  dora.addEventListener("transitionstart", () => {
+    dora.style.pointerEvents = "none";
+  });
+  dora.addEventListener("transitionend", () => {
+    dora.style.pointerEvents = "auto";
+  });
 
   /*******************************/
   /*        color-picker        */
@@ -70,4 +97,5 @@ $(() => {
   setStrokeStyle("black");
   setFillStyle("black");
   setFontStyle();
+  updateCoordCoefficient();
 });
