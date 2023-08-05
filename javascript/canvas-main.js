@@ -2,6 +2,10 @@ $(() => {
   /******************************/
   /*        canvas tools        */
   /******************************/
+  document.querySelector("#drawing-straight").addEventListener("click", () => {
+    currentFunction = new DrawingStraightLine(contextReal, contextDraft);
+  });
+
   document.querySelector("#drawing-rectangle").addEventListener("click", () => {
     currentFunction = new DrawingRectangle(contextReal, contextDraft);
   });
