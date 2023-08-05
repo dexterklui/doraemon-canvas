@@ -12,6 +12,7 @@
       integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
       crossorigin="anonymous"
     />
+    <link href="assets/coloris-0.21.0/coloris.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/style.css" />
     <script
       src="https://code.jquery.com/jquery-3.7.0.slim.min.js"
@@ -23,6 +24,11 @@
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
       crossorigin="anonymous"
+      defer
+    ></script>
+    <script
+      src="assets/coloris-0.21.0/coloris.min.js"
+      type="text/javascript"
       defer
     ></script>
     <script src="./assets/doraemon-canvas/main.js" type="module"></script>
@@ -51,10 +57,17 @@
           Zoom in/out
         </span>
       </div>
-      <div class="color-palette"></div>
-      <div class="color-indicate-container">
-        <div id="stroke-color" class="color-indicator"></div>
-        <div id="fill-color" class="color-indicator"></div>
+      <div class="color-selectors">
+        <input
+          class="color-selector color-selector-stroke"
+          type="text"
+          data-coloris
+        />
+        <input
+          class="color-selector color-selector-fill"
+          type="text"
+          data-coloris
+        />
       </div>
     </div>
   </body>

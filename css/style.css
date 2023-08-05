@@ -28,20 +28,12 @@ body {
 /*********************************/
 /*        color-container        */
 /*********************************/
-.color-palette {
+.color-selectors {
   display: flex;
   flex-wrap: wrap;
 }
-.color {
-  height: var(--btn-height);
-  width: var(--btn-width);
-}
-
-.color-indicate-container {
-  display: flex;
-  height: var(--btn-height);
-}
-.color-indicator {
+.clr-field button,
+.clr-field input {
   height: var(--btn-height);
   width: var(--btn-width);
 }

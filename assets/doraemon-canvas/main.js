@@ -43,6 +43,16 @@ function createFontStyleControl() {
   return div;
 }
 
+/** Use values in color selectors to update stroke and fill color */
+function updateColor() {
+  // @ts-ignore
+  const strokeColor = document.querySelector(".color-selector-stroke").value;
+  // @ts-ignore
+  const fillColor = document.querySelector(".color-selector-fill").value;
+  doraemon.setStrokeStyle(strokeColor);
+  doraemon.setFillStyle(fillColor);
+}
+
 /***************************************/
 /*        Variables declaration        */
 /***************************************/
@@ -104,34 +114,10 @@ document.querySelector("#zoom-canvas").addEventListener("click", () => {
 /*        color-picker        */
 /*******************************/
 
-const colorPalette = document.querySelector(".color-palette");
-const colors = [
-  "black",
-  "white",
-  "red",
-  "orange",
-  "yellow",
-  "green",
-  "blue",
-  "purple",
-  "pink",
-];
-for (const color of colors) {
-  const colorWell = document.createElement("div");
-  colorWell.classList.add("color", `color-${color}`);
-  colorWell.setAttribute("data-color", color);
-  colorWell.style.backgroundColor = color;
-  colorPalette.append(colorWell);
-}
-/** @type {HTMLDivElement[]} colorIndicators */
-// @ts-ignore
-const colorIndicators = document.querySelectorAll(".color-indicator");
-colorPalette.addEventListener("click", (e) => {
-  // @ts-ignore
-  const color = e.target.getAttribute("data-color");
-  doraemon.setStrokeStyle(color);
-  doraemon.setFillStyle(color);
-  colorIndicators.forEach((elem) => (elem.style.backgroundColor = color));
+document.querySelectorAll(".color-selector").forEach((elem) => {
+  elem.addEventListener("blur", () => {
+    updateColor();
+  });
 });
 
 /*********************************/
@@ -139,6 +125,7 @@ colorPalette.addEventListener("click", (e) => {
 /*********************************/
 
 doraemon.setFontStyle(20);
+updateColor();
 doraemon.setPaintFunction(DrawingLine);
 
 /****************************/
