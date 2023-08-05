@@ -7,6 +7,7 @@ import {
   DrawingText,
   SelectMove,
 } from "./external-dependencies.js";
+import "../coloris/coloris.min.js";
 
 /*************************************/
 /*        Function definition        */
