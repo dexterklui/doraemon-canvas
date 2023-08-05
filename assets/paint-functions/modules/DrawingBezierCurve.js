@@ -1,127 +1,52 @@
 import PaintFunction from "./PaintFunction.js";
 
+function bezierCurve(ctx, c1, c2, start, end) {
+  ctx.beginPath();
+  ctx.moveTo(...start);
+  ctx.bezierCurveTo(...c1, ...c2, ...end);
+  ctx.stroke();
+}
+
 /**
  * Functionality to draw a cubic bezier curve.
  * @extends PaintFunction
  */
 export default class DrawingBezierCurve extends PaintFunction {
-  /**
-   * @param {CanvasRenderingContext2D} contextReal
-   * @param {CanvasRenderingContext2D} contextDraft
-   */
-  constructor(contextReal, contextDraft) {
-    super(contextReal, contextDraft);
-    /**
-     * Tracks the stage of drawing bezier curve
-     * @type {0|1|2} controlStage
-     * 0: drawing initial line
-     * 1: placing 1st control point
-     * 2: placing 2nd control point
-     */
-    this.controlStage = 0;
-    this.#draggingFlag = false;
-  }
-
   onMouseDown(coord) {
-    this.#draggingFlag = true;
-    switch (this.controlStage) {
-      case 0:
-        this.origX = coord[0];
-        this.origY = coord[1];
-        break;
-      case 1:
-        this.cPt1X = coord[0];
-        this.cPt1Y = coord[1];
-        break;
-      case 2:
-        this.clearDraft();
-        this.contextReal.beginPath();
-        this.contextReal.moveTo(this.origX, this.origY);
-        this.contextReal.bezierCurveTo(
-          this.cPt1X,
-          this.cPt1Y,
-          coord[0],
-          coord[1],
-          this.endX,
-          this.endY
-        );
-        this.contextReal.stroke();
-        break;
+    if (this.start == null) {
+      this.start = coord;
+      return;
     }
-  }
-
-  onDragging(coord) {
-    if (this.controlStage) return;
+    if (this.end == null) {
+      this.end = coord;
+      return;
+    }
+    if (this.c1 == null) {
+      this.c1 = coord;
+      return;
+    }
     this.clearDraft();
-    this.contextDraft.beginPath();
-    this.contextDraft.moveTo(this.origX, this.origY);
-    this.contextDraft.lineTo(coord[0], coord[1]);
-    this.contextDraft.stroke();
+    bezierCurve(this.contextReal, this.c1, coord, this.start, this.end);
+    this.start = null;
+    this.end = null;
+    this.c1 = null;
   }
 
   onMouseMove(coord) {
-    if (this.#draggingFlag) return;
-    switch (this.controlStage) {
-      case 0:
-        return;
-      case 1:
-        this.clearDraft();
-        this.contextDraft.beginPath();
-        this.contextDraft.moveTo(this.origX, this.origY);
-        this.contextDraft.bezierCurveTo(
-          coord[0],
-          coord[1],
-          this.endX,
-          this.endY,
-          this.endX,
-          this.endY
-        );
-        this.contextDraft.stroke();
-        return;
-      case 2:
-        this.clearDraft();
-        this.contextDraft.beginPath();
-        this.contextDraft.moveTo(this.origX, this.origY);
-        this.contextDraft.bezierCurveTo(
-          this.cPt1X,
-          this.cPt1Y,
-          coord[0],
-          coord[1],
-          this.endX,
-          this.endY
-        );
-        this.contextDraft.stroke();
-        return;
+    if (this.start == null) return;
+    if (this.end == null) {
+      this.clearDraft();
+      bezierCurve(this.contextDraft, this.start, coord, this.start, coord);
+      return;
     }
-  }
-
-  // Committing the element to the canvas
-  onMouseUp(coord) {
-    this.#draggingFlag = false;
-    switch (this.controlStage) {
-      case 0:
-        this.clearDraft();
-        this.endX = coord[0];
-        this.endY = coord[1];
-        this.contextDraft.beginPath();
-        this.contextDraft.moveTo(this.origX, this.origY);
-        this.contextDraft.lineTo(this.endX, this.endY);
-        this.contextDraft.stroke();
-        ++this.controlStage;
-        return;
-      case 1:
-        ++this.controlStage;
-        return;
-      case 2:
-        this.controlStage = 0;
-        return;
+    if (this.c1 == null) {
+      this.clearDraft();
+      bezierCurve(this.contextDraft, coord, this.end, this.start, this.end);
+      return;
     }
+    this.clearDraft();
+    bezierCurve(this.contextDraft, this.c1, coord, this.start, this.end);
   }
-  onMouseLeave() {
-    this.#draggingFlag = false;
-  }
-
-  #draggingFlag;
 }
 
 export { DrawingBezierCurve };
