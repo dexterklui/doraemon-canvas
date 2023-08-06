@@ -111,6 +111,30 @@ document.querySelector("#zoom-canvas").addEventListener("click", () => {
   doraemon.toggleZoom();
 });
 
+/*********************************/
+/*        Keypress events        */
+/*********************************/
+
+let ctlKeydownFlag = false;
+
+window.addEventListener("keydown", (e) => {
+  switch (e.key) {
+    case "Control":
+      ctlKeydownFlag = true;
+      break;
+    case " ":
+      if (!ctlKeydownFlag) doraemon.toggleZoom();
+      break;
+  }
+});
+window.addEventListener("keyup", (e) => {
+  switch (e.key) {
+    case "Control":
+      ctlKeydownFlag = false;
+      break;
+  }
+});
+
 /*******************************/
 /*        color-picker        */
 /*******************************/
