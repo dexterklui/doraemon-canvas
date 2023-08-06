@@ -19,6 +19,7 @@ export default class DrawingBezierCurve extends PaintFunction {
     }
     if (this.end == null) {
       this.end = coord;
+      this.contextDraft.canvas.style.cursor = "default";
       return;
     }
     if (this.c1 == null) {
@@ -28,6 +29,7 @@ export default class DrawingBezierCurve extends PaintFunction {
     this.clearDraft();
     bezierCurve(this.contextReal, this.c1, coord, this.start, this.end);
     this.writeUndoCb();
+    this.contextDraft.canvas.style.cursor = "crosshair";
     this.start = null;
     this.end = null;
     this.c1 = null;

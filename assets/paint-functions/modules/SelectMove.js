@@ -5,16 +5,6 @@ import PaintFunction from "./PaintFunction.js";
  * @extends PaintFunction
  */
 export default class SelectMove extends PaintFunction {
-  /**
-   * @param {CanvasRenderingContext2D} contextReal
-   * @param {CanvasRenderingContext2D} contextDraft
-   * @param {Function} [writeUndoCb]
-   */
-  constructor(contextReal, contextDraft, writeUndoCb) {
-    super(contextReal, contextDraft, writeUndoCb);
-    this.contextDraft.canvas.style.cursor = "crosshair";
-  }
-
   destructor() {
     if (this.#drawImageData()) this.imageData = undefined;
     super.destructor();

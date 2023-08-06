@@ -5,6 +5,11 @@ import PaintFunction from "./PaintFunction.js";
  * @extends PaintFunction
  */
 export default class DrawingText extends PaintFunction {
+  constructor(contextReal, contextDraft, writeUndoCb) {
+    super(contextReal, contextDraft, writeUndoCb);
+    this.contextDraft.canvas.style.cursor = "text";
+  }
+
   onMouseDown(coord, event) {
     if (this.draftInput) return;
     const fontSize = this.contextReal.font.match(/^\d+px/)[0];

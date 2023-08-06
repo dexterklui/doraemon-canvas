@@ -5,6 +5,19 @@ import PaintFunction from "./PaintFunction.js";
  * @extends PaintFunction
  */
 export default class DrawingLine extends PaintFunction {
+  constructor(contextReal, contextDraft, writeUndoCb) {
+    super(contextReal, contextDraft, writeUndoCb);
+    this.contextDraft.canvas.style.cursor = "none";
+    this.contextDraft.save();
+    this.contextDraft.fillStyle = this.contextDraft.strokeStyle;
+    this.penRadius = this.contextReal.lineWidth / 2;
+  }
+
+  destructor() {
+    this.contextDraft.restore();
+    super.destructor();
+  }
+
   /** @param {[number, number]} coord */
   onMouseDown(coord) {
     // Kind of line
@@ -23,6 +36,18 @@ export default class DrawingLine extends PaintFunction {
 
   onMouseUp() {
     this.writeUndoCb();
+  }
+
+  /** @param {[number, number]} coord */
+  onMouseMove(coord) {
+    this.clearDraft();
+    this.contextDraft.beginPath();
+    this.contextDraft.arc(...coord, this.penRadius, 0, 2 * Math.PI);
+    this.contextDraft.fill();
+  }
+
+  onMouseLeave() {
+    this.clearDraft();
   }
 
   /**

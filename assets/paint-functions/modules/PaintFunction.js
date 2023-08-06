@@ -13,6 +13,7 @@ export default class PaintFunction {
     this.contextReal = contextReal;
     this.contextDraft = contextDraft;
     this.writeUndoCb = writeUndoCb ?? function () {};
+    this.contextDraft.canvas.style.cursor = "crosshair";
   }
 
   /**
