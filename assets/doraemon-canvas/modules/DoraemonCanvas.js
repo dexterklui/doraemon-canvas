@@ -17,10 +17,8 @@ export default class DoraemonCanvas {
     const longerDimension = Math.max(window.innerWidth, window.innerHeight);
     const canvasWidth = longerDimension * CANVAS_WIDTH_COEFFICIENT;
     const canvasHeight = canvasWidth * DORA_FACE_ASPECT_RATIO;
-    this.#drawingCanvas = new DrawingCanvas(canvasWidth, canvasHeight);
-    this.#div
-      .querySelector(".dora-face")
-      .append(this.#drawingCanvas.canvasReal, this.#drawingCanvas.canvasDraft);
+    const parent = this.#div.querySelector(".dora-face");
+    this.#drawingCanvas = new DrawingCanvas(canvasWidth, canvasHeight, parent);
 
     // TODO: Create a Canvas Tool Instance. Remove unnecessary public getters
     // and setters.

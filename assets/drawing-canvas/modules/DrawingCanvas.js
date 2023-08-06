@@ -9,12 +9,13 @@ export default class DrawingCanvas {
   /**
    * @param {number} [canvasWidth=1280] - default 1280
    * @param {number} [canvasHeight=720] - default 720
+   * @param {HTMLElement} [parentElem] - parent element
    * @param {Object<string, any>} [options]
    *        Defaults:
    *        - strokeStyle: "black"
    *        - fillStyle: "black"
    */
-  constructor(canvasWidth = 1280, canvasHeight = 720, options) {
+  constructor(canvasWidth = 1280, canvasHeight = 720, parentElem, options) {
     this.canvasReal = document.createElement("canvas");
     this.canvasReal.classList.add(
       "drawing-canvas-real",
@@ -33,6 +34,9 @@ export default class DrawingCanvas {
     this.setStrokeStyle(options?.strokeStyle ?? "black");
     this.setFillStyle(options?.fillStyle ?? "black");
     this.#setupHandlers();
+
+    this.parentElem = parentElem;
+    if (parentElem) parentElem.append(this.canvasReal, this.canvasDraft);
   }
 
   /*******************************************************/
