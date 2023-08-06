@@ -63,6 +63,11 @@ export default class DrawingCanvas {
     return this.#currentPaintFunction;
   }
 
+  /** @returns {string} an png image data URL for the real canvas */
+  get dataUrl() {
+    return this.canvasReal.toDataURL();
+  }
+
   /********************************************************/
   /*                    Public setters                    */
   /********************************************************/

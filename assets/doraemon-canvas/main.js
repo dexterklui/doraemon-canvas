@@ -107,8 +107,12 @@ document.querySelector("#drawing-text").addEventListener("click", (e) => {
 document.querySelector("#select-move").addEventListener("click", () => {
   doraemon.setPaintFunction(SelectMove);
 });
+
 document.querySelector("#zoom-canvas").addEventListener("click", () => {
   doraemon.toggleZoom();
+});
+document.querySelector(".dora-pocket").addEventListener("click", () => {
+  window.open(doraemon.dataUrl, "_blank");
 });
 
 /*********************************/

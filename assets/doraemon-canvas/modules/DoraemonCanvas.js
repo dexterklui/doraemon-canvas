@@ -38,6 +38,11 @@ export default class DoraemonCanvas {
     return this.#div;
   }
 
+  /** @returns {string} an png image data URL for the real canvas */
+  get dataUrl() {
+    return this.#drawingCanvas.dataUrl;
+  }
+
   /********************************************************/
   /*                    Public methods                    */
   /********************************************************/
