@@ -131,18 +131,21 @@
 /*********************************/
 
 .dora-body {
+  height: 100%;
+  aspect-ratio: 3.0381;
   grid-area: body;
-  position: relative;
+  display: grid;
+  grid-template-areas: "stack";
 }
 .dora-tummy {
   height: 80%;
   aspect-ratio: 1.22;
   clip-path: ellipse(50% 60% at 50% 35%);
-  position: absolute;
-  top: 5%;
-  left: 50%;
-  transform: translateX(-50%);
+  grid-area: stack;
+  margin-top: 2%;
   background: white;
+  display: grid;
+  grid-template-areas: "stack";
 }
 .dora-pocket {
   height: calc(100% - 5px);
@@ -154,25 +157,32 @@
   background: white;
 }
 .dora-pocket.clip-outline {
-  height: 45%;
+  height: 42%;
   width: auto;
   aspect-ratio: 2.13;
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  top: 0;
+  left: 0;
+  margin-top: 40%;
   background: #ccc;
+  transition: height 0.2s ease-out, top 0.2s ease-out;
   animation: dora-pocket-shaking 2.5s ease-out infinite;
+}
+.dora-pocket.clip-outline:hover {
+  top: -5%;
+  height: 50%;
+}
+.dora-pocket.clip-outline:active :first-child {
+  background: #eee;
 }
 .dora-feet {
   height: 16%;
   aspect-ratio: 14;
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  grid-area: stack;
+  align-self: end;
   display: flex;
   justify-content: space-between;
+  overflow: hidden;
 }
 .dora-foot {
   height: 100%;
@@ -209,15 +219,15 @@
 
 @keyframes dora-pocket-shaking {
   80% {
-    transform: translateX(-50%);
+    transform: none;
   }
   85% {
-    transform: translateX(-50%) rotateZ(3deg);
+    transform: rotateZ(3deg);
   }
   90% {
-    transform: translateX(-50%) rotateZ(-5deg);
+    transform: rotateZ(-5deg);
   }
   100% {
-    transform: translateX(-50%);
+    transform: none;
   }
 }
