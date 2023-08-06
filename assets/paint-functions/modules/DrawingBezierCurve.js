@@ -27,6 +27,7 @@ export default class DrawingBezierCurve extends PaintFunction {
     }
     this.clearDraft();
     bezierCurve(this.contextReal, this.c1, coord, this.start, this.end);
+    this.writeUndoCb();
     this.start = null;
     this.end = null;
     this.c1 = null;

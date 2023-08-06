@@ -35,6 +35,7 @@ export default class DrawingText extends PaintFunction {
             this.origX,
             this.origY
           );
+          this.writeUndoCb();
         }
         this.draftInput.remove();
         this.draftInput = null;

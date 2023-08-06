@@ -117,6 +117,16 @@ document.querySelector("#zoom-canvas").addEventListener("click", () => {
 
 let ctlKeydownFlag = false;
 
+document
+  .querySelector(".dora-foot:first-child")
+  .addEventListener("click", () => {
+    doraemon.undo();
+  });
+document
+  .querySelector(".dora-foot:last-child")
+  .addEventListener("click", () => {
+    doraemon.redo();
+  });
 window.addEventListener("keydown", (e) => {
   switch (e.key) {
     case "Control":
@@ -124,6 +134,12 @@ window.addEventListener("keydown", (e) => {
       break;
     case " ":
       if (!ctlKeydownFlag) doraemon.toggleZoom();
+      break;
+    case "z":
+      if (ctlKeydownFlag) doraemon.undo();
+      break;
+    case "y":
+      if (ctlKeydownFlag) doraemon.redo();
       break;
   }
 });

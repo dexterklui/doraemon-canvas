@@ -8,9 +8,10 @@ export default class DrawingPolygon extends PaintFunction {
   /**
    * @param {CanvasRenderingContext2D} contextReal
    * @param {CanvasRenderingContext2D} contextDraft
+   * @param {Function} [writeUndoCb]
    */
-  constructor(contextReal, contextDraft) {
-    super(contextReal, contextDraft);
+  constructor(contextReal, contextDraft, writeUndoCb) {
+    super(contextReal, contextDraft, writeUndoCb);
     this.coords = [];
   }
 
@@ -21,6 +22,7 @@ export default class DrawingPolygon extends PaintFunction {
       this.contextReal.closePath();
       this.contextReal.stroke();
       this.contextReal.fill();
+      this.writeUndoCb();
       this.coords = [];
       return;
     }

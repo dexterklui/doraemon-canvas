@@ -21,6 +21,10 @@ export default class DrawingLine extends PaintFunction {
     this.draw(coord[0], coord[1]);
   }
 
+  onMouseUp() {
+    this.writeUndoCb();
+  }
+
   /**
    * @param {number} x
    * @param {number} y

@@ -8,9 +8,10 @@ export default class SelectMove extends PaintFunction {
   /**
    * @param {CanvasRenderingContext2D} contextReal
    * @param {CanvasRenderingContext2D} contextDraft
+   * @param {Function} [writeUndoCb]
    */
-  constructor(contextReal, contextDraft) {
-    super(contextReal, contextDraft);
+  constructor(contextReal, contextDraft, writeUndoCb) {
+    super(contextReal, contextDraft, writeUndoCb);
     this.contextDraft.canvas.style.cursor = "crosshair";
   }
 
@@ -202,6 +203,7 @@ export default class SelectMove extends PaintFunction {
     const ctx = canvas.getContext("2d");
     ctx.putImageData(this.imageData, 0, 0);
     this.contextReal.drawImage(canvas, this.smallerX, this.smallerY);
+    this.writeUndoCb();
     return true;
   }
 

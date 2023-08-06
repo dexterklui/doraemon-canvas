@@ -1,4 +1,5 @@
 import { PaintFunction } from "../external-dependencies.js";
+import UndoStack from "./UndoStack.js";
 
 /**
  * Allows user to paint on a given canvas under "2d" context using
@@ -25,10 +26,12 @@ export default class DrawingCanvas {
     this.#ctxReal = this.canvasReal.getContext("2d");
     this.#ctxDraft = this.canvasDraft.getContext("2d");
 
+    this.#undoStack = new UndoStack();
+
     this.updateCoordCoefficient();
+    this.writeUndo();
     this.setStrokeStyle(options?.strokeStyle ?? "black");
     this.setFillStyle(options?.fillStyle ?? "black");
-
     this.#setupHandlers();
   }
 
@@ -119,6 +122,24 @@ export default class DrawingCanvas {
     this.#clearCanvas(this.#ctxDraft, this.#ctxReal);
   }
 
+  writeUndo() {
+    const width = this.canvasReal.width;
+    const height = this.canvasReal.height;
+    this.#undoStack.write(this.#ctxReal.getImageData(0, 0, width, height));
+  }
+
+  undo() {
+    const imageData = this.#undoStack.undo();
+    if (imageData == null) return;
+    this.#ctxReal.putImageData(imageData, 0, 0);
+  }
+
+  redo() {
+    const imageData = this.#undoStack.redo();
+    if (imageData == null) return;
+    this.#ctxReal.putImageData(imageData, 0, 0);
+  }
+
   // TODO: Can be private?
   /**
    * Updates the coefficient used for correcting coordinates of mouse events
@@ -153,6 +174,8 @@ export default class DrawingCanvas {
   #resizeObserver;
   /** @type {boolean} #draggingFlag */
   #draggingFlag;
+  /** @type {UndoStack} #undoStack */
+  #undoStack;
 
   /*********************************************************/
   /*                    Private methods                    */

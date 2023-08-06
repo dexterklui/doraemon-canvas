@@ -6,10 +6,13 @@ export default class PaintFunction {
   /**
    * @param {CanvasRenderingContext2D} contextReal
    * @param {CanvasRenderingContext2D} contextDraft
+   * @param {Function} [writeUndoCb] - Callback that writes current state of
+   *                   real canvas to undo history
    */
-  constructor(contextReal, contextDraft) {
+  constructor(contextReal, contextDraft, writeUndoCb) {
     this.contextReal = contextReal;
     this.contextDraft = contextDraft;
+    this.writeUndoCb = writeUndoCb ?? function () {};
   }
 
   /**

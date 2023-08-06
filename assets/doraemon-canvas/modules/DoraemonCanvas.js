@@ -75,7 +75,11 @@ export default class DoraemonCanvas {
     this.#drawingCanvas.paintFunction?.destructor();
     const ctxReal = this.#drawingCanvas.ctxReal;
     const ctxDraft = this.#drawingCanvas.ctxDraft;
-    const paintFunction = new PaintFunction(ctxReal, ctxDraft);
+    const paintFunction = new PaintFunction(
+      ctxReal,
+      ctxDraft,
+      this.#drawingCanvas.writeUndo.bind(this.#drawingCanvas)
+    );
     this.#drawingCanvas.paintFunction = paintFunction;
   }
 
@@ -102,6 +106,16 @@ export default class DoraemonCanvas {
    */
   setFontStyle(size = 22, family = "arial") {
     this.#drawingCanvas.setFontStyle(size, family);
+  }
+
+  /** Undo previous draw operation */
+  undo() {
+    this.#drawingCanvas.undo();
+  }
+
+  /** Redo previous undone draw operation */
+  redo() {
+    this.#drawingCanvas.redo();
   }
 
   /********************************************************/
