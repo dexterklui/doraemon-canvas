@@ -15,8 +15,8 @@ export default class DrawingPolygon extends PaintFunction {
   }
 
   onMouseDown(coord) {
-    this.clearDraft();
     if (this.coords.length && this.distance(this.coords[0], coord) < 10) {
+      this.clearDraft();
       this.drawPartialPolygon(this.contextReal);
       this.contextReal.closePath();
       this.contextReal.stroke();
