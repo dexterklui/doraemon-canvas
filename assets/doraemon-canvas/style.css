@@ -168,6 +168,13 @@
   transition: height 0.2s ease-out, top 0.2s ease-out;
   animation: dora-pocket-shaking 2.5s ease-out infinite;
 }
+.dora-pocket.clip-outline:hover {
+  top: -5%;
+  height: 50%;
+}
+.dora-pocket.clip-outline:active :first-child {
+  background: #eee;
+}
 .dora-feet {
   height: 16%;
   aspect-ratio: 14;
