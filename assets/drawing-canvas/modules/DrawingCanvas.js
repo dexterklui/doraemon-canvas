@@ -9,7 +9,7 @@ export default class DrawingCanvas {
   /**
    * @param {number} [canvasWidth=1280] - default 1280
    * @param {number} [canvasHeight=720] - default 720
-   * @param {HTMLElement} [parentElem] - parent element
+   * @param {Element} [parentElem] - parent element
    * @param {Object<string, any>} [options]
    *        Defaults:
    *        - strokeStyle: "black"
@@ -139,14 +139,12 @@ export default class DrawingCanvas {
 
   undo() {
     const imageData = this.#undoStack.undo();
-    if (imageData == null) return;
-    this.#ctxReal.putImageData(imageData, 0, 0);
+    this.#drawImageData(imageData);
   }
 
   redo() {
     const imageData = this.#undoStack.redo();
-    if (imageData == null) return;
-    this.#ctxReal.putImageData(imageData, 0, 0);
+    this.#drawImageData(imageData);
   }
 
   // TODO: Can be private?
@@ -161,6 +159,38 @@ export default class DrawingCanvas {
       return;
     }
     this.#coordCoefficient = this.canvasDraft.width / width;
+    // For perforamnce
+    if (Math.abs(this.#coordCoefficient - 1) < 0.001)
+      this.#coordCoefficient = 1;
+  }
+
+  /**
+   * Resizes canvas to given dimension, or to fit the size of the parent if any
+   * one dimension is not given. This is done so that #coordCoefficient can be
+   * rest to 1 to enhance perforamnce.
+   * @param {number} [width]
+   * @param {number} [height]
+   */
+  resizeCanvas(width, height) {
+    if (width == undefined || height == undefined) {
+      if (this.parentElem == undefined) return;
+      const boundingRect = this.parentElem.getBoundingClientRect();
+      width = boundingRect.width;
+      height = boundingRect.height;
+    }
+    if (
+      Math.abs(this.canvasReal.width - width) < 1 &&
+      Math.abs(this.canvasReal.height - height) < 1
+    ) {
+      return;
+    }
+    const styles = this.#getStyles();
+    for (const canvas of [this.canvasReal, this.canvasDraft]) {
+      canvas.width = width;
+      canvas.height = height;
+    }
+    this.#drawImageData(this.#undoStack.getCurrentData());
+    this.#setStyles(styles);
   }
 
   /********************************************************/
@@ -197,6 +227,18 @@ export default class DrawingCanvas {
     }
   }
 
+  #getStyles() {
+    const { strokeStyle, fillStyle, font, lineWidth } = this.#ctxReal;
+    return { strokeStyle, fillStyle, font, lineWidth };
+  }
+
+  /** @param {Object} styles - storing CanvasRenderingContext2D properties */
+  #setStyles(styles) {
+    for (const ctx of [this.#ctxReal, this.#ctxDraft]) {
+      for (const [key, value] of Object.entries(styles)) ctx[key] = value;
+    }
+  }
+
   /******************************/
   /*        Canvas setup        */
   /******************************/
@@ -217,6 +259,28 @@ export default class DrawingCanvas {
     this.#addResizeHandlers();
   }
 
+  /**
+   * Draws ImageData on real canvas. Data is stretched to fill whole canvas if
+   * necessary.
+   * @param {ImageData} data
+   */
+  #drawImageData(data) {
+    if (data == null) return;
+    const width = data.width;
+    const height = data.height;
+    const canvas = this.canvasReal;
+    this.clearAll();
+    if (canvas.width === width && canvas.height === height) {
+      this.#ctxReal.putImageData(data, 0, 0);
+      return;
+    }
+    const canvasTmp = document.createElement("canvas");
+    canvasTmp.width = width;
+    canvasTmp.height = height;
+    canvasTmp.getContext("2d").putImageData(data, 0, 0);
+    this.#ctxReal.drawImage(canvasTmp, 0, 0, canvas.width, canvas.height);
+  }
+
   #addResizeHandlers() {
     // TODO: Can improve performance during transition?
     this.#resizeObserver = new ResizeObserver(() => {
@@ -227,23 +291,38 @@ export default class DrawingCanvas {
 
   #addDrawingHandlers() {
     this.canvasDraft.addEventListener("mousedown", (e) => {
+      this.#draggingFlag = true;
+      if (this.#coordCoefficient === 1) {
+        this.#currentPaintFunction?.onMouseDown([e.offsetX, e.offsetY], e);
+        return;
+      }
       const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
       const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
       this.#currentPaintFunction?.onMouseDown([coordX, coordY], e);
-      this.#draggingFlag = true;
     });
 
     this.canvasDraft.addEventListener("mousemove", (e) => {
+      if (this.#coordCoefficient === 1) {
+        this.#currentPaintFunction?.onMouseMove([e.offsetX, e.offsetY], e);
+        if (this.#draggingFlag) {
+          this.#currentPaintFunction?.onDragging([e.offsetX, e.offsetY], e);
+        }
+        return;
+      }
       const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
       const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
+      this.#currentPaintFunction?.onMouseMove([coordX, coordY], e);
       if (this.#draggingFlag) {
         this.#currentPaintFunction?.onDragging([coordX, coordY], e);
       }
-      this.#currentPaintFunction?.onMouseMove([coordX, coordY], e);
     });
 
     this.canvasDraft.addEventListener("mouseup", (e) => {
       this.#draggingFlag = false;
+      if (this.#coordCoefficient === 1) {
+        this.#currentPaintFunction?.onMouseUp([e.offsetX, e.offsetY], e);
+        return;
+      }
       const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
       const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
       this.#currentPaintFunction?.onMouseUp([coordX, coordY], e);
@@ -251,12 +330,20 @@ export default class DrawingCanvas {
 
     this.canvasDraft.addEventListener("mouseleave", (e) => {
       this.#draggingFlag = false;
+      if (this.#coordCoefficient === 1) {
+        this.#currentPaintFunction?.onMouseLeave([e.offsetX, e.offsetY], e);
+        return;
+      }
       const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
       const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
       this.#currentPaintFunction?.onMouseLeave([coordX, coordY], e);
     });
 
     this.canvasDraft.addEventListener("mouseenter", (e) => {
+      if (this.#coordCoefficient === 1) {
+        this.#currentPaintFunction?.onMouseEnter([e.offsetX, e.offsetY], e);
+        return;
+      }
       const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
       const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
       this.#currentPaintFunction?.onMouseEnter([coordX, coordY], e);

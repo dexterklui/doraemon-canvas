@@ -29,11 +29,17 @@ export default class UndoStack {
     this.#idx = this.#undoStack.length - 1;
   }
 
-  /** @returns {(ImageData|null)} the next state or null*/
+  /** @returns {(ImageData|null)} the next state or null */
   redo() {
     if (this.#idx == null) return null;
     if (this.#idx + 1 >= this.#undoStack.length) return null;
     return this.#undoStack[++this.#idx];
+  }
+
+  /** @returns {(ImageData|null)} the current state or null */
+  getCurrentData() {
+    if (this.#idx == null) return null;
+    return this.#undoStack[this.#idx];
   }
 
   /************************************************************/

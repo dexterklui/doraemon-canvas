@@ -9,17 +9,28 @@ const CANVAS_WIDTH_COEFFICIENT = 0.75;
 export default class DoraemonCanvas {
   /**
    * Creates a Doraemon theme canvas
+   * @param {Element} parent - parent element of this DoraemonCanvas
+   * @param {boolean} [replaceFlag=false] - replace parent instead of append to
    */
-  constructor() {
+  constructor(parent, replaceFlag = false) {
     this.#div = this.#createDoraemon();
 
     // Create a DrawingCanvas instance
     const longerDimension = Math.max(window.innerWidth, window.innerHeight);
-    const canvasWidth = longerDimension * CANVAS_WIDTH_COEFFICIENT;
-    const canvasHeight = canvasWidth * DORA_FACE_ASPECT_RATIO;
-    const parent = this.#div.querySelector(".dora-face");
-    this.#drawingCanvas = new DrawingCanvas(canvasWidth, canvasHeight, parent);
+    const width = longerDimension * CANVAS_WIDTH_COEFFICIENT;
+    const height = width * DORA_FACE_ASPECT_RATIO;
+    const doraFace = this.#div.querySelector(".dora-face");
+    this.#drawingCanvas = new DrawingCanvas(width, height, doraFace);
+    if (replaceFlag) {
+      this.#addHandlerToResize(parent.parentNode);
+      parent.replaceWith(this.#div);
+    } else {
+      this.#addHandlerToResize(parent);
+      parent.append(this.#div);
+    }
 
+    window.addEventListener("resize", () => this.resizeCanvas());
+    this.#div.addEventListener("transitionend", () => this.resizeCanvas());
     // TODO: Create a Canvas Tool Instance. Remove unnecessary public getters
     // and setters.
   }
@@ -50,15 +61,16 @@ export default class DoraemonCanvas {
    * @returns {boolean} true if ending in zoom-in state; false for zoom-out
    */
   toggleZoom() {
+    const div = this.#div;
     this.#zoomFlag = !this.#zoomFlag;
     if (this.#zoomFlag) {
       this.#origHeight = this.#div.style.height;
-      this.#div.style.height = this.#ZOOM_HEIGHT;
+      div.style.height = this.#ZOOM_HEIGHT;
       this.#origTransform = this.#div.style.transform;
-      this.#div.style.transform = this.#ZOOM_TRANSFORM;
+      div.style.transform = this.#ZOOM_TRANSFORM;
     } else {
-      this.#div.style.height = this.#origHeight ?? "100%";
-      this.#div.style.transform = this.#origTransform ?? "none";
+      div.style.height = this.#origHeight ?? "100%";
+      div.style.transform = this.#origTransform ?? "none";
     }
     return this.#zoomFlag;
   }
@@ -119,6 +131,21 @@ export default class DoraemonCanvas {
   /** Redo previous undone draw operation */
   redo() {
     this.#drawingCanvas.redo();
+  }
+
+  /**
+   * Resizes canvas to fit parent's size. The purpose is to increase performance
+   * and reduce lag by removing the need to adjust MouseEvent coordinate by a
+   * scale factor.
+   */
+  resizeCanvas() {
+    if (this.#zoomFlag) {
+      this.#drawingCanvas.resizeCanvas();
+      return;
+    }
+    const doraFace = this.#div.querySelector(".dora-face");
+    const { width, height } = doraFace.getBoundingClientRect();
+    this.#drawingCanvas.resizeCanvas(2 * width, 2 * height);
   }
 
   /********************************************************/
@@ -206,6 +233,27 @@ export default class DoraemonCanvas {
 </div>
 `;
     return div;
+  }
+
+  /**
+   * Adds handler to resize canvas after doraemon is added to DOM.
+   * @param {Node} parent
+   */
+  #addHandlerToResize(parent) {
+    const observer = new MutationObserver(() => {
+      for (const child of Array.from(parent.childNodes)) {
+        if (child !== this.#div) continue;
+        // XXX: Dunno why but even after Doraemon is added to DOM, it seems
+        // canvas's parent (.dora-face, which is already a descendant node of
+        // Doraemon) still doesn't have it's width and height updated. So wait
+        // 300ms here, otherwise the canvas' size, thus doraemon's size, will
+        // mess up.
+        setTimeout(() => this.resizeCanvas(), 300);
+        observer.disconnect();
+        return;
+      }
+    });
+    observer.observe(parent, { childList: true });
   }
 }
 
