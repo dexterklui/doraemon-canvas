@@ -223,57 +223,39 @@ export default class DrawingCanvas {
 
   #addDrawingHandlers() {
     this.canvasDraft.addEventListener("mousedown", (e) => {
-      const mouseX = e.offsetX;
-      const mouseY = e.offsetY;
-      this.#currentPaintFunction?.onMouseDown(
-        [mouseX * this.#coordCoefficient, mouseY * this.#coordCoefficient],
-        e
-      );
+      const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
+      const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
+      this.#currentPaintFunction?.onMouseDown([coordX, coordY], e);
       this.#draggingFlag = true;
     });
 
     this.canvasDraft.addEventListener("mousemove", (e) => {
-      const mouseX = e.offsetX;
-      const mouseY = e.offsetY;
+      const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
+      const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
       if (this.#draggingFlag) {
-        this.#currentPaintFunction?.onDragging(
-          [mouseX * this.#coordCoefficient, mouseY * this.#coordCoefficient],
-          e
-        );
+        this.#currentPaintFunction?.onDragging([coordX, coordY], e);
       }
-      this.#currentPaintFunction?.onMouseMove(
-        [mouseX * this.#coordCoefficient, mouseY * this.#coordCoefficient],
-        e
-      );
+      this.#currentPaintFunction?.onMouseMove([coordX, coordY], e);
     });
 
     this.canvasDraft.addEventListener("mouseup", (e) => {
       this.#draggingFlag = false;
-      const mouseX = e.offsetX;
-      const mouseY = e.offsetY;
-      this.#currentPaintFunction?.onMouseUp(
-        [mouseX * this.#coordCoefficient, mouseY * this.#coordCoefficient],
-        e
-      );
+      const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
+      const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
+      this.#currentPaintFunction?.onMouseUp([coordX, coordY], e);
     });
 
     this.canvasDraft.addEventListener("mouseleave", (e) => {
       this.#draggingFlag = false;
-      const mouseX = e.offsetX;
-      const mouseY = e.offsetY;
-      this.#currentPaintFunction?.onMouseLeave(
-        [mouseX * this.#coordCoefficient, mouseY * this.#coordCoefficient],
-        e
-      );
+      const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
+      const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
+      this.#currentPaintFunction?.onMouseLeave([coordX, coordY], e);
     });
 
     this.canvasDraft.addEventListener("mouseenter", (e) => {
-      const mouseX = e.offsetX;
-      const mouseY = e.offsetY;
-      this.#currentPaintFunction?.onMouseEnter(
-        [mouseX * this.#coordCoefficient, mouseY * this.#coordCoefficient],
-        e
-      );
+      const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
+      const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
+      this.#currentPaintFunction?.onMouseEnter([coordX, coordY], e);
     });
   }
 }
