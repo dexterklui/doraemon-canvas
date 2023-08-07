@@ -54,9 +54,9 @@ function updateColor() {
   doraemon.setFillStyle(fillColor);
 }
 
-/***************************************/
-/*        Variables declaration        */
-/***************************************/
+/******************************************************/
+/*                    Add doraemon                    */
+/******************************************************/
 
 const canvasApp = document.querySelector("#canvas-app");
 /** @type {DoraemonCanvas} doraemon */

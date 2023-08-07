@@ -162,6 +162,7 @@ export default class DrawingCanvas {
     // For perforamnce
     if (Math.abs(this.#coordCoefficient - 1) < 0.001)
       this.#coordCoefficient = 1;
+    this.#updateDrawingHandlers();
   }
 
   /**
@@ -191,6 +192,7 @@ export default class DrawingCanvas {
     }
     this.#drawImageData(this.#undoStack.getCurrentData());
     this.#setStyles(styles);
+    this.updateCoordCoefficient();
   }
 
   /********************************************************/
@@ -215,6 +217,8 @@ export default class DrawingCanvas {
   #draggingFlag;
   /** @type {UndoStack} #undoStack */
   #undoStack;
+  /** @type {AbortController} #abortController */
+  #abortController;
 
   /*********************************************************/
   /*                    Private methods                    */
@@ -255,7 +259,7 @@ export default class DrawingCanvas {
   }
 
   #setupHandlers() {
-    this.#addDrawingHandlers();
+    this.#updateDrawingHandlers();
     this.#addResizeHandlers();
   }
 
@@ -289,66 +293,114 @@ export default class DrawingCanvas {
     this.#resizeObserver.observe(this.canvasDraft);
   }
 
-  #addDrawingHandlers() {
-    this.canvasDraft.addEventListener("mousedown", (e) => {
-      this.#draggingFlag = true;
-      if (this.#coordCoefficient === 1) {
-        this.#currentPaintFunction?.onMouseDown([e.offsetX, e.offsetY], e);
-        return;
-      }
-      const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
-      const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
-      this.#currentPaintFunction?.onMouseDown([coordX, coordY], e);
+  #updateDrawingHandlers() {
+    this.#abortController?.abort();
+    this.#abortController = new AbortController();
+
+    if (this.#coordCoefficient === 1) {
+      this.canvasDraft.addEventListener("mousedown", this.#mouseDownHandler, {
+        signal: this.#abortController.signal,
+      });
+
+      this.canvasDraft.addEventListener("mousemove", this.#mouseMoveHandler, {
+        signal: this.#abortController.signal,
+      });
+
+      this.canvasDraft.addEventListener("mouseup", this.#mouseUpHandler, {
+        signal: this.#abortController.signal,
+      });
+
+      this.canvasDraft.addEventListener("mouseleave", this.#mouseLeaveHandler, {
+        signal: this.#abortController.signal,
+      });
+
+      this.canvasDraft.addEventListener("mouseenter", this.#mouseEnterHandler, {
+        signal: this.#abortController.signal,
+      });
+      return;
+    }
+
+    this.canvasDraft.addEventListener(
+      "mousedown",
+      this.#mouseDownAdjustHandler,
+      { signal: this.#abortController.signal }
+    );
+
+    this.canvasDraft.addEventListener(
+      "mousemove",
+      this.#mouseMoveAdjustHandler,
+      { signal: this.#abortController.signal }
+    );
+
+    this.canvasDraft.addEventListener("mouseup", this.#mouseUpAdjustHandler, {
+      signal: this.#abortController.signal,
     });
 
-    this.canvasDraft.addEventListener("mousemove", (e) => {
-      if (this.#coordCoefficient === 1) {
-        this.#currentPaintFunction?.onMouseMove([e.offsetX, e.offsetY], e);
-        if (this.#draggingFlag) {
-          this.#currentPaintFunction?.onDragging([e.offsetX, e.offsetY], e);
-        }
-        return;
-      }
-      const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
-      const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
-      this.#currentPaintFunction?.onMouseMove([coordX, coordY], e);
-      if (this.#draggingFlag) {
-        this.#currentPaintFunction?.onDragging([coordX, coordY], e);
-      }
-    });
+    this.canvasDraft.addEventListener(
+      "mouseleave",
+      this.#mouseLeaveAdjustHandler,
+      { signal: this.#abortController.signal }
+    );
 
-    this.canvasDraft.addEventListener("mouseup", (e) => {
-      this.#draggingFlag = false;
-      if (this.#coordCoefficient === 1) {
-        this.#currentPaintFunction?.onMouseUp([e.offsetX, e.offsetY], e);
-        return;
-      }
-      const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
-      const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
-      this.#currentPaintFunction?.onMouseUp([coordX, coordY], e);
-    });
-
-    this.canvasDraft.addEventListener("mouseleave", (e) => {
-      this.#draggingFlag = false;
-      if (this.#coordCoefficient === 1) {
-        this.#currentPaintFunction?.onMouseLeave([e.offsetX, e.offsetY], e);
-        return;
-      }
-      const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
-      const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
-      this.#currentPaintFunction?.onMouseLeave([coordX, coordY], e);
-    });
-
-    this.canvasDraft.addEventListener("mouseenter", (e) => {
-      if (this.#coordCoefficient === 1) {
-        this.#currentPaintFunction?.onMouseEnter([e.offsetX, e.offsetY], e);
-        return;
-      }
-      const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
-      const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
-      this.#currentPaintFunction?.onMouseEnter([coordX, coordY], e);
-    });
+    this.canvasDraft.addEventListener(
+      "mouseenter",
+      this.#mouseEnterAdjustHandler,
+      { signal: this.#abortController.signal }
+    );
   }
+
+  #mouseDownHandler = (e) => {
+    this.#draggingFlag = true;
+    this.#currentPaintFunction?.onMouseDown([e.offsetX, e.offsetY], e);
+  };
+  #mouseMoveHandler = (e) => {
+    this.#currentPaintFunction?.onMouseMove([e.offsetX, e.offsetY], e);
+    if (this.#draggingFlag) {
+      this.#currentPaintFunction?.onDragging([e.offsetX, e.offsetY], e);
+    }
+  };
+  #mouseUpHandler = (e) => {
+    this.#draggingFlag = false;
+    this.#currentPaintFunction?.onMouseUp([e.offsetX, e.offsetY], e);
+  };
+  #mouseLeaveHandler = (e) => {
+    this.#draggingFlag = false;
+    this.#currentPaintFunction?.onMouseLeave([e.offsetX, e.offsetY], e);
+  };
+  #mouseEnterHandler = (e) => {
+    this.#currentPaintFunction?.onMouseEnter([e.offsetX, e.offsetY], e);
+  };
+  #mouseDownAdjustHandler = (e) => {
+    this.#draggingFlag = true;
+    const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
+    const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
+    this.#currentPaintFunction?.onMouseDown([coordX, coordY], e);
+  };
+  #mouseMoveAdjustHandler = (e) => {
+    const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
+    const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
+    this.#currentPaintFunction?.onMouseMove([coordX, coordY], e);
+    if (this.#draggingFlag) {
+      this.#currentPaintFunction?.onDragging([coordX, coordY], e);
+    }
+  };
+  #mouseUpAdjustHandler = (e) => {
+    this.#draggingFlag = false;
+    const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
+    const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
+    this.#currentPaintFunction?.onMouseUp([coordX, coordY], e);
+  };
+  #mouseLeaveAdjustHandler = (e) => {
+    this.#draggingFlag = false;
+    const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
+    const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
+    this.#currentPaintFunction?.onMouseLeave([coordX, coordY], e);
+  };
+  #mouseEnterAdjustHandler = (e) => {
+    const coordX = Math.floor(e.offsetX * this.#coordCoefficient);
+    const coordY = Math.floor(e.offsetY * this.#coordCoefficient);
+    this.#currentPaintFunction?.onMouseEnter([coordX, coordY], e);
+  };
 }
 
 export { DrawingCanvas };
