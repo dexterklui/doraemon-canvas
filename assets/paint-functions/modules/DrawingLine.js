@@ -7,8 +7,7 @@ import PaintFunction from "./PaintFunction.js";
 export default class DrawingLine extends PaintFunction {
   constructor(contextReal, contextDraft, writeUndoCb) {
     super(contextReal, contextDraft, writeUndoCb);
-    this.contextDraft.canvas.style.cursor = "none";
-    this.#prerenderCursorCanvas();
+    this.#setCursor();
   }
 
   /** @param {[number, number]} coord */
@@ -33,21 +32,8 @@ export default class DrawingLine extends PaintFunction {
     this.writeUndoCb();
   }
 
-  /** @param {[number, number]} coord */
-  onMouseMove(coord) {
-    if (this.draggingFlag) return;
-    const x = coord[0] - this.radius;
-    const y = coord[1] - this.radius;
-    this.clearDraft();
-    this.contextDraft.drawImage(this.cursorCanvas, x, y);
-  }
-
-  onMouseLeave() {
-    this.clearDraft();
-  }
-
   onMouseEnter() {
-    this.#prerenderCursorCanvas();
+    this.#setCursor();
   }
 
   /**
@@ -55,13 +41,11 @@ export default class DrawingLine extends PaintFunction {
    * @param {number} y
    */
   draw(x, y) {
-    //
     this.contextReal.lineTo(x, y);
-    // Draw the line onto the page
     this.contextReal.stroke();
   }
 
-  #prerenderCursorCanvas() {
+  #setCursor() {
     if (
       this.strokeStyle === this.contextReal.strokeStyle &&
       this.lineWidth === this.contextReal.lineWidth
@@ -69,15 +53,11 @@ export default class DrawingLine extends PaintFunction {
       return;
     this.strokeStyle = this.contextReal.strokeStyle;
     this.lineWidth = this.contextReal.lineWidth;
-    this.radius = this.lineWidth / 2;
-    this.cursorCanvas = document.createElement("canvas");
-    const ctx = this.cursorCanvas.getContext("2d");
-    this.cursorCanvas.width = this.lineWidth;
-    this.cursorCanvas.height = this.lineWidth;
-    ctx.fillStyle = this.strokeStyle;
-    ctx.beginPath();
-    ctx.arc(this.radius, this.radius, this.radius, 0, 2 * Math.PI);
-    ctx.fill();
+    const radius = this.lineWidth / 2;
+    const svgStr = `<svg width="${this.lineWidth}" height="${this.lineWidth}" viewBox="0 0 ${this.lineWidth} ${this.lineWidth}" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="${radius}" cy="${radius}" r="${radius}" fill="${this.strokeStyle}"/></svg>`;
+    const blob = new Blob([svgStr], { type: "image/svg+xml" });
+    const url = URL.createObjectURL(blob);
+    this.contextDraft.canvas.style.cursor = `url(${url}) ${this.lineWidth} ${this.lineWidth}, auto`;
   }
 }
 
