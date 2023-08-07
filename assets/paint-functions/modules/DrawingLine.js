@@ -57,7 +57,7 @@ export default class DrawingLine extends PaintFunction {
     const svgStr = `<svg width="${this.lineWidth}" height="${this.lineWidth}" viewBox="0 0 ${this.lineWidth} ${this.lineWidth}" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="${radius}" cy="${radius}" r="${radius}" fill="${this.strokeStyle}"/></svg>`;
     const blob = new Blob([svgStr], { type: "image/svg+xml" });
     const url = URL.createObjectURL(blob);
-    this.contextDraft.canvas.style.cursor = `url(${url}) ${this.lineWidth} ${this.lineWidth}, auto`;
+    this.contextDraft.canvas.style.cursor = `url(${url}) ${radius} ${radius}, auto`;
   }
 }
 
