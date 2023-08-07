@@ -135,7 +135,9 @@ export default class DoraemonCanvas {
 
   /** Clears all drawing on both real and draft canvas. */
   clearCanvas() {
-    this.getPaintFunction().destructor();
+    // This calls the destructor to clear cache waiting to be applied to canvas
+    // @ts-ignore
+    this.setPaintFunction(this.getPaintFunction().constructor);
     this.#drawingCanvas.clearAll();
     this.#drawingCanvas.writeUndo();
   }
