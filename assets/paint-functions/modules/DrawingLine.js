@@ -8,14 +8,6 @@ export default class DrawingLine extends PaintFunction {
   constructor(contextReal, contextDraft, writeUndoCb) {
     super(contextReal, contextDraft, writeUndoCb);
     this.contextDraft.canvas.style.cursor = "none";
-    this.contextDraft.save();
-    this.contextDraft.fillStyle = this.contextDraft.strokeStyle;
-    this.penRadius = this.contextReal.lineWidth / 2;
-  }
-
-  destructor() {
-    this.contextDraft.restore();
-    super.destructor();
   }
 
   /** @param {[number, number]} coord */
@@ -51,6 +43,13 @@ export default class DrawingLine extends PaintFunction {
 
   onMouseLeave() {
     this.clearDraft();
+    this.contextDraft.restore();
+  }
+
+  onMouseEnter() {
+    this.contextDraft.save();
+    this.contextDraft.fillStyle = this.contextDraft.strokeStyle;
+    this.penRadius = this.contextReal.lineWidth / 2;
   }
 
   /**
