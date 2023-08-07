@@ -8,6 +8,7 @@ export default class DrawingLine extends PaintFunction {
   constructor(contextReal, contextDraft, writeUndoCb) {
     super(contextReal, contextDraft, writeUndoCb);
     this.contextDraft.canvas.style.cursor = "none";
+    this.#prerenderCursorCanvas();
   }
 
   /** @param {[number, number]} coord */
@@ -35,21 +36,18 @@ export default class DrawingLine extends PaintFunction {
   /** @param {[number, number]} coord */
   onMouseMove(coord) {
     if (this.draggingFlag) return;
+    const x = coord[0] - this.radius;
+    const y = coord[1] - this.radius;
     this.clearDraft();
-    this.contextDraft.beginPath();
-    this.contextDraft.arc(...coord, this.penRadius, 0, 2 * Math.PI);
-    this.contextDraft.fill();
+    this.contextDraft.drawImage(this.cursorCanvas, x, y);
   }
 
   onMouseLeave() {
     this.clearDraft();
-    this.contextDraft.restore();
   }
 
   onMouseEnter() {
-    this.contextDraft.save();
-    this.contextDraft.fillStyle = this.contextDraft.strokeStyle;
-    this.penRadius = this.contextReal.lineWidth / 2;
+    this.#prerenderCursorCanvas();
   }
 
   /**
@@ -61,6 +59,25 @@ export default class DrawingLine extends PaintFunction {
     this.contextReal.lineTo(x, y);
     // Draw the line onto the page
     this.contextReal.stroke();
+  }
+
+  #prerenderCursorCanvas() {
+    if (
+      this.strokeStyle === this.contextReal.strokeStyle &&
+      this.lineWidth === this.contextReal.lineWidth
+    )
+      return;
+    this.strokeStyle = this.contextReal.strokeStyle;
+    this.lineWidth = this.contextReal.lineWidth;
+    this.radius = this.lineWidth / 2;
+    this.cursorCanvas = document.createElement("canvas");
+    const ctx = this.cursorCanvas.getContext("2d");
+    this.cursorCanvas.width = this.lineWidth;
+    this.cursorCanvas.height = this.lineWidth;
+    ctx.fillStyle = this.strokeStyle;
+    ctx.beginPath();
+    ctx.arc(this.radius, this.radius, this.radius, 0, 2 * Math.PI);
+    ctx.fill();
   }
 }
 
