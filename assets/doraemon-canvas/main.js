@@ -111,6 +111,9 @@ document.querySelector("#select-move").addEventListener("click", () => {
 document.querySelector("#zoom-canvas").addEventListener("click", () => {
   doraemon.toggleZoom();
 });
+document.querySelector("#clear-canvas").addEventListener("click", () => {
+  doraemon.clearCanvas();
+});
 document.querySelector(".dora-pocket").addEventListener("click", () => {
   window.open(doraemon.dataUrl, "_blank");
 });
