@@ -1,28 +1,37 @@
+// cp stand for control point
+function quadraticCurve(ctx, cp, start, end) {
+  ctx.beginPath();
+  ctx.moveTo(...start);
+  ctx.quadraticCurveTo(...cp, ...end);
+  ctx.stroke();
+}
+
 class DrawingQuadraticCurve extends PaintFunction {
-  constructor(contextReal, contextDraft) {
-    super(contextReal, contextDraft);
-  }
-
-  onMouseDown(coord, event) {
-    this.origX = coord[0];
-    this.origY = coord[1];
-  }
-
-  onDragging(coord, event) {
+  onMouseDown(coord) {
+    if (this.start == null) {
+      this.start = coord;
+      return;
+    }
+    if (this.end == null) {
+      this.end = coord;
+      this.contextDraft.canvas.style.cursor = "default";
+      return;
+    }
     this.clearDraft();
-    this.contextDraft.moveTo(this.origX, this.origY);
-    this.contextDraft.quadraticCurveTo(coord[0]+100, coord[1]+100, coord[0], coord[1]);
-    this.contextDraft.stroke();
+    quadraticCurve(this.contextReal, coord, this.start, this.end);
+    this.contextDraft.canvas.style.cursor = "crosshair";
+    this.start = null;
+    this.end = null;
   }
 
-  onMouseMove() {}
-
-  onMouseUp(coord) {
+  onMouseMove(coord) {
+    if (this.start == null) return;
+    if (this.end == null) {
+      this.clearDraft();
+      quadraticCurve(this.contextDraft, coord, this.start, coord);
+      return;
+    }
     this.clearDraft();
-    this.contextReal.moveTo(this.origX, this.origY);
-    this.contextReal.quadraticCurveTo(coord[0]+100, coord[1]+100, coord[0], coord[1]);
-    this.contextReal.stroke();
+    quadraticCurve(this.contextDraft, coord, this.start, this.end);
   }
-  onMouseLeave() {}
-  onMouseEnter() {}
 }

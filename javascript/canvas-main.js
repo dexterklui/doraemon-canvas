@@ -8,6 +8,18 @@ $(() => {
   document.querySelector("#drawing-line").addEventListener("click", () => {
     currentFunction = new DrawingLine(contextReal);
   });
+  document.querySelector("#drawing-circle").addEventListener("click", () => {
+    currentFunction = new DrawingCircle(contextReal, contextDraft);
+  });
+  document.querySelector("#drawing-ellipse").addEventListener("click", () => {
+    currentFunction = new DrawingEllipse(contextReal, contextDraft);
+  });
+  document.querySelector("#drawing-quadraticCurve").addEventListener("click", () => {
+    currentFunction = new DrawingQuadraticCurve(contextReal, contextDraft);
+  });
+  document.querySelector("#drawing-regularPolygon").addEventListener("click", () => {
+    currentFunction = new DrawingRegularPolygon(contextReal, contextDraft);
+  });
 
   /*******************************/
   /*        color-picker        */
