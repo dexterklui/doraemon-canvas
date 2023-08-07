@@ -1,21 +1,25 @@
 import { PaintFunction } from "../external-dependencies.js";
 import UndoStack from "./UndoStack.js";
 
+/** @type {Options} DEFAULT_OPTIONS */
+const DEFAULT_OPTIONS = {
+  canvasWidth: 1280,
+  canvasHeight: 720,
+  strokeStyle: "black",
+  fillStyle: "black",
+};
+
 /**
  * Allows user to paint on a given canvas under "2d" context using
  * {@link PaintFunction}
  */
 export default class DrawingCanvas {
   /**
-   * @param {number} [canvasWidth=1280] - default 1280
-   * @param {number} [canvasHeight=720] - default 720
    * @param {Element} [parentElem] - parent element
-   * @param {Object<string, any>} [options]
-   *        Defaults:
-   *        - strokeStyle: "black"
-   *        - fillStyle: "black"
+   * @param {Object} [options] - see {@link Options}
    */
-  constructor(canvasWidth = 1280, canvasHeight = 720, parentElem, options) {
+  constructor(parentElem, options = {}) {
+    options = { ...DEFAULT_OPTIONS, ...options };
     this.canvasReal = document.createElement("canvas");
     this.canvasReal.classList.add(
       "drawing-canvas-real",
@@ -23,21 +27,30 @@ export default class DrawingCanvas {
     );
     this.canvasDraft = document.createElement("canvas");
     this.canvasDraft.classList.add("drawing-canvas-draft");
-    this.#setCanvasDimension(canvasWidth, canvasHeight);
+    this.#setCanvasDimension(options.canvasWidth, options.canvasHeight);
     this.#ctxReal = this.canvasReal.getContext("2d");
     this.#ctxDraft = this.canvasDraft.getContext("2d");
 
     this.#undoStack = new UndoStack();
-
-    this.updateCoordCoefficient();
     this.writeUndo();
-    this.setStrokeStyle(options?.strokeStyle ?? "black");
-    this.setFillStyle(options?.fillStyle ?? "black");
+    this.setStrokeStyle(options.strokeStyle);
+    this.setFillStyle(options.fillStyle);
     this.#setupHandlers();
 
     this.parentElem = parentElem;
     if (parentElem) parentElem.append(this.canvasReal, this.canvasDraft);
+
+    this.updateCoordCoefficient();
   }
+
+  /**
+   * Options for DrawingCanvas
+   * @typedef {Object} Options
+   * @property {number} canvasWidth
+   * @property {number} canvasHeight
+   * @property {string} strokeStyle
+   * @property {string} fillStyle
+   */
 
   /*******************************************************/
   /*                    Public fields                    */
@@ -51,6 +64,10 @@ export default class DrawingCanvas {
   /********************************************************/
   /*                    Public getters                    */
   /********************************************************/
+
+  static get DEFAULT_OPTIONS() {
+    return DEFAULT_OPTIONS;
+  }
 
   /** @returns {CanvasRenderingContext2D} the 2d context of real canvas */
   get ctxReal() {

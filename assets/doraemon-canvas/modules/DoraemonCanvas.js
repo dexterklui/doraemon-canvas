@@ -3,6 +3,11 @@ import { DrawingCanvas, PaintFunction } from "../external-dependencies.js";
 const DORA_FACE_ASPECT_RATIO = 0.8;
 const CANVAS_WIDTH_COEFFICIENT = 0.75;
 
+/** @type {Options} DEFAULT_OPTIONS */
+const DEFAULT_OPTIONS = {
+  replace: false,
+};
+
 /**
  * A Doraemon themed canvas that allows user to draw on it.
  */
@@ -10,18 +15,21 @@ export default class DoraemonCanvas {
   /**
    * Creates a Doraemon theme canvas
    * @param {Element} parent - parent element of this DoraemonCanvas
-   * @param {boolean} [replaceFlag=false] - replace parent instead of append to
+   * @param {Object} [options] - see {@link Options}
    */
-  constructor(parent, replaceFlag = false) {
+  constructor(parent, options = {}) {
+    options = { ...DEFAULT_OPTIONS, ...options };
     this.#div = this.#createDoraemon();
-
-    // Create a DrawingCanvas instance
     const longerDimension = Math.max(window.innerWidth, window.innerHeight);
     const width = longerDimension * CANVAS_WIDTH_COEFFICIENT;
     const height = width * DORA_FACE_ASPECT_RATIO;
     const doraFace = this.#div.querySelector(".dora-face");
-    this.#drawingCanvas = new DrawingCanvas(width, height, doraFace);
-    if (replaceFlag) {
+    this.#drawingCanvas = new DrawingCanvas(doraFace, {
+      canvasWidth: width,
+      canvasHeight: height,
+    });
+
+    if (options.replace) {
       this.#addHandlerToResize(parent.parentNode);
       parent.replaceWith(this.#div);
     } else {
@@ -35,9 +43,16 @@ export default class DoraemonCanvas {
     // and setters.
   }
 
-  /********************************************************/
-  /*                    Public getters                    */
-  /********************************************************/
+  /**
+   * The options for DoraemonCanvas.
+   * @typedef {Object} Options
+   * @property {boolean} replace - whether this doraemon element replaces the
+   *                     parent element rather than append to it
+   */
+
+  /****************************************************************/
+  /*                    Public getters/setters                    */
+  /****************************************************************/
 
   /**
    * Gets the doraemon canvas.
@@ -50,6 +65,10 @@ export default class DoraemonCanvas {
   /** @returns {string} an png image data URL for the real canvas */
   get dataUrl() {
     return this.#drawingCanvas.dataUrl;
+  }
+
+  static get DEFAULT_OPTIONS() {
+    return DEFAULT_OPTIONS;
   }
 
   /********************************************************/

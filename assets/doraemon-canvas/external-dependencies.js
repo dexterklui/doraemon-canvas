@@ -1,4 +1,4 @@
-export { DrawingCanvas } from "../drawing-canvas/modules/DrawingCanvas.js";
+export { DrawingCanvas } from "../drawing-canvas/drawing-canvas.js";
 export {
   PaintFunction,
   DrawingLine,

@@ -60,7 +60,7 @@ function updateColor() {
 
 const canvasApp = document.querySelector("#canvas-app");
 /** @type {DoraemonCanvas} doraemon */
-const doraemon = new DoraemonCanvas(canvasApp, true);
+const doraemon = new DoraemonCanvas(canvasApp, { replace: true });
 doraemon.div.id = "canvas-app";
 
 /******************************/
