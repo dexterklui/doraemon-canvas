@@ -1,4 +1,5 @@
 export { PaintFunction } from "./modules/PaintFunction.js";
+export { AddImage } from "./modules/AddImage.js";
 export { DrawingLine } from "./modules/DrawingLine.js";
 export { DrawingRectangle } from "./modules/DrawingRectangle.js";
 export { DrawingBezierCurve } from "./modules/DrawingBezierCurve.js";

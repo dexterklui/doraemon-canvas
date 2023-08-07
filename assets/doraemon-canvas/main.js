@@ -1,5 +1,6 @@
 import DoraemonCanvas from "./modules/DoraemonCanvas.js";
 import {
+  AddImage,
   DrawingLine,
   DrawingRectangle,
   DrawingBezierCurve,
@@ -110,6 +111,9 @@ document.querySelector("#select-move").addEventListener("click", () => {
 
 document.querySelector("#zoom-canvas").addEventListener("click", () => {
   doraemon.toggleZoom();
+});
+document.querySelector("#add-image").addEventListener("click", () => {
+  doraemon.setPaintFunction(AddImage);
 });
 document.querySelector(".dora-pocket").addEventListener("click", () => {
   window.open(doraemon.dataUrl, "_blank");
