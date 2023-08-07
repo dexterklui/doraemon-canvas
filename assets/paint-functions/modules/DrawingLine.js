@@ -20,6 +20,7 @@ export default class DrawingLine extends PaintFunction {
 
   /** @param {[number, number]} coord */
   onMouseDown(coord) {
+    this.draggingFlag = true;
     // Kind of line
     this.contextReal.lineJoin = "round";
     // Width of line
@@ -35,11 +36,13 @@ export default class DrawingLine extends PaintFunction {
   }
 
   onMouseUp() {
+    this.draggingFlag = false;
     this.writeUndoCb();
   }
 
   /** @param {[number, number]} coord */
   onMouseMove(coord) {
+    if (this.draggingFlag) return;
     this.clearDraft();
     this.contextDraft.beginPath();
     this.contextDraft.arc(...coord, this.penRadius, 0, 2 * Math.PI);
