@@ -4,7 +4,7 @@ import PaintFunction from "./PaintFunction.js";
  * Functionality to draw a polygon with arbitrary sides.
  * @extends PaintFunction
  */
-export default class DrawingPolygon extends PaintFunction {
+export default class DrawingIrregularPolygon extends PaintFunction {
   /**
    * @param {CanvasRenderingContext2D} contextReal
    * @param {CanvasRenderingContext2D} contextDraft
@@ -57,4 +57,4 @@ export default class DrawingPolygon extends PaintFunction {
   }
 }
 
-export { DrawingPolygon };
+export { DrawingIrregularPolygon };
