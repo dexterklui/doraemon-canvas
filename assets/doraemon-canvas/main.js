@@ -5,6 +5,7 @@ import {
   DrawingBezierCurve,
   DrawingPolygon,
   DrawingText,
+  Eraser,
   SelectMove,
 } from "./external-dependencies.js";
 import "../coloris/coloris.min.js";
@@ -77,6 +78,9 @@ document.querySelector(".buttons").addEventListener("click", (e) => {
   } else {
     drawingTextBtn.textContent = "Input Text";
   }
+});
+document.querySelector("#eraser").addEventListener("click", () => {
+  doraemon.setPaintFunction(Eraser);
 });
 document.querySelector("#drawing-rectangle").addEventListener("click", () => {
   doraemon.setPaintFunction(DrawingRectangle);
