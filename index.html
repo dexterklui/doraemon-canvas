@@ -20,40 +20,53 @@
     <div id="canvas-app"></div>
     <div class="tools">
       <div class="buttons">
-        <span class="btn btn-info fa fa-paint-brush" id="eraser"> Eraser </span>
-        <span class="btn btn-primary fa fa-square" id="drawing-rectangle">
-          Draw Rectangle
+        <span class="btn" id="drawing-circle">
+          <img src="./assets/icons/icon_circle.png" width="30px">
         </span>
-        <span class="btn btn-info fa fa-paint-brush" id="drawing-line">
-          Draw Line
+        <span class="btn" id="drawing-ellipse">
+          <img src="./assets/icons/icon_ellipse.png" width="30px">
         </span>
-        <span
-          class="btn btn-outline-dark fa fa-paint-brush"
-          id="drawing-straight-line"
-        >
-          Draw Straight line
+        <span class="btn" id="drawing-rectangle">
+          <img src="./assets/icons/icon_rectangle.png" width="30px">
         </span>
-        <span
-          class="btn btn-success fa fa-paint-brush"
-          id="drawing-quadratic-curve"
-        >
-          Draw quadratic curve
+        <span class="btn" id="drawing-quadratic-curve">
+          <img src="./assets/icons/icon_quadratic.png" width="30px">
         </span>
-        <span class="btn btn-info fa fa-paint-brush" id="drawing-bezier-curve">
-          Draw Bezier Curve
+        <span class="btn" id="drawing-bezier-curve">
+          <img src="./assets/icons/icon_bezier.png" width="30px">
         </span>
-        <span class="btn btn-secondary fa fa-square" id="drawing-circle">
-          Draw Circle
+        <span class="btn" id="drawing-regular-polygon">
+          <img src="./assets/icons/icon_regular-polygon.png" width="30px">
         </span>
-        <span class="btn btn-warning fa fa-square" id="drawing-ellipse">
-          Draw Ellipse
+        <span class="btn" id="drawing-irregular-polygon">
+          <img src="./assets/icons/icon_polygon.png" width="30px">
         </span>
-        <span
-          class="btn btn-info fa fa-paint-brush"
-          id="drawing-regular-polygon"
-        >
-          Draw Polygon
+        <span class="btn" id="drawing-line">
+          <img src="./assets/icons/icon_free-draw.png" width="30px">
         </span>
+        <span class="btn" id="drawing-straight-line">
+          <img src="./assets/icons/icon_line.png" width="30px">
+        </span>
+        <span class="btn" id="drawing-text">
+          <img src="./assets/icons/icon_text.png" width="30px">
+        </span>
+        <span class="btn" id="select-move">
+          <img src="./assets/icons/icon_move.png" width="30px">
+        </span>
+        <span class="btn" id="zoom-canvas">
+          <img src="./assets/icons/icon_zoom.png" width="30px">
+        </span>
+        <span class="btn" id="eraser">
+          <img src="./assets/icons/icon_eraser.png" width="30px">
+        </span>
+        <span class="btn" id="clear-canvas">
+          <img src="./assets/icons/icon_clear.png" width="30px">
+        </span>
+        <span class="btn" id="add-image">
+          <img src="./assets/icons/icon_add-image.png" width="30px">
+        </span>
+
+        <p class="title">Side :</p>
         <input
           type="number"
           value="3"
@@ -62,33 +75,16 @@
           min="3"
           max="99"
         />
-        <span
-          class="btn btn-info fa fa-paint-brush"
-          id="drawing-irregular-polygon"
-        >
-          Draw Irregular Polygon
-        </span>
-        <span class="btn btn-info fa fa-paint-brush" id="drawing-text">
-          Input text
-        </span>
-        <span class="btn btn-primary fa fa-square" id="select-move">Move</span>
-        <span class="btn btn-primary fa fa-paint-brush" id="zoom-canvas">
-          Zoom in/out
-        </span>
-        <span class="btn btn-primary fa fa-paint-brush" id="add-image">
-          Add image
-        </span>
-        <span class="btn btn-primary fa fa-paint-brush" id="clear-canvas">
-          Clear
-        </span>
-      </div>
+      
       <div class="color-selectors">
+        <p class="title">Stroke :</p>
         <input
           class="color-selector color-selector-stroke"
           type="text"
           data-coloris
           value="#000000"
         />
+        <p class="title">Fill :</p>
         <input
           class="color-selector color-selector-fill"
           type="text"
@@ -96,6 +92,7 @@
           value="#000000"
         />
       </div>
+    </div>
     </div>
   </body>
 </html>
