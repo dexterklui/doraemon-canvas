@@ -33,6 +33,13 @@ export default class DrawingRegularPolygon extends PaintFunction {
     );
     let index = 0;
 
+    this.contextDraft.save();
+    this.contextDraft.translate(this.origX, this.origY);
+    const acos = Math.acos((coord[0] - this.origX) / radius);
+    const angle = coord[1] < this.origY ? 2 * Math.PI - acos : acos;
+    this.contextDraft.rotate(angle);
+    this.contextDraft.translate(-this.origX, -this.origY);
+
     for (index; index < sides; index++) {
       coordinates.push({
         x: this.origX + radius * Math.cos(incAngle),
@@ -50,6 +57,8 @@ export default class DrawingRegularPolygon extends PaintFunction {
 
     this.contextDraft.closePath();
     this.contextDraft.stroke();
+
+    this.contextDraft.restore();
   }
 
   onMouseUp(coord) {
@@ -61,6 +70,13 @@ export default class DrawingRegularPolygon extends PaintFunction {
         Math.pow(coord[0] - this.origX, 2) + Math.pow(coord[1] - this.origY, 2)
       ),
       index = 0;
+
+    this.contextReal.save();
+    this.contextReal.translate(this.origX, this.origY);
+    const acos = Math.acos((coord[0] - this.origX) / radius);
+    const angle = coord[1] < this.origY ? 2 * Math.PI - acos : acos;
+    this.contextReal.rotate(angle);
+    this.contextReal.translate(-this.origX, -this.origY);
 
     for (index; index < sides; index++) {
       coordinates.push({
@@ -78,6 +94,8 @@ export default class DrawingRegularPolygon extends PaintFunction {
 
     this.contextReal.closePath();
     this.contextReal.stroke();
+
+    this.contextReal.restore();
   }
 }
 
