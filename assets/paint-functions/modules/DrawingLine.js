@@ -7,7 +7,8 @@ import PaintFunction from "./PaintFunction.js";
 export default class DrawingLine extends PaintFunction {
   constructor(contextReal, contextDraft, writeUndoCb) {
     super(contextReal, contextDraft, writeUndoCb);
-    this.#setCursor();
+    this.cursorStyle = "stroke";
+    this.updateCursor();
   }
 
   /** @param {[number, number]} coord */
@@ -27,10 +28,6 @@ export default class DrawingLine extends PaintFunction {
     this.writeUndoCb();
   }
 
-  onMouseEnter() {
-    this.#setCursor();
-  }
-
   /**
    * @param {number} x
    * @param {number} y
@@ -38,21 +35,6 @@ export default class DrawingLine extends PaintFunction {
   draw(x, y) {
     this.contextReal.lineTo(x, y);
     this.contextReal.stroke();
-  }
-
-  #setCursor() {
-    if (
-      this.strokeStyle === this.contextReal.strokeStyle &&
-      this.lineWidth === this.contextReal.lineWidth
-    )
-      return;
-    this.strokeStyle = this.contextReal.strokeStyle;
-    this.lineWidth = this.contextReal.lineWidth;
-    const radius = this.lineWidth / 2;
-    const svgStr = `<svg width="${this.lineWidth}" height="${this.lineWidth}" viewBox="0 0 ${this.lineWidth} ${this.lineWidth}" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="${radius}" cy="${radius}" r="${radius}" fill="${this.strokeStyle}"/></svg>`;
-    const blob = new Blob([svgStr], { type: "image/svg+xml" });
-    const url = URL.createObjectURL(blob);
-    this.contextDraft.canvas.style.cursor = `url(${url}) ${radius} ${radius}, auto`;
   }
 }
 

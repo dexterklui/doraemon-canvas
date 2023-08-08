@@ -5,6 +5,17 @@ import PaintFunction from "./PaintFunction.js";
  * @extends PaintFunction
  */
 export default class DrawingStraightLine extends PaintFunction {
+  /**
+   * @param {CanvasRenderingContext2D} contextReal
+   * @param {CanvasRenderingContext2D} contextDraft
+   * @param {Function} [writeUndoCb]
+   */
+  constructor(contextReal, contextDraft, writeUndoCb) {
+    super(contextReal, contextDraft, writeUndoCb);
+    this.cursorStyle = "stroke";
+    this.updateCursor();
+  }
+
   onMouseDown(coord) {
     this.origX = coord[0];
     this.origY = coord[1];

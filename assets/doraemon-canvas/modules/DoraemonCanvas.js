@@ -124,7 +124,7 @@ export default class DoraemonCanvas {
    * @param {string} color
    */
   setStrokeStyle(color) {
-    this.#drawingCanvas.setStrokeStyle(color);
+    this.setCanvasProperties({ strokeStyle: color });
   }
 
   /**
@@ -132,7 +132,7 @@ export default class DoraemonCanvas {
    * @param {string} color
    */
   setFillStyle(color) {
-    this.#drawingCanvas.setFillStyle(color);
+    this.setCanvasProperties({ fillStyle: color });
   }
 
   /**
@@ -141,7 +141,7 @@ export default class DoraemonCanvas {
    * @param {string} [family="arial"] - font family
    */
   setFontStyle(size = 22, family = "arial") {
-    this.#drawingCanvas.setFontStyle(size, family);
+    this.setCanvasProperties({ font: `${size}px ${family}` });
   }
 
   /**
@@ -151,6 +151,7 @@ export default class DoraemonCanvas {
    */
   setCanvasProperties(options) {
     this.#drawingCanvas.setCanvasProperties(options);
+    this.getPaintFunction()?.updateCursor();
   }
 
   /**

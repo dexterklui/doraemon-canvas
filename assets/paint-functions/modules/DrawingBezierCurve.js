@@ -12,6 +12,17 @@ function bezierCurve(ctx, c1, c2, start, end) {
  * @extends PaintFunction
  */
 export default class DrawingBezierCurve extends PaintFunction {
+  /**
+   * @param {CanvasRenderingContext2D} contextReal
+   * @param {CanvasRenderingContext2D} contextDraft
+   * @param {Function} [writeUndoCb]
+   */
+  constructor(contextReal, contextDraft, writeUndoCb) {
+    super(contextReal, contextDraft, writeUndoCb);
+    this.cursorStyle = "stroke";
+    this.updateCursor();
+  }
+
   onMouseDown(coord) {
     if (this.start == null) {
       this.start = coord;
@@ -19,7 +30,7 @@ export default class DrawingBezierCurve extends PaintFunction {
     }
     if (this.end == null) {
       this.end = coord;
-      this.contextDraft.canvas.style.cursor = "default";
+      this.contextDraft.canvas.style.cursor = "crosshair";
       return;
     }
     if (this.c1 == null) {
@@ -29,7 +40,7 @@ export default class DrawingBezierCurve extends PaintFunction {
     this.clearDraft();
     bezierCurve(this.contextReal, this.c1, coord, this.start, this.end);
     this.writeUndoCb();
-    this.contextDraft.canvas.style.cursor = "crosshair";
+    this.updateCursor();
     this.start = null;
     this.end = null;
     this.c1 = null;
