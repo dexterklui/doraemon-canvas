@@ -5,9 +5,32 @@ import UndoStack from "./UndoStack.js";
 const DEFAULT_OPTIONS = {
   canvasWidth: 1280,
   canvasHeight: 720,
+  font: "22px ariel",
   strokeStyle: "black",
   fillStyle: "black",
+  globalAlpha: 1.0,
+  lineWidth: 6,
+  lineCap: "round",
+  lineJoin: "round",
+  miterLimit: 10.0,
 };
+
+/**
+ * List of properties returned by method getCanvasProperties() and accepted by
+ * method setCanvasProperties().
+ * @type {string[]} DRAWING_CANVAS_PROPERTIES
+ */
+const DRAWING_CANVAS_PROPERTIES = [
+  "font",
+  "strokeStyle",
+  "fillStyle",
+  "globalAlpha",
+  "lineWidth",
+  "lineCap",
+  "lineJoin",
+  "miterLimit",
+  "globalCompositeOperation",
+];
 
 /**
  * Allows user to paint on a given canvas under "2d" context using
@@ -33,8 +56,7 @@ export default class DrawingCanvas {
 
     this.#undoStack = new UndoStack();
     this.writeUndo();
-    this.setStrokeStyle(options.strokeStyle);
-    this.setFillStyle(options.fillStyle);
+    this.setCanvasProperties(options);
     this.#setupHandlers();
 
     this.parentElem = parentElem;
@@ -48,8 +70,14 @@ export default class DrawingCanvas {
    * @typedef {Object} Options
    * @property {number} canvasWidth
    * @property {number} canvasHeight
+   * @property {string} font - e.g. "22px arial"
    * @property {string} strokeStyle
    * @property {string} fillStyle
+   * @property {number} globalAlpha - between 0.0 to 1.0
+   * @property {number} lineWidth
+   * @property {string} lineJoin
+   * @property {string} lineCap
+   * @property {number} miterLimit
    */
 
   /*******************************************************/
@@ -106,13 +134,38 @@ export default class DrawingCanvas {
   /********************************************************/
 
   /**
+   * Sets certain property values for both real and draft canvas.
+   * @param {Object} options - Storing key-value pairs of supported properties
+   * @see {@link DRAWING_CANVAS_PROPERTIES}
+   */
+  setCanvasProperties(options) {
+    for (const key of DRAWING_CANVAS_PROPERTIES) {
+      if (options[key] == null) continue;
+      this.#ctxReal[key] = options[key];
+      this.#ctxDraft[key] = options[key];
+    }
+  }
+
+  /**
+   * Gets centain property values for only real canvas.
+   * @returns {Object.<string,any>}
+   * @see {@link DRAWING_CANVAS_PROPERTIES}
+   */
+  getCanvasProperties() {
+    const result = {};
+    for (const key of DRAWING_CANVAS_PROPERTIES) {
+      result[key] = this.#ctxReal[key];
+    }
+    return result;
+  }
+
+  /**
    * Sets strokes style for both real and draft canvas
    * @param {string} color
    * @returns {string} the same color
    */
   setStrokeStyle(color) {
-    this.#ctxReal.strokeStyle = color;
-    this.#ctxDraft.strokeStyle = color;
+    this.setCanvasProperties({ strokeStyle: color });
     return color;
   }
 
@@ -122,8 +175,7 @@ export default class DrawingCanvas {
    * @returns {string} the same color
    */
   setFillStyle(color) {
-    this.#ctxReal.fillStyle = color;
-    this.#ctxDraft.fillStyle = color;
+    this.setCanvasProperties({ fillStyle: color });
     return color;
   }
 
@@ -134,8 +186,7 @@ export default class DrawingCanvas {
    */
   setFontStyle(size = 22, family = "arial") {
     const style = `${size.toString()}px ${family}`;
-    this.#ctxReal.font = style;
-    this.#ctxDraft.font = style;
+    this.setCanvasProperties({ font: style });
   }
 
   /** Clears all drawings on draft canvas. */
@@ -202,13 +253,13 @@ export default class DrawingCanvas {
     ) {
       return;
     }
-    const styles = this.#getStyles();
+    const styles = this.getCanvasProperties();
     for (const canvas of [this.canvasReal, this.canvasDraft]) {
       canvas.width = width;
       canvas.height = height;
     }
     this.#drawImageData(this.#undoStack.getCurrentData());
-    this.#setStyles(styles);
+    this.setCanvasProperties(styles);
     this.updateCoordCoefficient();
   }
 
@@ -245,18 +296,6 @@ export default class DrawingCanvas {
   #clearCanvas(...ctxs) {
     for (const ctx of ctxs) {
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    }
-  }
-
-  #getStyles() {
-    const { strokeStyle, fillStyle, font, lineWidth } = this.#ctxReal;
-    return { strokeStyle, fillStyle, font, lineWidth };
-  }
-
-  /** @param {Object} styles - storing CanvasRenderingContext2D properties */
-  #setStyles(styles) {
-    for (const ctx of [this.#ctxReal, this.#ctxDraft]) {
-      for (const [key, value] of Object.entries(styles)) ctx[key] = value;
     }
   }
 
@@ -420,4 +459,4 @@ export default class DrawingCanvas {
   };
 }
 
-export { DrawingCanvas };
+export { DrawingCanvas, DRAWING_CANVAS_PROPERTIES };
