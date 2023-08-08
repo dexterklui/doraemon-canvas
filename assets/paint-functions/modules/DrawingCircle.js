@@ -30,6 +30,7 @@ export default class DrawingCircle extends PaintFunction {
     this.contextReal.beginPath();
     this.contextReal.arc(this.origX, this.origY, radius, 0, 2 * Math.PI);
     this.contextReal.stroke();
+    this.writeUndoCb();
   }
 }
 

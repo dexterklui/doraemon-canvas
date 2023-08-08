@@ -25,6 +25,7 @@ export default class DrawingQuadraticCurve extends PaintFunction {
     }
     this.clearDraft();
     quadraticCurve(this.contextReal, coord, this.start, this.end);
+    this.writeUndoCb();
     this.contextDraft.canvas.style.cursor = "crosshair";
     this.start = null;
     this.end = null;
