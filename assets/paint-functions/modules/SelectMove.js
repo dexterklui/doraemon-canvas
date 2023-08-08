@@ -109,7 +109,7 @@ export default class SelectMove extends PaintFunction {
    * @returns {boolean}
    */
   #withinSelection(coord) {
-    if (!this.endX || !this.origX) return false;
+    if (this.endX == null || this.origX == null) return false;
     if (coord[0] < this.smallerX || coord[0] >= this.largerX) return false;
     if (coord[1] < this.smallerY || coord[1] >= this.largerY) return false;
     return true;
