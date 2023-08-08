@@ -3,6 +3,7 @@ export {
   PaintFunction,
   AddImage,
   DrawingLine,
+  DrawingStraightLine,
   DrawingRectangle,
   DrawingBezierCurve,
   DrawingPolygon,

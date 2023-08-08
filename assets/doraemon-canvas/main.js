@@ -2,6 +2,7 @@ import DoraemonCanvas from "./modules/DoraemonCanvas.js";
 import {
   AddImage,
   DrawingLine,
+  DrawingStraightLine,
   DrawingRectangle,
   DrawingBezierCurve,
   DrawingPolygon,
@@ -89,6 +90,11 @@ document.querySelector("#drawing-rectangle").addEventListener("click", () => {
 document.querySelector("#drawing-line").addEventListener("click", () => {
   doraemon.setPaintFunction(DrawingLine);
 });
+document
+  .querySelector("#drawing-straight-line")
+  .addEventListener("click", () => {
+    doraemon.setPaintFunction(DrawingStraightLine);
+  });
 document
   .querySelector("#drawing-bezier-curve")
   .addEventListener("click", () => {
