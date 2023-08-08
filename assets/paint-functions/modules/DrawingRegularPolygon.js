@@ -56,6 +56,7 @@ export default class DrawingRegularPolygon extends PaintFunction {
     }
 
     this.contextDraft.closePath();
+    this.contextDraft.fill();
     this.contextDraft.stroke();
 
     this.contextDraft.restore();
@@ -93,6 +94,7 @@ export default class DrawingRegularPolygon extends PaintFunction {
     }
 
     this.contextReal.closePath();
+    this.contextReal.fill();
     this.contextReal.stroke();
 
     this.contextReal.restore();
