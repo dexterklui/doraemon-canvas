@@ -114,7 +114,7 @@ export default class PaintFunction {
     } else {
       strokeWidth = 10;
     }
-    const fillRadius = radius - 2 * strokeWidth;
+    const fillRadius = radius - strokeWidth;
     const svgWidth = Math.max(minSvgWidth, this.lineWidth);
     const halfSvgWidth = svgWidth / 2;
     return { svgWidth, halfSvgWidth, radius, fillRadius, strokeWidth };

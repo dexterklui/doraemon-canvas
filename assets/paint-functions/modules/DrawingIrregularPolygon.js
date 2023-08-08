@@ -22,8 +22,8 @@ export default class DrawingIrregularPolygon extends PaintFunction {
       this.clearDraft();
       this.drawPartialPolygon(this.contextReal);
       this.contextReal.closePath();
-      this.contextReal.stroke();
       this.contextReal.fill();
+      this.contextReal.stroke();
       this.writeUndoCb();
       this.coords = [];
       return;
