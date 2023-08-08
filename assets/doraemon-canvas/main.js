@@ -4,7 +4,10 @@ import {
   DrawingLine,
   DrawingStraightLine,
   DrawingRectangle,
+  DrawingQuadraticCurve,
   DrawingBezierCurve,
+  DrawingCircle,
+  DrawingEllipse,
   DrawingPolygon,
   DrawingText,
   Eraser,
@@ -96,10 +99,21 @@ document
     doraemon.setPaintFunction(DrawingStraightLine);
   });
 document
+  .querySelector("#drawing-quadratic-curve")
+  .addEventListener("click", () => {
+    doraemon.setPaintFunction(DrawingQuadraticCurve);
+  });
+document
   .querySelector("#drawing-bezier-curve")
   .addEventListener("click", () => {
     doraemon.setPaintFunction(DrawingBezierCurve);
   });
+document.querySelector("#drawing-circle").addEventListener("click", () => {
+  doraemon.setPaintFunction(DrawingCircle);
+});
+document.querySelector("#drawing-ellipse").addEventListener("click", () => {
+  doraemon.setPaintFunction(DrawingEllipse);
+});
 document.querySelector("#drawing-polygon").addEventListener("click", () => {
   doraemon.setPaintFunction(DrawingPolygon);
 });
