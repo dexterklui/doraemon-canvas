@@ -4,7 +4,8 @@ export {
   DrawingLine,
   DrawingRectangle,
   DrawingBezierCurve,
-  DrawingPolygon,
+  DrawingRegularPolygon,
+  DrawingIrregularPolygon,
   DrawingText,
   SelectMove,
 } from "../paint-functions/paint-functions.js";

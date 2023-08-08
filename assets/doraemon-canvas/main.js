@@ -3,7 +3,8 @@ import {
   DrawingLine,
   DrawingRectangle,
   DrawingBezierCurve,
-  DrawingPolygon,
+  DrawingRegularPolygon,
+  DrawingIrregularPolygon,
   DrawingText,
   SelectMove,
 } from "./external-dependencies.js";
@@ -89,9 +90,16 @@ document
   .addEventListener("click", () => {
     doraemon.setPaintFunction(DrawingBezierCurve);
   });
-document.querySelector("#drawing-polygon").addEventListener("click", () => {
-  doraemon.setPaintFunction(DrawingPolygon);
-});
+document
+  .querySelector("#drawing-regular-polygon")
+  .addEventListener("click", () => {
+    doraemon.setPaintFunction(DrawingRegularPolygon);
+  });
+document
+  .querySelector("#drawing-irregular-polygon")
+  .addEventListener("click", () => {
+    doraemon.setPaintFunction(DrawingIrregularPolygon);
+  });
 document.querySelector("#drawing-text").addEventListener("click", (e) => {
   const currentPaintFunction = doraemon.getPaintFunction();
   if (currentPaintFunction instanceof DrawingText) {
