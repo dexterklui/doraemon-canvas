@@ -66,6 +66,35 @@ input{
   border-radius: 3px;
 }
 
+.buttons{
+  position: absolute;
+  width: 110px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 5px rgba(0, 51, 92, 0.2);
+  padding: 10px;
+  margin: 10px;
+}
+
+.btn{
+  background-color: white;
+  border: 1px solid rgb(170, 170, 170);
+  border-radius: 5px;
+  padding: 5px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  width: fit-content;
+  margin: 0px 0px 5px;
+}
+
+.btn:hover{
+  background-color: rgb(209, 209, 209);
+}
+
+.btn:active{
+  background-color: rgb(119, 199, 253);
+}
+
 /*********************************/
 /*        color-container        */
 /*********************************/
@@ -83,5 +112,12 @@ input{
   font-size: small;
   font-weight: 800;
   color: #007FFF;
+  margin: 0px;
+}
+.title{
+  font-size: small;
+  font-weight: 800;
+  color: #007FFF;
+  text-align: center;
   margin: 0px;
 }
