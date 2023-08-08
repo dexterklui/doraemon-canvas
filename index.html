@@ -20,33 +20,40 @@
     <div id="canvas-app"></div>
     <div class="tools">
       <div class="buttons">
-        <span class="btn btn-primary fa fa-square" id="drawing-rectangle">
-          Draw Rectangle
+        <span class="btn" id="drawing-rectangle">
+          <img src="./assets/icons/rectangle.png" width="30px">
         </span>
-        <span class="btn btn-info fa fa-paint-brush" id="drawing-line">
-          Draw Line
+        <span class="btn" id="drawing-line">
+          <img src="./assets/icons/line.png" width="30px">
         </span>
-        <span class="btn btn-info fa fa-paint-brush" id="drawing-bezier-curve">
-          Draw Bezier Curve
+        <span class="btn" id="drawing-bezier-curve">
+          <img src="./assets/icons/bezier-curve.png" width="30px">
         </span>
-        <span class="btn btn-info fa fa-paint-brush" id="drawing-polygon">
-          Draw Polygon
+        <span class="btn" id="drawing-polygon">
+          <img src="./assets/icons/rectangle.png" width="30px">
         </span>
-        <span class="btn btn-info fa fa-paint-brush" id="drawing-text">
-          Input text
+        <span class="btn" id="drawing-text">
+          <img src="./assets/icons/text.png" width="30px">
         </span>
-        <span class="btn btn-primary fa fa-square" id="select-move">Move</span>
-        <span class="btn btn-primary fa fa-paint-brush" id="zoom-canvas">
-          Zoom in/out
+        <span class="btn" id="drawing-text">
+          <img src="./assets/icons/text.png" width="30px">
         </span>
-      </div>
+        <span class="btn" id="select-move">
+          <img src="./assets/icons/move.png" width="30px">
+        </span>
+        <span class="btn" id="zoom-canvas">
+          <img src="./assets/icons/zoom.png" width="30px">
+        </span>
+      
       <div class="color-selectors">
+        <p class="title">Stroke</p>
         <input
           class="color-selector color-selector-stroke"
           type="text"
           data-coloris
           value="#000000"
         />
+        <p class="title">Fill</p>
         <input
           class="color-selector color-selector-fill"
           type="text"
@@ -54,6 +61,7 @@
           value="#000000"
         />
       </div>
+    </div>
     </div>
   </body>
 </html>
