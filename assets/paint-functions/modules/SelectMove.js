@@ -145,7 +145,8 @@ export default class SelectMove extends PaintFunction {
     h = this.selectionHeight
   ) {
     this.contextDraft.save();
-    this.contextDraft.strokeStyle = "black";
+    this.contextDraft.lineWidth = 2;
+    this.contextDraft.strokeStyle = "gray";
     this.contextDraft.setLineDash([5, 5]);
     this.contextDraft.strokeRect(x, y, w, h);
     this.contextDraft.restore();

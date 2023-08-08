@@ -27,6 +27,8 @@ export default class DoraemonCanvas {
     this.#drawingCanvas = new DrawingCanvas(doraFace, {
       canvasWidth: width,
       canvasHeight: height,
+      // @ts-ignore
+      lineWidth: document.querySelector(".canvas-line-width").value,
     });
 
     if (options.replace) {

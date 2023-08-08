@@ -13,11 +13,6 @@ export default class DrawingLine extends PaintFunction {
   /** @param {[number, number]} coord */
   onMouseDown(coord) {
     this.draggingFlag = true;
-    // Kind of line
-    this.contextReal.lineJoin = "round";
-    // Width of line
-    this.contextReal.lineWidth = 5;
-    // Drawing the line here
     this.contextReal.beginPath();
     this.contextReal.moveTo(coord[0], coord[1]);
   }

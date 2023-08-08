@@ -19,8 +19,6 @@ export default class Eraser extends PaintFunction {
   /** @param {[number, number]} coord */
   onMouseDown(coord) {
     this.draggingFlag = true;
-    this.contextReal.lineJoin = "round";
-    this.contextReal.lineWidth = 5;
     this.contextReal.beginPath();
     this.contextReal.moveTo(coord[0], coord[1]);
   }

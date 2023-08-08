@@ -61,6 +61,14 @@ function polygonNumSidesHandler(e) {
   currentPaintFunction.numSides = value;
 }
 
+function lineWidthHandler(e) {
+  /** @type {HTMLInputElement} target */ // @ts-ignore
+  const target = e.target;
+  const value = parseInt(target.value);
+  if (isNaN(value) || value < 1 || value > 99) return;
+  doraemon.setCanvasProperties({ lineWidth: value });
+}
+
 /** Use values in color selectors to update stroke and fill color */
 function updateColor() {
   // @ts-ignore
@@ -178,6 +186,9 @@ document.querySelector("#clear-canvas").addEventListener("click", () => {
 document.querySelector(".dora-pocket").addEventListener("click", () => {
   window.open(doraemon.dataUrl, "_blank");
 });
+const canvasLineWidthInput = document.querySelector(".canvas-line-width");
+canvasLineWidthInput.addEventListener("blur", lineWidthHandler);
+canvasLineWidthInput.addEventListener("change", lineWidthHandler);
 
 /*********************************/
 /*        Keypress events        */
