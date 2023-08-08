@@ -61,6 +61,11 @@ body {
   background-color: #007FFF;
 }
 
+input{
+  border: 1px solid rgb(170, 170, 170);
+  border-radius: 3px;
+}
+
 /*********************************/
 /*        color-container        */
 /*********************************/
@@ -78,6 +83,5 @@ body {
   font-size: small;
   font-weight: 800;
   color: #007FFF;
-  text-align: center;
   margin: 0px;
 }
