@@ -45,6 +45,16 @@ function createFontStyleControl() {
   return div;
 }
 
+function polygonNumSidesHandler(e) {
+  /** @type {HTMLInputElement} target */ // @ts-ignore
+  const target = e.target;
+  const value = parseInt(target.value);
+  if (isNaN(value) || value < 3 || value > 99) return;
+  const currentPaintFunction = doraemon.getPaintFunction();
+  if (!(currentPaintFunction instanceof DrawingRegularPolygon)) return;
+  currentPaintFunction.numSides = value;
+}
+
 /** Use values in color selectors to update stroke and fill color */
 function updateColor() {
   // @ts-ignore
@@ -67,43 +77,58 @@ doraemon.div.id = "canvas-app";
 /******************************/
 /*        canvas tools        */
 /******************************/
-document.querySelector(".buttons").addEventListener("click", (e) => {
-  /** @type {HTMLElement} target */
-  // @ts-ignore
+const buttons = document.querySelector(".buttons");
+buttons.addEventListener("click", (e) => {
+  /** @type {HTMLElement} target */ // @ts-ignore
   const target = e.target;
-  const drawingTextBtn = document.querySelector("#drawing-text");
+  const drawingTextBtn = buttons.querySelector("#drawing-text");
+  /** @type {HTMLInputElement} polygonNumSidesInput */
+  const polygonNumSidesInput = buttons.querySelector(".polygon-num-sides");
   if (!target.classList.contains("btn")) return;
   if (target.id === "drawing-text") {
     drawingTextBtn.textContent = "Font style";
   } else {
     drawingTextBtn.textContent = "Input Text";
   }
+  if (
+    target.id === "drawing-regular-polygon" ||
+    target.classList.contains("polygon-num-sides")
+  ) {
+    polygonNumSidesInput.classList.remove("hidden");
+    polygonNumSidesInput.focus();
+  } else {
+    polygonNumSidesInput.classList.add("hidden");
+  }
 });
-document.querySelector("#drawing-rectangle").addEventListener("click", () => {
+buttons.querySelector("#drawing-rectangle").addEventListener("click", () => {
   doraemon.setPaintFunction(DrawingRectangle);
 });
-document.querySelector("#drawing-line").addEventListener("click", () => {
+buttons.querySelector("#drawing-line").addEventListener("click", () => {
   doraemon.setPaintFunction(DrawingLine);
 });
-document
-  .querySelector("#drawing-bezier-curve")
-  .addEventListener("click", () => {
-    doraemon.setPaintFunction(DrawingBezierCurve);
-  });
-document
+buttons.querySelector("#drawing-bezier-curve").addEventListener("click", () => {
+  doraemon.setPaintFunction(DrawingBezierCurve);
+});
+buttons
   .querySelector("#drawing-regular-polygon")
   .addEventListener("click", () => {
     doraemon.setPaintFunction(DrawingRegularPolygon);
   });
-document
+buttons
+  .querySelector(".polygon-num-sides")
+  .addEventListener("blur", polygonNumSidesHandler);
+buttons
+  .querySelector(".polygon-num-sides")
+  .addEventListener("change", polygonNumSidesHandler);
+buttons
   .querySelector("#drawing-irregular-polygon")
   .addEventListener("click", () => {
     doraemon.setPaintFunction(DrawingIrregularPolygon);
   });
-document.querySelector("#drawing-text").addEventListener("click", (e) => {
+buttons.querySelector("#drawing-text").addEventListener("click", (e) => {
   const currentPaintFunction = doraemon.getPaintFunction();
   if (currentPaintFunction instanceof DrawingText) {
-    if (document.querySelector("#font-style-panel")) return;
+    if (buttons.querySelector("#font-style-panel")) return;
     const div = createFontStyleControl();
     div.style.position = "absolute";
     div.style.top = "3em";
@@ -112,11 +137,11 @@ document.querySelector("#drawing-text").addEventListener("click", (e) => {
   }
   doraemon.setPaintFunction(DrawingText);
 });
-document.querySelector("#select-move").addEventListener("click", () => {
+buttons.querySelector("#select-move").addEventListener("click", () => {
   doraemon.setPaintFunction(SelectMove);
 });
 
-document.querySelector("#zoom-canvas").addEventListener("click", () => {
+buttons.querySelector("#zoom-canvas").addEventListener("click", () => {
   doraemon.toggleZoom();
 });
 document.querySelector(".dora-pocket").addEventListener("click", () => {
