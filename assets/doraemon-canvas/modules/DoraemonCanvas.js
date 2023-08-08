@@ -152,6 +152,15 @@ export default class DoraemonCanvas {
     this.#drawingCanvas.redo();
   }
 
+  /** Clears all drawing on both real and draft canvas. */
+  clearCanvas() {
+    // This calls the destructor to clear cache waiting to be applied to canvas
+    // @ts-ignore
+    this.setPaintFunction(this.getPaintFunction().constructor);
+    this.#drawingCanvas.clearAll();
+    this.#drawingCanvas.writeUndo();
+  }
+
   /**
    * Resizes canvas to fit parent's size. The purpose is to increase performance
    * and reduce lag by removing the need to adjust MouseEvent coordinate by a

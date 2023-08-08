@@ -7,5 +7,6 @@ export {
   DrawingBezierCurve,
   DrawingPolygon,
   DrawingText,
+  Eraser,
   SelectMove,
 } from "../paint-functions/paint-functions.js";
