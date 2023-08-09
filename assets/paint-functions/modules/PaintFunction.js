@@ -54,7 +54,7 @@ export default class PaintFunction {
     this.strokeStyle = this.contextReal.strokeStyle;
     this.lineWidth = this.contextReal.lineWidth;
     const { svgWidth, halfSvgWidth, radius } = this.#cursorVars();
-    const svgStr = `<svg width="${svgWidth}" height="${svgWidth}" viewBox="0 0 ${svgWidth} ${svgWidth}" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="${halfSvgWidth}" cy="${halfSvgWidth}" r="${radius}" fill="${this.strokeStyle}"/><path d="M ${halfSvgWidth} 0 V ${svgWidth} M 0 ${halfSvgWidth} H ${svgWidth}" stroke="black" stroke-width="1"/></svg>`;
+    const svgStr = `<svg width="${svgWidth}" height="${svgWidth}" viewBox="0 0 ${svgWidth} ${svgWidth}" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="${halfSvgWidth}" cy="${halfSvgWidth}" r="${radius}" fill="${this.strokeStyle}"/><path d="M ${halfSvgWidth} 0 V ${svgWidth} M 0 ${halfSvgWidth} H ${svgWidth}" stroke="#333" stroke-width="1"/></svg>`;
     return `url(${this.#svgUrl(svgStr)}) ${halfSvgWidth} ${halfSvgWidth}, auto`;
   }
 
@@ -64,7 +64,7 @@ export default class PaintFunction {
     this.lineWidth = this.contextReal.lineWidth;
     const { svgWidth, halfSvgWidth, fillRadius, strokeWidth } =
       this.#cursorVars();
-    const svgStr = `<svg width="${svgWidth}" height="${svgWidth}" viewBox="0 0 ${svgWidth} ${svgWidth}" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="${halfSvgWidth}" cy="${halfSvgWidth}" r="${fillRadius}" stroke="${this.strokeStyle}" fill="${this.fillStyle}" stroke-width="${strokeWidth}"/><path d="M ${halfSvgWidth} 0 V ${svgWidth} M 0 ${halfSvgWidth} H ${svgWidth}" stroke="black" stroke-width="1"/></svg>`;
+    const svgStr = `<svg width="${svgWidth}" height="${svgWidth}" viewBox="0 0 ${svgWidth} ${svgWidth}" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="${halfSvgWidth}" cy="${halfSvgWidth}" r="${fillRadius}" stroke="${this.strokeStyle}" fill="${this.fillStyle}" stroke-width="${strokeWidth}"/><path d="M ${halfSvgWidth} 0 V ${svgWidth} M 0 ${halfSvgWidth} H ${svgWidth}" stroke="#333" stroke-width="1"/></svg>`;
     return `url(${this.#svgUrl(svgStr)}) ${halfSvgWidth} ${halfSvgWidth}, auto`;
   }
 

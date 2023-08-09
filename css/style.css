@@ -6,6 +6,7 @@
   --tools-btn-border: 1px solid rgb(170, 170, 170);
   --tools-btn-border-radius: 8px;
   font-size: 16px;
+  overflow: hidden;
 }
 
 /**************************/
@@ -31,21 +32,23 @@ body {
 /******************************************************************************/
 
 .tools {
-  --tools-padding: 10px;
+  --margin: 10px;
+  --padding: 10px;
   --tools-btn-gap: 5px;
 
   box-sizing: border-box;
   width: calc(
-    2 * var(--tools-btn-width) + var(--tools-btn-gap) +
-      (2 * var(--tools-padding))
+    2 * var(--tools-btn-width) + var(--tools-btn-gap) + (2 * var(--padding))
   );
   height: fit-content;
+  max-height: calc(100% - 2 * var(--margin));
+  max-width: calc(100% - 2 * var(--margin));
   resize: horizontal;
 
   z-index: 1;
   grid-area: stack;
-  padding: var(--tools-padding);
-  margin: 10px;
+  padding: var(--padding);
+  margin: var(--margin);
   border-radius: 10px;
 
   container-type: inline-size;
@@ -68,6 +71,7 @@ body {
   justify-content: center;
   align-items: flex-start;
   align-content: flex-start;
+  gap: var(--tools-btn-gap);
 }
 
 .tool-with-title {
@@ -127,8 +131,11 @@ body {
 /*        Setting tools        */
 /*******************************/
 
-.tools-settings {
-  width: fit-content;
+.tools-settings .tool-with-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .tools-settings input[type="number"] {
@@ -179,12 +186,33 @@ body {
     container-type: normal;
     width: fit-content;
   }
-  .tools-title {
-    writing-mode: vertical-lr;
+  .color-selectors .tools-title {
+    writing-mode: vertical-rl;
     width: auto;
   }
   .tool-with-title {
+    height: var(--tools-btn-width);
     flex-wrap: nowrap;
+  }
+}
+
+/*******************************************************/
+/*                    Media Queries                    */
+/*******************************************************/
+
+@media (width < 400px) or (height < 400px) {
+  :root {
+    --tools-btn-width: 35px;
+  }
+}
+
+@media (width < 620px) and (orientation: portrait) {
+  .tools {
+    width: 94%;
+    height: calc(
+      var(--tools-btn-width) + var(--padding) + var(--tools-btn-gap)
+    );
+    resize: vertical;
   }
 }
 

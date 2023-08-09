@@ -29,6 +29,8 @@ export default class DoraemonCanvas {
       canvasHeight: height,
       // @ts-ignore
       lineWidth: document.querySelector(".canvas-line-width").value,
+      strokeStyle: document.querySelector(".color-selector-stroke"),
+      fillstyle: document.querySelector(".color-selector-fill"),
     });
 
     if (options.replace) {
