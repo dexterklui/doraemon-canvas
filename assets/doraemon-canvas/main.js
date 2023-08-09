@@ -92,18 +92,15 @@ doraemon.div.id = "canvas-app";
 /*        canvas tools        */
 /******************************/
 const tools = document.querySelector(".tools");
+
 tools.addEventListener("click", (e) => {
   /** @type {HTMLElement} target */ // @ts-ignore
   const target = e.target;
+  const parent = target.parentElement;
   /** @type {HTMLInputElement} polygonNumSidesInput */
   const polygonNumSidesInput = tools.querySelector(".polygon-num-sides");
   const polygonNumSidesSetting = polygonNumSidesInput.parentElement;
-  // const drawingTextBtn = tools.querySelector("#drawing-text");
-  // if (target.id === "drawing-text") {
-  //   drawingTextBtn.textContent = "Font style";
-  // } else {
-  //   drawingTextBtn.textContent = "Input Text";
-  // }
+  if (target === tools) return;
   if (
     target.closest(".tool-btn")?.id === "drawing-regular-polygon" ||
     target.classList.contains("polygon-num-sides")
@@ -113,7 +110,14 @@ tools.addEventListener("click", (e) => {
   } else {
     polygonNumSidesSetting.classList.add("hidden");
   }
+  if (parent.classList.contains("tool-btn")) {
+    tools
+      .querySelector(".tool-btn--active")
+      ?.classList.remove("tool-btn--active");
+    parent.classList.add("tool-btn--active");
+  }
 });
+
 tools.querySelector("#eraser").addEventListener("click", () => {
   doraemon.setPaintFunction(Eraser);
 });

@@ -13,99 +13,93 @@
   <body>
     <div id="canvas-app"></div>
     <div class="tools">
-      <div class="tools-section draw-tools">
-        <div class="tool-btn" id="drawing-circle">
-          <img src="./assets/icons/icon_circle.png" alt="circle" />
-        </div>
-        <div class="tool-btn" id="drawing-ellipse">
-          <img src="./assets/icons/icon_ellipse.png" alt="ellipse" />
-        </div>
-        <div class="tool-btn" id="drawing-rectangle">
-          <img src="./assets/icons/icon_rectangle.png" alt="rectangle" />
-        </div>
-        <div class="tool-btn" id="drawing-quadratic-curve">
-          <img src="./assets/icons/icon_quadratic.png" alt="quad curve" />
-        </div>
-        <div class="tool-btn" id="drawing-bezier-curve">
-          <img src="./assets/icons/icon_bezier.png" alt="cubic curve" />
-        </div>
-        <div class="tool-btn" id="drawing-regular-polygon">
-          <img
-            src="./assets/icons/icon_regular-polygon.png"
-            alt="regular polygon"
-          />
-        </div>
-        <div class="tool-btn" id="drawing-irregular-polygon">
-          <img src="./assets/icons/icon_polygon.png" alt="polygon" />
-        </div>
-        <div class="tool-btn" id="drawing-line">
-          <img src="./assets/icons/icon_free-draw.png" alt="pen" />
-        </div>
-        <div class="tool-btn" id="drawing-straight-line">
-          <img src="./assets/icons/icon_line.png" alt="straight line" />
-        </div>
-        <div class="tool-btn" id="drawing-text">
-          <img src="./assets/icons/icon_text.png" alt="text" />
-        </div>
-        <div class="tool-btn" id="select-move">
-          <img src="./assets/icons/icon_move.png" alt="move rect" />
-        </div>
-        <div class="tool-btn" id="zoom-canvas">
-          <img src="./assets/icons/icon_zoom.png" alt="zoom" />
-        </div>
-        <div class="tool-btn" id="eraser">
-          <img src="./assets/icons/icon_eraser.png" alt="eraser" />
-        </div>
-        <div class="tool-btn" id="clear-canvas">
-          <img src="./assets/icons/icon_clear.png" alt="clear" />
-        </div>
-        <div class="tool-btn" id="add-image">
-          <img src="./assets/icons/icon_add-image.png" alt="image" />
-        </div>
+      <div class="tool-btn" id="drawing-circle">
+        <img src="./assets/icons/icon_circle.png" alt="circle" />
       </div>
-      <div class="tools-section tools-settings">
-        <div class="tool-with-title hidden">
-          <p class="tools-title">Side</p>
-          <input
-            type="number"
-            value="3"
-            name="polygon-num-sides"
-            class="polygon-num-sides"
-            min="3"
-            max="99"
-          />
-        </div>
-        <div class="tool-with-title">
-          <p class="tools-title">Line Width</p>
-          <input
-            class="canvas-line-width"
-            type="number"
-            max="99"
-            min="1"
-            name="canvas-line-width"
-            value="6"
-          />
-        </div>
+      <div class="tool-btn" id="drawing-ellipse">
+        <img src="./assets/icons/icon_ellipse.png" alt="ellipse" />
       </div>
-      <div class="tools-section color-selectors">
-        <div class="tool-with-title">
-          <p class="tools-title">Stroke</p>
-          <input
-            class="color-selector color-selector-stroke"
-            type="text"
-            data-coloris
-            value="#ed8a8a"
-          />
-        </div>
-        <div class="tool-with-title">
-          <p class="tools-title">Fill</p>
-          <input
-            class="color-selector color-selector-fill"
-            type="text"
-            data-coloris
-            value="#6ac7fc"
-          />
-        </div>
+      <div class="tool-btn" id="drawing-rectangle">
+        <img src="./assets/icons/icon_rectangle.png" alt="rectangle" />
+      </div>
+      <div class="tool-btn" id="drawing-quadratic-curve">
+        <img src="./assets/icons/icon_quadratic.png" alt="quad curve" />
+      </div>
+      <div class="tool-btn" id="drawing-bezier-curve">
+        <img src="./assets/icons/icon_bezier.png" alt="cubic curve" />
+      </div>
+      <div class="tool-btn" id="drawing-regular-polygon">
+        <img
+          src="./assets/icons/icon_regular-polygon.png"
+          alt="regular polygon"
+        />
+      </div>
+      <div class="tool-btn" id="drawing-irregular-polygon">
+        <img src="./assets/icons/icon_polygon.png" alt="polygon" />
+      </div>
+      <div class="tool-btn" id="drawing-line">
+        <img src="./assets/icons/icon_free-draw.png" alt="pen" />
+      </div>
+      <div class="tool-btn" id="drawing-straight-line">
+        <img src="./assets/icons/icon_line.png" alt="straight line" />
+      </div>
+      <div class="tool-btn" id="drawing-text">
+        <img src="./assets/icons/icon_text.png" alt="text" />
+      </div>
+      <div class="tool-btn" id="select-move">
+        <img src="./assets/icons/icon_move.png" alt="move rect" />
+      </div>
+      <div class="tool-btn" id="zoom-canvas">
+        <img src="./assets/icons/icon_zoom.png" alt="zoom" />
+      </div>
+      <div class="tool-btn" id="eraser">
+        <img src="./assets/icons/icon_eraser.png" alt="eraser" />
+      </div>
+      <div class="tool-btn" id="clear-canvas">
+        <img src="./assets/icons/icon_clear.png" alt="clear" />
+      </div>
+      <div class="tool-btn" id="add-image">
+        <img src="./assets/icons/icon_add-image.png" alt="image" />
+      </div>
+      <div class="tool-with-title canvas-setting hidden">
+        <p class="tools-title">Side</p>
+        <input
+          type="number"
+          value="3"
+          name="polygon-num-sides"
+          class="polygon-num-sides"
+          min="3"
+          max="99"
+        />
+      </div>
+      <div class="tool-with-title canvas-setting">
+        <p class="tools-title">Line Width</p>
+        <input
+          class="canvas-line-width"
+          type="number"
+          max="99"
+          min="1"
+          name="canvas-line-width"
+          value="6"
+        />
+      </div>
+      <div class="tool-with-title color-selector">
+        <p class="tools-title">Stroke</p>
+        <input
+          class="color-selector color-selector-stroke"
+          type="text"
+          data-coloris
+          value="#ed8a8a"
+        />
+      </div>
+      <div class="tool-with-title color-selector">
+        <p class="tools-title">Fill</p>
+        <input
+          class="color-selector color-selector-fill"
+          type="text"
+          data-coloris
+          value="#6ac7fc"
+        />
       </div>
     </div>
   </body>

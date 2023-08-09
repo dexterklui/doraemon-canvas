@@ -1,10 +1,12 @@
 /***************************/
 /*        variables        */
 /***************************/
+
 :root {
-  --tools-btn-width: 45px;
-  --tools-btn-border: 1px solid rgb(170, 170, 170);
-  --tools-btn-border-radius: 8px;
+  --tool-btn-width: 45px;
+  --tool-btn-border: 1px solid rgb(170, 170, 170);
+  --tool-btn-border-radius: 8px;
+  --tool-btn-gap: 5px;
   font-size: 16px;
   overflow: hidden;
 }
@@ -12,6 +14,7 @@
 /**************************/
 /*        elements        */
 /**************************/
+
 body {
   height: 100vh;
   height: 100dvh;
@@ -22,6 +25,7 @@ body {
   display: grid;
   grid-template-areas: "stack";
 }
+
 #canvas-app {
   grid-area: stack;
   justify-self: center;
@@ -34,11 +38,10 @@ body {
 .tools {
   --margin: 10px;
   --padding: 10px;
-  --tools-btn-gap: 5px;
 
   box-sizing: border-box;
   width: calc(
-    2 * var(--tools-btn-width) + var(--tools-btn-gap) + (2 * var(--padding))
+    2 * var(--tool-btn-width) + var(--tool-btn-gap) + (2 * var(--padding))
   );
   height: fit-content;
   max-height: calc(100% - 2 * var(--margin));
@@ -59,7 +62,7 @@ body {
   align-items: flex-start;
   align-content: flex-start;
   overflow: auto;
-  gap: var(--tools-btn-gap);
+  gap: var(--tool-btn-gap);
 
   background-color: white;
   box-shadow: 0 0 6px 6px rgba(0, 51, 92, 0.2);
@@ -71,7 +74,7 @@ body {
   justify-content: center;
   align-items: flex-start;
   align-content: flex-start;
-  gap: var(--tools-btn-gap);
+  gap: var(--tool-btn-gap);
 }
 
 .tool-with-title {
@@ -86,7 +89,7 @@ body {
   color: #007fff;
   margin: 0px;
   width: 100%;
-  max-width: calc(2 * var(--tools-btn-width));
+  max-width: calc(2 * var(--tool-btn-width));
   text-align: center;
 }
 
@@ -94,21 +97,12 @@ body {
 /*        Tool buttons        */
 /******************************/
 
-.draw-tools {
-  width: 100%;
-  height: fit-content;
-  container-type: inline-size;
-  container-name: draw-tools;
-  gap: var(--tools-btn-gap);
-}
-
 .tool-btn {
   box-sizing: border-box;
-  width: var(--tools-btn-width);
-  height: var(--tools-btn-width);
-  border: var(--tools-btn-border);
-  border-radius: var(--tools-btn-border-radius);
-  overflow: hidden;
+  width: var(--tool-btn-width);
+  height: var(--tool-btn-width);
+  border: var(--tool-btn-border);
+  border-radius: var(--tool-btn-border-radius);
   background-color: white;
 }
 
@@ -117,7 +111,6 @@ body {
 }
 
 .tool-btn:active {
-  /* background-color: #007FFF; */
   background-color: rgb(119, 199, 253);
 }
 
@@ -131,14 +124,12 @@ body {
 /*        Setting tools        */
 /*******************************/
 
-.tools-settings .tool-with-title {
-  display: flex;
+.canvas-setting {
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
-.tools-settings input[type="number"] {
+.tools input[type="number"] {
   width: 3em;
 }
 
@@ -147,52 +138,67 @@ body {
 /******************************/
 
 .clr-field {
-  min-width: var(--tools-btn-width);
+  min-width: var(--tool-btn-width);
   width: 100%;
-  max-width: calc(2 * var(--tools-btn-width));
+  max-width: calc(2 * var(--tool-btn-width));
 }
+
 .clr-field button,
 .clr-field input {
-  height: var(--tools-btn-width);
+  box-sizing: border-box;
   width: 100%;
-  max-width: calc(2 * var(--tools-btn-width));
-  border: var(--tools-btn-border);
-  border-radius: var(--tools-btn-border-radius);
+  max-width: calc(2 * var(--tool-btn-width));
+  height: var(--tool-btn-width);
   padding: 0;
+  border-radius: var(--tool-btn-border-radius);
   border: none;
+}
+
+.clr-field button {
+  border: var(--tool-btn-border);
 }
 
 /*****************************/
 /*        Tool @rules        */
 /*****************************/
 
-@container draw-tools (width < calc(3 * 45px + 2 * 5px)) {
-  .tool-btn:nth-child(odd):is(:last-child) {
-    width: calc(2 * var(--tools-btn-width) + var(--tools-btn-gap));
+/* in two-column layout, the last child botton fill up whole width if it is the
+ * only button on the row. var() doesn't work, so use 45 px as button width and
+ * 5px as gap size */
+@container tools (width < calc(3 * 45px + 2 * 5px)) {
+  .tool-btn:nth-child(15) {
+    width: calc(2 * var(--tool-btn-width) + var(--tool-btn-gap));
   }
 }
+
+/** in one-column layout, reduce the height of buttons */
 @container tools (width < calc(2 * 45px + 5px)) {
   .tool-btn,
   .clr-field button,
   .clr-field input {
     max-height: 35px;
   }
-  .tool-btn:nth-child(odd):is(:last-child) {
-    width: var(--tools-btn-width);
+
+  .tool-btn {
+    max-width: 45px;
   }
 }
+
+/** when tool panel is wide (and short) */
 @container tools (width >= calc(7 * 45px + 6 * 5px)) {
-  .draw-tools {
-    container-type: normal;
-    width: fit-content;
-  }
-  .color-selectors .tools-title {
-    writing-mode: vertical-rl;
-    width: auto;
-  }
   .tool-with-title {
-    height: var(--tools-btn-width);
+    height: var(--tool-btn-width);
     flex-wrap: nowrap;
+  }
+
+  .color-selector .tools-title {
+    writing-mode: vertical-rl;
+    width: 1rem;
+  }
+
+  .clr-field button,
+  .clr-field input {
+    max-width: var(--tool-btn-width);
   }
 }
 
@@ -202,17 +208,15 @@ body {
 
 @media (width < 400px) or (height < 400px) {
   :root {
-    --tools-btn-width: 35px;
+    --tool-btn-width: 35px;
   }
 }
 
 @media (width < 620px) and (orientation: portrait) {
   .tools {
     width: 94%;
-    height: calc(
-      var(--tools-btn-width) + var(--padding) + var(--tools-btn-gap)
-    );
-    resize: vertical;
+    height: calc(var(--tool-btn-width) + var(--padding) + var(--tool-btn-gap));
+    resize: both;
   }
 }
 
@@ -222,4 +226,8 @@ body {
 
 .hidden {
   display: none !important;
+}
+
+.tool-btn--active * {
+  background-color: #b3e3ff;
 }
