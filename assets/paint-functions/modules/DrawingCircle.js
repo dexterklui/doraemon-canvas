@@ -18,6 +18,7 @@ export default class DrawingCircle extends PaintFunction {
     );
     this.contextDraft.beginPath();
     this.contextDraft.arc(this.origX, this.origY, radius, 0, 2 * Math.PI);
+    this.contextDraft.fill();
     this.contextDraft.stroke();
   }
 
@@ -29,6 +30,7 @@ export default class DrawingCircle extends PaintFunction {
     );
     this.contextReal.beginPath();
     this.contextReal.arc(this.origX, this.origY, radius, 0, 2 * Math.PI);
+    this.contextReal.fill();
     this.contextReal.stroke();
     this.writeUndoCb();
   }

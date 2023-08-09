@@ -8,14 +8,6 @@
   font-size: 16px;
 }
 
-/*******************************/
-/*        general class        */
-/*******************************/
-
-.hidden {
-  display: none;
-}
-
 /**************************/
 /*        elements        */
 /**************************/
@@ -139,7 +131,7 @@ body {
   width: fit-content;
 }
 
-.polygon-num-sides {
+.tools-settings input[type="number"] {
   width: 3em;
 }
 
@@ -194,4 +186,12 @@ body {
   .tool-with-title {
     flex-wrap: nowrap;
   }
+}
+
+/******************************/
+/*        active class        */
+/******************************/
+
+.hidden {
+  display: none;
 }

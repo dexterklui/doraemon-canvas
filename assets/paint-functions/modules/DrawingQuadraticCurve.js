@@ -13,6 +13,17 @@ function quadraticCurve(ctx, cp, start, end) {
  * @extends {PaintFunction}
  */
 export default class DrawingQuadraticCurve extends PaintFunction {
+  /**
+   * @param {CanvasRenderingContext2D} contextReal
+   * @param {CanvasRenderingContext2D} contextDraft
+   * @param {Function} [writeUndoCb]
+   */
+  constructor(contextReal, contextDraft, writeUndoCb) {
+    super(contextReal, contextDraft, writeUndoCb);
+    this.cursorStyle = "stroke";
+    this.updateCursor();
+  }
+
   onMouseDown(coord) {
     if (this.start == null) {
       this.start = coord;
@@ -20,13 +31,13 @@ export default class DrawingQuadraticCurve extends PaintFunction {
     }
     if (this.end == null) {
       this.end = coord;
-      this.contextDraft.canvas.style.cursor = "default";
+      this.contextDraft.canvas.style.cursor = "crosshair";
       return;
     }
     this.clearDraft();
     quadraticCurve(this.contextReal, coord, this.start, this.end);
     this.writeUndoCb();
-    this.contextDraft.canvas.style.cursor = "crosshair";
+    this.updateCursor();
     this.start = null;
     this.end = null;
   }

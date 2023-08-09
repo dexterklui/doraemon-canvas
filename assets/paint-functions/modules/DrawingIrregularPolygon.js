@@ -12,16 +12,18 @@ export default class DrawingIrregularPolygon extends PaintFunction {
    */
   constructor(contextReal, contextDraft, writeUndoCb) {
     super(contextReal, contextDraft, writeUndoCb);
+    this.cursorStyle = "strokeFill";
+    this.updateCursor();
     this.coords = [];
   }
 
   onMouseDown(coord) {
-    if (this.coords.length && this.distance(this.coords[0], coord) < 10) {
+    if (this.coords.length && this.distance(this.coords[0], coord) < 16) {
       this.clearDraft();
       this.drawPartialPolygon(this.contextReal);
       this.contextReal.closePath();
-      this.contextReal.stroke();
       this.contextReal.fill();
+      this.contextReal.stroke();
       this.writeUndoCb();
       this.coords = [];
       return;
@@ -36,6 +38,7 @@ export default class DrawingIrregularPolygon extends PaintFunction {
     this.drawPartialPolygon(this.contextDraft);
     this.contextDraft.lineTo(coord[0], coord[1]);
     this.contextDraft.stroke();
+    this.markOrigPoint();
   }
 
   /**
@@ -48,6 +51,18 @@ export default class DrawingIrregularPolygon extends PaintFunction {
     for (let i = 1; i < coords.length; ++i) {
       context.lineTo(coords[i][0], coords[i][1]);
     }
+  }
+
+  markOrigPoint() {
+    this.contextDraft.save();
+    this.contextDraft.strokeStyle = "black";
+    this.contextDraft.fillStyle = "white";
+    this.contextDraft.lineWidth = 4;
+    this.contextDraft.beginPath(); // @ts-ignore
+    this.contextDraft.arc(...this.coords[0], 8, 0, 2 * Math.PI);
+    this.contextDraft.stroke();
+    this.contextDraft.fill();
+    this.contextDraft.restore();
   }
 
   distance(coord1, coord2) {

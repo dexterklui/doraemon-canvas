@@ -16,6 +16,7 @@ export default class DrawingEllipse extends PaintFunction {
     let h = Math.abs(coord[1] - this.origY);
     this.contextDraft.beginPath();
     this.contextDraft.ellipse(this.origX, this.origY, w, h, 0, 0, 2 * Math.PI);
+    this.contextDraft.fill();
     this.contextDraft.stroke();
   }
 
@@ -25,6 +26,7 @@ export default class DrawingEllipse extends PaintFunction {
     let h = Math.abs(coord[1] - this.origY);
     this.contextReal.beginPath();
     this.contextReal.ellipse(this.origX, this.origY, w, h, 0, 0, 2 * Math.PI);
+    this.contextReal.fill();
     this.contextReal.stroke();
     this.writeUndoCb();
   }

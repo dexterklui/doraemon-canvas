@@ -1,6 +1,18 @@
 import PaintFunction from "./PaintFunction.js";
 
 /**
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {number} x
+ * @param {number} y
+ * @param {number} w
+ * @param {number} h
+ */
+function drawRect(ctx, x, y, w, h) {
+  ctx.fillRect(x, y, w, h);
+  ctx.strokeRect(x, y, w, h);
+}
+
+/**
  * Functionality to draw a filled rectangle.
  * @extends PaintFunction
  */
@@ -14,7 +26,8 @@ export default class DrawingRectangle extends PaintFunction {
   /** @param {[number, number]} coord */
   onDragging(coord) {
     this.clearDraft();
-    this.contextDraft.fillRect(
+    drawRect(
+      this.contextDraft,
       this.origX,
       this.origY,
       coord[0] - this.origX,
@@ -25,7 +38,8 @@ export default class DrawingRectangle extends PaintFunction {
   /** @param {[number, number]} coord */
   onMouseUp(coord) {
     this.clearDraft();
-    this.contextReal.fillRect(
+    drawRect(
+      this.contextReal,
       this.origX,
       this.origY,
       coord[0] - this.origX,

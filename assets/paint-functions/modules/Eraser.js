@@ -7,7 +7,7 @@ import PaintFunction from "./PaintFunction.js";
 export default class Eraser extends PaintFunction {
   constructor(contextReal, contextDraft, writeUndoCb) {
     super(contextReal, contextDraft, writeUndoCb);
-    this.#setCursor();
+    this.updateCursor();
     this.contextReal.globalCompositeOperation = "destination-out";
   }
 
@@ -19,8 +19,6 @@ export default class Eraser extends PaintFunction {
   /** @param {[number, number]} coord */
   onMouseDown(coord) {
     this.draggingFlag = true;
-    this.contextReal.lineJoin = "round";
-    this.contextReal.lineWidth = 5;
     this.contextReal.beginPath();
     this.contextReal.moveTo(coord[0], coord[1]);
   }
@@ -35,10 +33,6 @@ export default class Eraser extends PaintFunction {
     this.writeUndoCb();
   }
 
-  onMouseEnter() {
-    this.#setCursor();
-  }
-
   /**
    * @param {number} x
    * @param {number} y
@@ -48,11 +42,16 @@ export default class Eraser extends PaintFunction {
     this.contextReal.stroke();
   }
 
-  #setCursor() {
-    if (this.lineWidth === this.contextReal.lineWidth) return;
+  updateCursor() {
     this.lineWidth = this.contextReal.lineWidth;
     const radius = this.lineWidth / 2;
-    const svgStr = `<svg width="${this.lineWidth}" height="${this.lineWidth}" viewBox="0 0 ${this.lineWidth} ${this.lineWidth}" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="${radius}" cy="${radius}" r="${radius}" fill="white" stroke="black"/></svg>`;
+    const svgStr = `<svg width="${this.lineWidth}" height="${
+      this.lineWidth
+    }" viewBox="0 0 ${this.lineWidth} ${
+      this.lineWidth
+    }" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="${radius}" cy="${radius}" r="${
+      radius - 2
+    }" fill="white" stroke="black"/></svg>`;
     const blob = new Blob([svgStr], { type: "image/svg+xml" });
     const url = URL.createObjectURL(blob);
     this.contextDraft.canvas.style.cursor = `url(${url}) ${radius} ${radius}, auto`;

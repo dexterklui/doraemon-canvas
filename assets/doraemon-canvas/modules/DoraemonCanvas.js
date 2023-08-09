@@ -27,6 +27,8 @@ export default class DoraemonCanvas {
     this.#drawingCanvas = new DrawingCanvas(doraFace, {
       canvasWidth: width,
       canvasHeight: height,
+      // @ts-ignore
+      lineWidth: document.querySelector(".canvas-line-width").value,
     });
 
     if (options.replace) {
@@ -122,7 +124,7 @@ export default class DoraemonCanvas {
    * @param {string} color
    */
   setStrokeStyle(color) {
-    this.#drawingCanvas.setStrokeStyle(color);
+    this.setCanvasProperties({ strokeStyle: color });
   }
 
   /**
@@ -130,7 +132,7 @@ export default class DoraemonCanvas {
    * @param {string} color
    */
   setFillStyle(color) {
-    this.#drawingCanvas.setFillStyle(color);
+    this.setCanvasProperties({ fillStyle: color });
   }
 
   /**
@@ -139,7 +141,26 @@ export default class DoraemonCanvas {
    * @param {string} [family="arial"] - font family
    */
   setFontStyle(size = 22, family = "arial") {
-    this.#drawingCanvas.setFontStyle(size, family);
+    this.setCanvasProperties({ font: `${size}px ${family}` });
+  }
+
+  /**
+   * Sets certain property values for both real and draft canvas.
+   * @param {Object} options - Storing key-value pairs of supported properties
+   * @see {@link DrawingCanvas}
+   */
+  setCanvasProperties(options) {
+    this.#drawingCanvas.setCanvasProperties(options);
+    this.getPaintFunction()?.updateCursor();
+  }
+
+  /**
+   * Gets centain property values for only real canvas.
+   * @returns {Object.<string,any>}
+   * @see {@link DrawingCanvas}
+   */
+  getCanvasProperties() {
+    return this.#drawingCanvas.getCanvasProperties();
   }
 
   /** Undo previous draw operation */

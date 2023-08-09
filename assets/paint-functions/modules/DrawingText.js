@@ -7,7 +7,8 @@ import PaintFunction from "./PaintFunction.js";
 export default class DrawingText extends PaintFunction {
   constructor(contextReal, contextDraft, writeUndoCb) {
     super(contextReal, contextDraft, writeUndoCb);
-    this.contextDraft.canvas.style.cursor = "text";
+    this.cursorStyle = "text";
+    this.updateCursor();
   }
 
   onMouseDown(coord, event) {

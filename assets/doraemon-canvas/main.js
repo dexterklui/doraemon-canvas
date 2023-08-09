@@ -61,6 +61,14 @@ function polygonNumSidesHandler(e) {
   currentPaintFunction.numSides = value;
 }
 
+function lineWidthHandler(e) {
+  /** @type {HTMLInputElement} target */ // @ts-ignore
+  const target = e.target;
+  const value = parseInt(target.value);
+  if (isNaN(value) || value < 1 || value > 99) return;
+  doraemon.setCanvasProperties({ lineWidth: value });
+}
+
 /** Use values in color selectors to update stroke and fill color */
 function updateColor() {
   // @ts-ignore
@@ -89,6 +97,7 @@ tools.addEventListener("click", (e) => {
   const target = e.target;
   /** @type {HTMLInputElement} polygonNumSidesInput */
   const polygonNumSidesInput = tools.querySelector(".polygon-num-sides");
+  const polygonNumSidesSetting = polygonNumSidesInput.parentElement;
   // const drawingTextBtn = tools.querySelector("#drawing-text");
   // if (target.id === "drawing-text") {
   //   drawingTextBtn.textContent = "Font style";
@@ -99,10 +108,10 @@ tools.addEventListener("click", (e) => {
     target.closest(".tool-btn")?.id === "drawing-regular-polygon" ||
     target.classList.contains("polygon-num-sides")
   ) {
-    polygonNumSidesInput.classList.remove("hidden");
+    polygonNumSidesSetting.classList.remove("hidden");
     polygonNumSidesInput.focus();
   } else {
-    polygonNumSidesInput.classList.add("hidden");
+    polygonNumSidesSetting.classList.add("hidden");
   }
 });
 tools.querySelector("#eraser").addEventListener("click", () => {
@@ -175,6 +184,9 @@ document.querySelector("#clear-canvas").addEventListener("click", () => {
 document.querySelector(".dora-pocket").addEventListener("click", () => {
   window.open(doraemon.dataUrl, "_blank");
 });
+const canvasLineWidthInput = document.querySelector(".canvas-line-width");
+canvasLineWidthInput.addEventListener("blur", lineWidthHandler);
+canvasLineWidthInput.addEventListener("change", lineWidthHandler);
 
 /*********************************/
 /*        Keypress events        */
