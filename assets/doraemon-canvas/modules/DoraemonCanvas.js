@@ -196,7 +196,8 @@ export default class DoraemonCanvas {
     }
     const doraFace = this.#div.querySelector(".dora-face");
     const { width, height } = doraFace.getBoundingClientRect();
-    this.#drawingCanvas.resizeCanvas(2 * width, 2 * height);
+    const scale = parseInt(this.#ZOOM_HEIGHT.replace(/%$/, "")) / 100;
+    this.#drawingCanvas.resizeCanvas(scale * width, scale * height);
   }
 
   /********************************************************/
