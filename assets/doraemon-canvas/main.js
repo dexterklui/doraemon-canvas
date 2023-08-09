@@ -83,21 +83,20 @@ doraemon.div.id = "canvas-app";
 /******************************/
 /*        canvas tools        */
 /******************************/
-const buttons = document.querySelector(".buttons");
-buttons.addEventListener("click", (e) => {
+const tools = document.querySelector(".tools");
+tools.addEventListener("click", (e) => {
   /** @type {HTMLElement} target */ // @ts-ignore
   const target = e.target;
-  const drawingTextBtn = buttons.querySelector("#drawing-text");
   /** @type {HTMLInputElement} polygonNumSidesInput */
-  const polygonNumSidesInput = buttons.querySelector(".polygon-num-sides");
-  if (!target.classList.contains("btn")) return;
-  if (target.id === "drawing-text") {
-    drawingTextBtn.textContent = "Font style";
-  } else {
-    drawingTextBtn.textContent = "Input Text";
-  }
+  const polygonNumSidesInput = tools.querySelector(".polygon-num-sides");
+  // const drawingTextBtn = tools.querySelector("#drawing-text");
+  // if (target.id === "drawing-text") {
+  //   drawingTextBtn.textContent = "Font style";
+  // } else {
+  //   drawingTextBtn.textContent = "Input Text";
+  // }
   if (
-    target.id === "drawing-regular-polygon" ||
+    target.closest(".tool-btn")?.id === "drawing-regular-polygon" ||
     target.classList.contains("polygon-num-sides")
   ) {
     polygonNumSidesInput.classList.remove("hidden");
@@ -106,54 +105,52 @@ buttons.addEventListener("click", (e) => {
     polygonNumSidesInput.classList.add("hidden");
   }
 });
-buttons.querySelector("#eraser").addEventListener("click", () => {
+tools.querySelector("#eraser").addEventListener("click", () => {
   doraemon.setPaintFunction(Eraser);
 });
-buttons.querySelector("#drawing-rectangle").addEventListener("click", () => {
+tools.querySelector("#drawing-rectangle").addEventListener("click", () => {
   doraemon.setPaintFunction(DrawingRectangle);
 });
-buttons.querySelector("#drawing-line").addEventListener("click", () => {
+tools.querySelector("#drawing-line").addEventListener("click", () => {
   doraemon.setPaintFunction(DrawingLine);
 });
-buttons
-  .querySelector("#drawing-straight-line")
-  .addEventListener("click", () => {
-    doraemon.setPaintFunction(DrawingStraightLine);
-  });
-buttons
+tools.querySelector("#drawing-straight-line").addEventListener("click", () => {
+  doraemon.setPaintFunction(DrawingStraightLine);
+});
+tools
   .querySelector("#drawing-quadratic-curve")
   .addEventListener("click", () => {
     doraemon.setPaintFunction(DrawingQuadraticCurve);
   });
-buttons.querySelector("#drawing-bezier-curve").addEventListener("click", () => {
+tools.querySelector("#drawing-bezier-curve").addEventListener("click", () => {
   doraemon.setPaintFunction(DrawingBezierCurve);
 });
-buttons.querySelector("#drawing-circle").addEventListener("click", () => {
+tools.querySelector("#drawing-circle").addEventListener("click", () => {
   doraemon.setPaintFunction(DrawingCircle);
 });
-buttons.querySelector("#drawing-ellipse").addEventListener("click", () => {
+tools.querySelector("#drawing-ellipse").addEventListener("click", () => {
   doraemon.setPaintFunction(DrawingEllipse);
 });
-buttons
+tools
   .querySelector("#drawing-regular-polygon")
   .addEventListener("click", () => {
     doraemon.setPaintFunction(DrawingRegularPolygon);
   });
-buttons
+tools
   .querySelector(".polygon-num-sides")
   .addEventListener("blur", polygonNumSidesHandler);
-buttons
+tools
   .querySelector(".polygon-num-sides")
   .addEventListener("change", polygonNumSidesHandler);
-buttons
+tools
   .querySelector("#drawing-irregular-polygon")
   .addEventListener("click", () => {
     doraemon.setPaintFunction(DrawingIrregularPolygon);
   });
-buttons.querySelector("#drawing-text").addEventListener("click", (e) => {
+tools.querySelector("#drawing-text").addEventListener("click", (e) => {
   const currentPaintFunction = doraemon.getPaintFunction();
   if (currentPaintFunction instanceof DrawingText) {
-    if (buttons.querySelector("#font-style-panel")) return;
+    if (tools.querySelector("#font-style-panel")) return;
     const div = createFontStyleControl();
     div.style.position = "absolute";
     div.style.top = "3em";
@@ -162,11 +159,11 @@ buttons.querySelector("#drawing-text").addEventListener("click", (e) => {
   }
   doraemon.setPaintFunction(DrawingText);
 });
-buttons.querySelector("#select-move").addEventListener("click", () => {
+tools.querySelector("#select-move").addEventListener("click", () => {
   doraemon.setPaintFunction(SelectMove);
 });
 
-buttons.querySelector("#zoom-canvas").addEventListener("click", () => {
+tools.querySelector("#zoom-canvas").addEventListener("click", () => {
   doraemon.toggleZoom();
 });
 document.querySelector("#add-image").addEventListener("click", () => {

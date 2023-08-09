@@ -2,8 +2,9 @@
 /*        variables        */
 /***************************/
 :root {
-  --btn-height: 2.5rem;
-  --btn-width: 2.5rem;
+  --tools-btn-width: 45px;
+  --tools-btn-border: 1px solid rgb(170, 170, 170);
+  --tools-btn-border-radius: 8px;
   font-size: 16px;
 }
 
@@ -26,74 +27,171 @@ body {
   background: radial-gradient(white, var(--doraemon-canvas-color-primary));
   overflow: hidden;
   display: grid;
-  justify-items: center;
+  grid-template-areas: "stack";
 }
+#canvas-app {
+  grid-area: stack;
+  justify-self: center;
+}
+
+/******************************************************************************/
+/*                                 Tool Panel                                 */
+/******************************************************************************/
+
 .tools {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-.polygon-num-sides {
-  width: 3rem;
-}
+  --tools-padding: 10px;
+  --tools-btn-gap: 5px;
 
-input {
-  border: 1px solid rgb(170, 170, 170);
-  border-radius: 3px;
-}
+  box-sizing: border-box;
+  width: calc(
+    2 * var(--tools-btn-width) + var(--tools-btn-gap) +
+      (2 * var(--tools-padding))
+  );
+  height: fit-content;
+  resize: horizontal;
 
-.buttons {
-  position: absolute;
-  width: 110px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0px 0px 5px 5px rgba(0, 51, 92, 0.2);
-  padding: 10px;
+  z-index: 1;
+  grid-area: stack;
+  padding: var(--tools-padding);
   margin: 10px;
-}
+  border-radius: 10px;
 
-.btn {
-  background-color: white;
-  border: 1px solid rgb(170, 170, 170);
-  border-radius: 5px;
-  padding: 5px;
-  display: inline-flex;
+  container-type: inline-size;
+  container-name: tools;
+  display: flex;
   flex-wrap: wrap;
-  width: fit-content;
-  margin: 0px 0px 5px;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+  overflow: auto;
+  gap: var(--tools-btn-gap);
+
+  background-color: white;
+  box-shadow: 0 0 6px 6px rgba(0, 51, 92, 0.2);
 }
 
-.btn:hover {
+.tools-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.tool-with-title {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.tools-title {
+  font-size: small;
+  font-weight: 800;
+  color: #007fff;
+  margin: 0px;
+  width: 100%;
+  max-width: calc(2 * var(--tools-btn-width));
+  text-align: center;
+}
+
+/******************************/
+/*        Tool buttons        */
+/******************************/
+
+.draw-tools {
+  width: 100%;
+  height: fit-content;
+  container-type: inline-size;
+  container-name: draw-tools;
+  gap: var(--tools-btn-gap);
+}
+
+.tool-btn {
+  box-sizing: border-box;
+  width: var(--tools-btn-width);
+  height: var(--tools-btn-width);
+  border: var(--tools-btn-border);
+  border-radius: var(--tools-btn-border-radius);
+  overflow: hidden;
+  background-color: white;
+}
+
+.tool-btn:hover {
   background-color: rgb(209, 209, 209);
 }
 
-.btn:active {
+.tool-btn:active {
   /* background-color: #007FFF; */
   background-color: rgb(119, 199, 253);
 }
 
-/*********************************/
-/*        color-container        */
-/*********************************/
-.color-selectors {
-  display: flex;
-  flex-wrap: wrap;
+.tool-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: scale-down;
+}
+
+/*******************************/
+/*        Setting tools        */
+/*******************************/
+
+.tools-settings {
+  width: fit-content;
+}
+
+.polygon-num-sides {
+  width: 3em;
+}
+
+/******************************/
+/*        Colour tools        */
+/******************************/
+
+.clr-field {
+  min-width: var(--tools-btn-width);
+  width: 100%;
+  max-width: calc(2 * var(--tools-btn-width));
 }
 .clr-field button,
 .clr-field input {
-  height: var(--btn-height);
+  height: var(--tools-btn-width);
   width: 100%;
-  border-radius: 8px;
+  max-width: calc(2 * var(--tools-btn-width));
+  border: var(--tools-btn-border);
+  border-radius: var(--tools-btn-border-radius);
+  padding: 0;
+  border: none;
 }
-.title {
-  font-size: small;
-  font-weight: 800;
-  color: #007fff;
-  margin: 0px;
+
+/*****************************/
+/*        Tool @rules        */
+/*****************************/
+
+@container draw-tools (width < calc(3 * 45px + 2 * 5px)) {
+  .tool-btn:nth-child(odd):is(:last-child) {
+    width: calc(2 * var(--tools-btn-width) + var(--tools-btn-gap));
+  }
 }
-.title {
-  font-size: small;
-  font-weight: 800;
-  color: #007fff;
-  margin: 0px;
+@container tools (width < calc(2 * 45px + 5px)) {
+  .tool-btn,
+  .clr-field button,
+  .clr-field input {
+    max-height: 35px;
+  }
+  .tool-btn:nth-child(odd):is(:last-child) {
+    width: var(--tools-btn-width);
+  }
+}
+@container tools (width >= calc(7 * 45px + 6 * 5px)) {
+  .draw-tools {
+    container-type: normal;
+    width: fit-content;
+  }
+  .tools-title {
+    writing-mode: vertical-lr;
+    width: auto;
+  }
+  .tool-with-title {
+    flex-wrap: nowrap;
+  }
 }
