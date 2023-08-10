@@ -433,10 +433,10 @@ export default class DoraemonCanvas {
           tooltip.textContent = "Download drawing";
           break;
         case leftFoot:
-          tooltip.textContent = "Undo";
+          tooltip.textContent = "Undo (Ctrl+Z)";
           break;
         case rightFoot:
-          tooltip.textContent = "Redo";
+          tooltip.textContent = "Redo (Ctrl+Y)";
           break;
         default:
           tooltip.classList.remove(activeClass);
@@ -461,26 +461,72 @@ export default class DoraemonCanvas {
   }
 
   #addKeyboardShortcuts() {
+    const tool = this.mainToolPanelDiv.querySelector.bind(
+      this.mainToolPanelDiv
+    );
     window.addEventListener("keydown", (e) => {
       switch (e.key) {
         case "Control":
-          this.ctlKeydownFlag = true;
+          this.ctrlKeydown = true;
           break;
         case " ":
-          if (!this.ctlKeydownFlag) this.toggleZoom();
+          if (!this.ctrlKeydown) this.toggleZoom();
+          break;
+        case "a":
+          if (!this.ctrlKeydown) tool("#add-image").click();
+          break;
+        case "b":
+          if (!this.ctrlKeydown) tool("#drawing-bezier-curve").click();
+          break;
+        case "c":
+          if (!this.ctrlKeydown) tool("#drawing-circle").click();
+          if (this.ctrlKeydown) tool("#clear-canvas").click();
+          break;
+        case "e":
+          if (!this.ctrlKeydown) tool("#eraser").click();
+          break;
+        case "f":
+          if (!this.ctrlKeydown) tool("#drawing-line").click();
+          break;
+        case "i":
+          if (!this.ctrlKeydown) tool("#drawing-irregular-polygon").click();
+          break;
+        case "l":
+          if (!this.ctrlKeydown) tool("#drawing-ellipse").click();
+          break;
+        case "m":
+          if (!this.ctrlKeydown) tool("#select-move").click();
+          break;
+        case "r":
+          if (!this.ctrlKeydown) tool("#drawing-rectangle").click();
+          break;
+        case "t":
+          if (!this.ctrlKeydown) tool("#drawing-text").click();
+          break;
+        case "p":
+          if (!this.ctrlKeydown) tool("#drawing-regular-polygon").click();
+          break;
+        case "q":
+          if (!this.ctrlKeydown) tool("#drawing-quadratic-curve").click();
+          break;
+        case "s":
+          if (!this.ctrlKeydown) tool("#drawing-straight-line").click();
+          break;
+        case "u":
+          if (!this.ctrlKeydown) tool("#drawing-bezier-curve").click();
           break;
         case "z":
-          if (this.ctlKeydownFlag) this.undo();
+          if (this.ctrlKeydown) this.undo();
           break;
         case "y":
-          if (this.ctlKeydownFlag) this.redo();
+          if (this.ctrlKeydown) this.redo();
           break;
       }
     });
     window.addEventListener("keyup", (e) => {
       switch (e.key) {
         case "Control":
-          this.ctlKeydownFlag = false;
+          this.ctrlKeydown = false;
           break;
       }
     });
