@@ -14,6 +14,7 @@ doraemon.doraDiv.id = "canvas-app";
 const canvasToolPanel = doraemon.toolMainPanelDiv;
 canvasToolPanel.id = "canvas-tool-panel";
 document.querySelector("#canvas-tool-panel").replaceWith(canvasToolPanel);
+document.querySelector("#tooltips").append(doraemon.toolPanelTooltipSpan);
 
 /****************************/
 /*        Import CSS        */

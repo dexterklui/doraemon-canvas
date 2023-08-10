@@ -31,3 +31,7 @@ body {
 #canvas-tool-panel {
   grid-area: stack;
 }
+
+#tooltips {
+  grid-area: stack;
+}

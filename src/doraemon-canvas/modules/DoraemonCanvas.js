@@ -84,6 +84,10 @@ export default class DoraemonCanvas {
     return this.#toolPanel.mainPanelDiv;
   }
 
+  get toolPanelTooltipSpan() {
+    return this.#toolPanel.tooltipSpan;
+  }
+
   /** @returns {string} an png image data URL for the real canvas */
   get dataUrl() {
     return this.#drawingCanvas.dataUrl;
