@@ -218,6 +218,14 @@
   background: #fff;
   right: 0;
 }
+.dora-foot:hover,
+.dora-foot:hover .dora-foot-shadow-clip {
+  background: #b3e3ff;
+}
+.dora-foot:active,
+.dora-foot:active .dora-foot-shadow-clip {
+  background: #a3d3ef;
+}
 
 /***************************/
 /*        animation        */
