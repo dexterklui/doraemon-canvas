@@ -369,6 +369,7 @@ export default class ToolPanel {
 
     panel.addEventListener("mouseleave", () => {
       tooltip.classList.remove(activeClass);
+      tooltip.textContent = "";
     });
   }
 

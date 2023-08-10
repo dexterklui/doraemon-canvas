@@ -5,16 +5,17 @@ import DoraemonCanvas from "./modules/DoraemonCanvas.js";
 /******************************************************/
 
 const origCanvasApp = document.querySelector("#canvas-app");
+const tooltips = document.querySelector("#tooltips");
 /** @type {DoraemonCanvas} doraemon */
 const doraemon = new DoraemonCanvas(origCanvasApp, {
   replace: true,
   keyboardShortcuts: true,
 });
 doraemon.doraDiv.id = "canvas-app";
-const canvasToolPanel = doraemon.toolMainPanelDiv;
+const canvasToolPanel = doraemon.mainToolPanelDiv;
 canvasToolPanel.id = "canvas-tool-panel";
 document.querySelector("#canvas-tool-panel").replaceWith(canvasToolPanel);
-document.querySelector("#tooltips").append(doraemon.toolPanelTooltipSpan);
+tooltips.append(doraemon.toolPanelTooltipSpan, doraemon.doraTooltipSpan);
 
 /****************************/
 /*        Import CSS        */

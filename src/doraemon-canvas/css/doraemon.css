@@ -16,6 +16,7 @@
 .doraemon-canvas {
   height: 100%;
   aspect-ratio: 0.87;
+  position: relative;
   display: grid;
   grid-template:
     "." 1%
@@ -124,6 +125,7 @@
   aspect-ratio: 1.75;
   background: #f3e82a;
   clip-path: ellipse(50% 88% at 50% 10%);
+  cursor: pointer;
 }
 .dora-collar-bell:hover {
   background: #f9ee30;
@@ -161,6 +163,7 @@
   top: 2px;
   left: 3px;
   background: white;
+  cursor: pointer;
 }
 .dora-pocket.clip-outline {
   height: 42%;
@@ -197,6 +200,7 @@
   background: #fff;
   display: grid;
   align-items: end;
+  cursor: pointer;
 }
 .dora-foot:last-child {
   transform: scaleX(-1);
@@ -225,6 +229,65 @@
 .dora-foot:active,
 .dora-foot:active .dora-foot-shadow-clip {
   background: #a3d3ef;
+}
+
+/**************************/
+/*        tooltips        */
+/**************************/
+
+.dora-tooltip {
+  padding: 0.3em;
+  border-radius: 0.6em;
+  z-index: 1;
+  position: absolute;
+  color: #4f4f4f;
+  background: #b3e3ff;
+  opacity: 0.82;
+  animation: tooltip 0.6s ease-in 3s forwards;
+}
+/* the pointer of the tooltip */
+.dora-tooltip::before {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  border: 1rem solid;
+  border-color: #b3e3ff #0000 #0000 #0000;
+  content: "";
+}
+.dora-tooltip-download-image {
+  bottom: 14%;
+}
+.dora-tooltip-undo {
+  bottom: 5.2%;
+  left: 32%;
+  transform: translateX(-50%);
+}
+.dora-tooltip-redo {
+  bottom: 5.2%;
+  left: 68%;
+  transform: translateX(-50%);
+}
+.dora-hover-tooltip {
+  padding: 0.3em;
+  border-radius: 0.6em;
+  z-index: 1;
+  position: absolute;
+  transform: translateX(-50%) translateY(-40px);
+  color: #5a5a5a;
+  background: white;
+  opacity: 0;
+  transition: opacity 0.3s ease-out, display 0.3s;
+  cursor: pointer;
+}
+.dora-hover-tooltip--active {
+  opacity: 0.82;
+}
+
+@keyframes tooltip {
+  100% {
+    opacity: 0;
+  }
 }
 
 /***************************/
