@@ -170,10 +170,12 @@
 
   .color-selector .tool-title {
     writing-mode: vertical-rl;
+    width: 1rem;
   }
 
   .color-selector .input-container {
     width: var(--tool-btn-width);
+    height: var(--tool-btn-width);
   }
 }
 
