@@ -1,4 +1,5 @@
 import { DrawingCanvas, PaintFunction } from "../external-dependencies.js";
+import ToolPanel from "./ToolPanel.js";
 
 const DORA_FACE_ASPECT_RATIO = 0.8;
 const CANVAS_WIDTH_COEFFICIENT = 0.75;
@@ -6,6 +7,7 @@ const CANVAS_WIDTH_COEFFICIENT = 0.75;
 /** @type {Options} DEFAULT_OPTIONS */
 const DEFAULT_OPTIONS = {
   replace: false,
+  keyboardShortcuts: false,
 };
 
 /**
@@ -19,32 +21,25 @@ export default class DoraemonCanvas {
    */
   constructor(parent, options = {}) {
     options = { ...DEFAULT_OPTIONS, ...options };
-    this.#div = this.#createDoraemon();
-    const longerDimension = Math.max(window.innerWidth, window.innerHeight);
-    const width = longerDimension * CANVAS_WIDTH_COEFFICIENT;
-    const height = width * DORA_FACE_ASPECT_RATIO;
-    const doraFace = this.#div.querySelector(".dora-face");
-    this.#drawingCanvas = new DrawingCanvas(doraFace, {
-      canvasWidth: width,
-      canvasHeight: height,
-      // @ts-ignore
-      lineWidth: document.querySelector(".canvas-line-width").value,
-      strokeStyle: document.querySelector(".color-selector-stroke"),
-      fillstyle: document.querySelector(".color-selector-fill"),
-    });
+    this.#doraDiv = this.#createDoraemon();
+    this.#toolPanel = this.#createToolPanel();
+    this.#drawingCanvas = this.#createDrawingCanvas();
 
     if (options.replace) {
       this.#addHandlerToResize(parent.parentNode);
-      parent.replaceWith(this.#div);
+      parent.replaceWith(this.#doraDiv);
     } else {
       this.#addHandlerToResize(parent);
-      parent.append(this.#div);
+      parent.append(this.#doraDiv);
     }
+    if (options.keyboardShortcuts) this.#addKeyboardShortcuts();
 
+    this.#addDoraClickHandlers();
     window.addEventListener("resize", () => this.resizeCanvas());
-    this.#div.addEventListener("transitionend", () => this.resizeCanvas());
-    // TODO: Create a Canvas Tool Instance. Remove unnecessary public getters
-    // and setters.
+    this.#doraDiv.addEventListener("transitionend", () => this.resizeCanvas());
+
+    // @ts-ignore
+    this.toolMainPanelDiv.querySelector("#drawing-line").click();
   }
 
   /**
@@ -52,6 +47,8 @@ export default class DoraemonCanvas {
    * @typedef {Object} Options
    * @property {boolean} replace - whether this doraemon element replaces the
    *                     parent element rather than append to it
+   * @property {boolean} keyboardShortcuts - whether keyboard shortcuts should
+   *                     be added
    */
 
   /****************************************************************/
@@ -59,11 +56,15 @@ export default class DoraemonCanvas {
   /****************************************************************/
 
   /**
-   * Gets the doraemon canvas.
+   * Gets the doraemon canvas element.
    * @type {HTMLDivElement}
    */
-  get div() {
-    return this.#div;
+  get doraDiv() {
+    return this.#doraDiv;
+  }
+
+  get toolMainPanelDiv() {
+    return this.#toolPanel.mainPanelDiv;
   }
 
   /** @returns {string} an png image data URL for the real canvas */
@@ -84,16 +85,16 @@ export default class DoraemonCanvas {
    * @returns {boolean} true if ending in zoom-in state; false for zoom-out
    */
   toggleZoom() {
-    const div = this.#div;
+    const doraDiv = this.#doraDiv;
     this.#zoomFlag = !this.#zoomFlag;
     if (this.#zoomFlag) {
-      this.#origHeight = this.#div.style.height;
-      div.style.height = this.#ZOOM_HEIGHT;
-      this.#origTransform = this.#div.style.transform;
-      div.style.transform = this.#ZOOM_TRANSFORM;
+      this.#origHeight = this.#doraDiv.style.height;
+      doraDiv.style.height = this.#ZOOM_HEIGHT;
+      this.#origTransform = this.#doraDiv.style.transform;
+      doraDiv.style.transform = this.#ZOOM_TRANSFORM;
     } else {
-      div.style.height = this.#origHeight ?? "100%";
-      div.style.transform = this.#origTransform ?? "none";
+      doraDiv.style.height = this.#origHeight ?? "100%";
+      doraDiv.style.transform = this.#origTransform ?? "none";
     }
     return this.#zoomFlag;
   }
@@ -194,7 +195,7 @@ export default class DoraemonCanvas {
       this.#drawingCanvas.resizeCanvas();
       return;
     }
-    const doraFace = this.#div.querySelector(".dora-face");
+    const doraFace = this.#doraDiv.querySelector(".dora-face");
     const { width, height } = doraFace.getBoundingClientRect();
     const scale = parseInt(this.#ZOOM_HEIGHT.replace(/%$/, "")) / 100;
     this.#drawingCanvas.resizeCanvas(scale * width, scale * height);
@@ -204,8 +205,8 @@ export default class DoraemonCanvas {
   /*                    Private fields                    */
   /********************************************************/
 
-  /** @type {HTMLDivElement} #div */
-  #div;
+  /** @type {HTMLDivElement} #doraDiv */
+  #doraDiv;
 
   /** @type {boolean} #zoomFlag */
   #zoomFlag;
@@ -218,6 +219,9 @@ export default class DoraemonCanvas {
 
   /** @type {DrawingCanvas} #drawingCanvas */
   #drawingCanvas;
+
+  /** @type {ToolPanel} #toolPanel */
+  #toolPanel;
 
   /** @type {string} */
   get #ZOOM_HEIGHT() {
@@ -287,6 +291,35 @@ export default class DoraemonCanvas {
     return div;
   }
 
+  #createToolPanel() {
+    return new ToolPanel(this);
+  }
+
+  #createDrawingCanvas() {
+    const longerDimension = Math.max(window.innerWidth, window.innerHeight);
+    const width = longerDimension * CANVAS_WIDTH_COEFFICIENT;
+    const height = width * DORA_FACE_ASPECT_RATIO;
+    const doraFace = this.#doraDiv.querySelector(".dora-face");
+    const toolMainPanel = this.toolMainPanelDiv;
+    return new DrawingCanvas(doraFace, {
+      canvasWidth: width,
+      canvasHeight: height,
+      lineWidth: toolMainPanel.querySelector(
+        ".canvas-setting input[name='line-width']" // @ts-ignore
+      ).value,
+      strokeStyle: toolMainPanel.querySelector(
+        ".color-selector input[name='stroke-style']" // @ts-ignore
+      ).value,
+      fillStyle: toolMainPanel.querySelector(
+        ".color-selector input[name='fill-style']" // @ts-ignore
+      ).value,
+      font:
+        toolMainPanel.querySelector(
+          "#drawing-text-setting input[name='font-size']" // @ts-ignore
+        ).value + "px arial",
+    });
+  }
+
   /**
    * Adds handler to resize canvas after doraemon is added to DOM.
    * @param {Node} parent
@@ -294,7 +327,7 @@ export default class DoraemonCanvas {
   #addHandlerToResize(parent) {
     const observer = new MutationObserver(() => {
       for (const child of Array.from(parent.childNodes)) {
-        if (child !== this.#div) continue;
+        if (child !== this.#doraDiv) continue;
         // XXX: Dunno why but even after Doraemon is added to DOM, it seems
         // canvas's parent (.dora-face, which is already a descendant node of
         // Doraemon) still doesn't have it's width and height updated. So wait
@@ -306,6 +339,44 @@ export default class DoraemonCanvas {
       }
     });
     observer.observe(parent, { childList: true });
+  }
+
+  #addDoraClickHandlers() {
+    this.#doraDiv
+      .querySelector(".dora-pocket")
+      .addEventListener("click", () => window.open(this.dataUrl, "_blank"));
+    this.#doraDiv
+      .querySelector(".dora-foot:first-child")
+      .addEventListener("click", () => this.undo());
+    this.#doraDiv
+      .querySelector(".dora-foot:last-child")
+      .addEventListener("click", () => this.redo());
+  }
+
+  #addKeyboardShortcuts() {
+    window.addEventListener("keydown", (e) => {
+      switch (e.key) {
+        case "Control":
+          this.ctlKeydownFlag = true;
+          break;
+        case " ":
+          if (!this.ctlKeydownFlag) this.toggleZoom();
+          break;
+        case "z":
+          if (this.ctlKeydownFlag) this.undo();
+          break;
+        case "y":
+          if (this.ctlKeydownFlag) this.redo();
+          break;
+      }
+    });
+    window.addEventListener("keyup", (e) => {
+      switch (e.key) {
+        case "Control":
+          this.ctlKeydownFlag = false;
+          break;
+      }
+    });
   }
 }
 
