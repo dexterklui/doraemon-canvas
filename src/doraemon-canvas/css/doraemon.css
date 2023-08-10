@@ -125,6 +125,12 @@
   background: #f3e82a;
   clip-path: ellipse(50% 88% at 50% 10%);
 }
+.dora-collar-bell:hover {
+  background: #f9ee30;
+}
+.dora-collar-bell:active {
+  background: #ede224;
+}
 
 /*********************************/
 /*        Doraemon's body        */
