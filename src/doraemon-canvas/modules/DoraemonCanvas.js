@@ -3,12 +3,29 @@ import ToolPanel from "./ToolPanel.js";
 
 const DORA_FACE_ASPECT_RATIO = 0.8;
 const CANVAS_WIDTH_COEFFICIENT = 0.75;
+const DORA_BLUE = "#15a9ff";
 
 /** @type {Options} DEFAULT_OPTIONS */
 const DEFAULT_OPTIONS = {
   replace: false,
   keyboardShortcuts: false,
 };
+
+/**
+ * @returns {number} random integer inclusive between start and end
+ */
+function randomInt(start, end) {
+  start = Math.floor(start);
+  end = Math.floor(end);
+  return start + Math.floor((end - start + 1) * Math.random());
+}
+
+function randomRgbColorStr() {
+  const r = randomInt(0, 255);
+  const g = randomInt(0, 255);
+  const b = randomInt(0, 255);
+  return `rgb(${r}, ${g}, ${b})`;
+}
 
 /**
  * A Doraemon themed canvas that allows user to draw on it.
@@ -201,6 +218,17 @@ export default class DoraemonCanvas {
     this.#drawingCanvas.resizeCanvas(scale * width, scale * height);
   }
 
+  randomDoraColor() {
+    const color = randomRgbColorStr(); // @ts-ignore
+    this.#doraDiv.querySelector(".dora-skull").style.backgroundColor = color;
+  }
+
+  resetDoraColor() {
+    // @ts-ignore
+    this.#doraDiv.querySelector(".dora-skull").style.backgroundColor =
+      DORA_BLUE;
+  }
+
   /********************************************************/
   /*                    Private fields                    */
   /********************************************************/
@@ -351,6 +379,12 @@ export default class DoraemonCanvas {
     this.#doraDiv
       .querySelector(".dora-foot:last-child")
       .addEventListener("click", () => this.redo());
+    this.#doraDiv
+      .querySelector(".dora-collar-bell")
+      .addEventListener("click", () => this.randomDoraColor());
+    this.#doraDiv
+      .querySelector(".dora-collar-bell")
+      .addEventListener("dblclick", () => this.resetDoraColor());
   }
 
   #addKeyboardShortcuts() {
