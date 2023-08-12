@@ -100,6 +100,38 @@
   width: 3em;
 }
 
+.tools input[type="range"] {
+  -webkit-appearance: none;
+  width: 90%;
+  max-width: calc(2*var(--tool-btn-width) + var(--tool-btn-gap));
+  height: 10px;
+  border-radius: 5px;
+  background: #d2243d;
+  opacity: 0.8;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.tools input[type="range"]:hover {
+  opacity: 1;
+}
+
+.tools input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; 
+  appearance: none;
+  width: 20px;
+  height: 18px;
+  background: url('/assets/icons/bell-01.png');
+  cursor: pointer;
+}
+
+.tools input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 18px;
+  background: url('/assets/icons/bell-01.png');
+  cursor: pointer;
+}
+
 /******************************/
 /*        Colour tools        */
 /******************************/

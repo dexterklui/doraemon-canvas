@@ -147,7 +147,7 @@ export default class ToolPanel {
 <div id="drawing-text-setting" class="tool-with-title tool-setting">
   <p class="tool-title">Font Size</p>
   <input
-    type="number"
+    type="range"
     value="20"
     name="font-size"
     min="6"
@@ -162,7 +162,7 @@ export default class ToolPanel {
 <div class="tool-with-title canvas-setting">
   <p class="tool-title">Line Width</p>
   <input
-    type="number"
+    type="range"
     max="99"
     min="1"
     name="line-width"
@@ -343,6 +343,7 @@ export default class ToolPanel {
     let value = e.target.value;
     const inputType = e.target.getAttribute("type");
     if (inputType === "number") value = parseInt(value);
+    if (inputType === "range") value = parseInt(value);
     paintFunction[targetProperty] = value;
   }
 
@@ -358,6 +359,7 @@ export default class ToolPanel {
     let value = e.target.value;
     const inputType = e.target.getAttribute("type");
     if (inputType === "number") value = parseInt(value);
+    if (inputType === "range") value = parseInt(value);
     option[targetProperty] = value;
     this.#canvasApp.setCanvasProperties(option);
   }
