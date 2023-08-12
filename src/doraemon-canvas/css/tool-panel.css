@@ -158,6 +158,10 @@
   .color-selector .input-container {
     max-width: 45px;
   }
+
+  .tool-title {
+    font-size: small;
+  }
 }
 
 /** when tool panel is wide (and therefore, short) */
@@ -188,6 +192,18 @@
 @media (width < 400px) or (height < 400px) {
   :root {
     --tool-btn-width: 35px;
+  }
+}
+
+@media (width < 620px) or (height < 400px) {
+  .tools {
+    --margin: 8px;
+    --padding: 8px;
+    border-radius: 10px;
+  }
+
+  .tool-title {
+    font-size: small;
   }
 }
 

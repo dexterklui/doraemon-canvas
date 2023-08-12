@@ -77,7 +77,6 @@ export default class ToolPanel {
     div.innerHTML = `
 <!-- drawing tool buttons -->
 <!-- NOTE: id, when turned into PascalCase, must match the class name of its corresponding PaintFunction -->
-
 <div class="tool-btn draw-tool" id="drawing-line">
   <img src="./assets/icons/icon_free-draw.png" alt="pen" />
 </div>
@@ -125,11 +124,10 @@ export default class ToolPanel {
 <div class="tool-btn canvas-tool" id="zoom-canvas">
   <img src="./assets/icons/icon_zoom_2.png" alt="zoom" />
 </div>
-
-<div class="tool-btn canvas-tool" id="select-pointer">
+<!-- but this is draw tool, just for layout sake it is here -->
+<div class="tool-btn draw-tool" id="object-move">
   <img src="./assets/icons/icon_pointer.png" alt="selection tool" />
 </div>
-
 <div class="tool-btn canvas-tool" id="clear-canvas">
   <img src="./assets/icons/icon_clear.png" alt="clear" />
 </div>

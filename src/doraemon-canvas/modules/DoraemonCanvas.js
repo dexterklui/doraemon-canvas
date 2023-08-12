@@ -286,7 +286,6 @@ export default class DoraemonCanvas {
       </div>
     </div>
   </div>
-
 </div>
 `;
     return div;
