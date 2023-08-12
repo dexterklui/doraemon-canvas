@@ -41,6 +41,7 @@ export default class ToolPanel {
   constructor(canvasApp) {
     this.#canvasApp = canvasApp;
     this.#mainPanelDiv = this.#createMainPanelDiv();
+    this.#tooltip = this.#createTooltip();
     this.#addHandlers();
   }
 
@@ -56,6 +57,10 @@ export default class ToolPanel {
     return this.#mainPanelDiv;
   }
 
+  get tooltipSpan() {
+    return this.#tooltip;
+  }
+
   /********************************************************/
   /*                    Private fields                    */
   /********************************************************/
@@ -65,6 +70,9 @@ export default class ToolPanel {
 
   /** @type {DoraemonCanvas} #canvasApp */
   #canvasApp;
+
+  /** @type {HTMLSpanElement} #tooltip */
+  #tooltip;
 
   /*********************************************************/
   /*                    Private methods                    */
@@ -78,54 +86,54 @@ export default class ToolPanel {
 <!-- drawing tool buttons -->
 <!-- NOTE: id, when turned into PascalCase, must match the class name of its corresponding PaintFunction -->
 <div class="tool-btn draw-tool" id="drawing-line">
-  <img src="./assets/icons/icon_free-draw.png" alt="pen" />
+  <img src="./assets/icons/icon_free-draw.png" alt="Free drawing" />
 </div>
 <div class="tool-btn draw-tool" id="drawing-straight-line">
-  <img src="./assets/icons/icon_line.png" alt="straight line" />
+  <img src="./assets/icons/icon_line.png" alt="Straight line" />
 </div>
 <div class="tool-btn draw-tool" id="drawing-quadratic-curve">
-  <img src="./assets/icons/icon_quadratic.png" alt="quad curve" />
+  <img src="./assets/icons/icon_quadratic.png" alt="Quadratic curve" />
 </div>
 <div class="tool-btn draw-tool" id="drawing-bezier-curve">
-  <img src="./assets/icons/icon_bezier.png" alt="cubic curve" />
+  <img src="./assets/icons/icon_bezier.png" alt="Cubic curve" />
 </div>
 <div class="tool-btn draw-tool" id="drawing-circle">
-  <img src="./assets/icons/icon_circle.png" alt="circle" />
+  <img src="./assets/icons/icon_circle.png" alt="Circle" />
 </div>
 <div class="tool-btn draw-tool" id="drawing-ellipse">
-  <img src="./assets/icons/icon_ellipse.png" alt="ellipse" />
+  <img src="./assets/icons/icon_ellipse.png" alt="Ellipse" />
 </div>
 <div class="tool-btn draw-tool" id="drawing-rectangle">
-  <img src="./assets/icons/icon_rectangle.png" alt="rectangle" />
+  <img src="./assets/icons/icon_rectangle.png" alt="Rectangle" />
 </div>
 <div class="tool-btn draw-tool" id="drawing-regular-polygon">
   <img
     src="./assets/icons/icon_regular-polygon.png"
-    alt="regular polygon"
+    alt="Regular polygon"
   />
 </div>
 <div class="tool-btn draw-tool" id="drawing-irregular-polygon">
-  <img src="./assets/icons/icon_polygon.png" alt="polygon" />
+  <img src="./assets/icons/icon_polygon.png" alt="Irregular polygon" />
 </div>
 <div class="tool-btn draw-tool" id="drawing-text">
-  <img src="./assets/icons/icon_text.png" alt="text" />
+  <img src="./assets/icons/icon_text.png" alt="Add text" />
 </div>
 <div class="tool-btn draw-tool" id="add-image">
-  <img src="./assets/icons/icon_add-image.png" alt="image" />
+  <img src="./assets/icons/icon_add-image.png" alt="Add image" />
 </div>
 <div class="tool-btn draw-tool" id="eraser">
-  <img src="./assets/icons/icon_eraser.png" alt="eraser" />
+  <img src="./assets/icons/icon_eraser.png" alt="Eraser" />
 </div>
 <div class="tool-btn draw-tool" id="select-move">
-  <img src="./assets/icons/icon_move.png" alt="move rect" />
+  <img src="./assets/icons/icon_move.png" alt="Move area" />
 </div>
 
 <!-- Canvas tool buttons (i.e. not setting new PaintFunction) -->
 <div class="tool-btn canvas-tool" id="zoom-canvas">
-  <img src="./assets/icons/icon_zoom.png" alt="zoom" />
+  <img src="./assets/icons/icon_zoom.png" alt="Toggle zoom" />
 </div>
 <div class="tool-btn canvas-tool" id="clear-canvas">
-  <img src="./assets/icons/icon_clear.png" alt="clear" />
+  <img src="./assets/icons/icon_clear.png" alt="Clear canvas" />
 </div>
 
 <!-- drawing tool specific settings -->
@@ -205,6 +213,12 @@ export default class ToolPanel {
     return div;
   }
 
+  #createTooltip() {
+    const tooltip = document.createElement("span");
+    tooltip.classList.add("tool-panel-tooltip");
+    return tooltip;
+  }
+
   /** Adds handler to elements on tool panel */
   #addHandlers() {
     this.#addDrawingToolHandlers();
@@ -212,6 +226,7 @@ export default class ToolPanel {
     this.#addCanvasToolHandlers();
     this.#addCanvasSettingHandlers();
     this.#addColorSettingHandlers();
+    this.#addHandlersForTooltip();
   }
 
   /** Attaches handlers that set paint functions to drawing tool buttons */
@@ -324,6 +339,56 @@ export default class ToolPanel {
         this.#canvasApp.setCanvasProperties({ font: value });
       });
     }
+  }
+
+  #addHandlersForTooltip() {
+    const panel = this.#mainPanelDiv;
+    const activeClass = "tool-panel-tooltip--active";
+    const tooltip = this.#tooltip;
+    const windowWidth = window.innerWidth;
+
+    panel.addEventListener("mousemove", (e) => {
+      const cursorAtBottomRight = this.#cursorAtBottomRight(e);
+      const hoverTool = panel.querySelector(".tool-btn:hover");
+      if (!hoverTool && !cursorAtBottomRight) {
+        tooltip.classList.remove(activeClass);
+        return;
+      }
+      if (cursorAtBottomRight) {
+        tooltip.textContent = "Drag to resize, double click to reset";
+      } else {
+        tooltip.textContent = hoverTool
+          .querySelector("img")
+          .getAttribute("alt");
+      }
+      const tooltipWidth = tooltip.getBoundingClientRect().width;
+      let xCoord;
+      const yCoord = e.clientY.toString() + "px";
+      if (e.clientX + tooltipWidth > windowWidth) {
+        xCoord = (e.clientX - 15 - tooltipWidth).toString() + "px";
+      } else {
+        xCoord = (e.clientX + 15).toString() + "px";
+      }
+      tooltip.style.top = yCoord;
+      tooltip.style.left = xCoord;
+      tooltip.classList.add(activeClass);
+    });
+
+    panel.addEventListener("mouseleave", () => {
+      tooltip.classList.remove(activeClass);
+      tooltip.textContent = "";
+    });
+  }
+
+  /**
+   * Checks if cursor is near the bottom right corner of main tool panel.
+   * @param {MouseEvent} e
+   * @returns {boolean}
+   */
+  #cursorAtBottomRight(e) {
+    const { width, height } = this.#mainPanelDiv.getBoundingClientRect();
+    console.log("tool panel width, height:", width, height);
+    return width - e.offsetX < 10 && height - e.offsetY < 10;
   }
 
   /*************************************************************/

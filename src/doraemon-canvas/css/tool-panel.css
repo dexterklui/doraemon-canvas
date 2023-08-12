@@ -164,6 +164,22 @@
   cursor: pointer;
 }
 
+/*************************/
+/*        Tooltip        */
+/*************************/
+
+.tool-panel-tooltip {
+  padding: 0.3em;
+  border-radius: 0.6em;
+  z-index: 1;
+  position: absolute;
+  color: #5a5a5a;
+  background: white;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  cursor: pointer;
+}
+
 /*****************************/
 /*        Tool @rules        */
 /*****************************/
@@ -239,4 +255,8 @@
 
 .draw-tool--active {
   background-color: #b3e3ff;
+}
+
+.tool-panel-tooltip--active {
+  opacity: 0.82;
 }
