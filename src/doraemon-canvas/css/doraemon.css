@@ -25,6 +25,7 @@
     "body" 21.743%;
   transition: height 1s ease-out, transform 1s ease-out;
   overflow: hidden;
+  contain: strict;
 }
 .dora-head {
   grid-area: head;
@@ -33,6 +34,7 @@
   aspect-ratio: 1.25;
   display: grid;
   align-items: end;
+  contain: strict;
 }
 .dora-skull {
   background: var(--doraemon-canvas-color-primary);
@@ -40,6 +42,7 @@
   width: 100%;
   grid-area: stack;
   clip-path: ellipse(50% 60% at 50% 60%);
+  contain: strict;
 }
 .dora-face {
   grid-area: stack;
@@ -49,6 +52,7 @@
   background-color: white;
   display: grid;
   grid-template-areas: "stack";
+  contain: strict;
 }
 .dora-eyes {
   height: 30%;
@@ -64,6 +68,7 @@
   position: relative;
   clip-path: ellipse(50% 50%);
   background: #dddddd;
+  contain: strict;
 }
 .dora-eye-white {
   position: absolute;
@@ -73,6 +78,7 @@
   width: calc(100% - 2px);
   clip-path: ellipse(50% 50%);
   background: white;
+  contain: strict;
 }
 .dora-eye-black {
   position: absolute;
@@ -86,6 +92,7 @@
   display: grid;
   place-items: center;
   font-size: 2rem;
+  contain: strict;
 }
 .dora-eye:first-child .dora-eye-black {
   right: 10%;
@@ -111,6 +118,7 @@
   grid-area: collar;
   display: grid;
   grid-template-rows: 45% 55%;
+  contain: strict;
 }
 .dora-collar-strip {
   grid-row: 1 2;
@@ -144,6 +152,7 @@
   grid-area: body;
   display: grid;
   grid-template-areas: "stack";
+  contain: strict;
 }
 .dora-tummy {
   height: 80%;
@@ -154,6 +163,7 @@
   background: white;
   display: grid;
   grid-template-areas: "stack";
+  contain: strict;
 }
 .dora-pocket {
   height: calc(100% - 5px);
@@ -176,6 +186,7 @@
   background: #ccc;
   transition: height 0.2s ease-out, top 0.2s ease-out;
   animation: dora-pocket-shaking 2.5s ease-out infinite;
+  contain: strict;
 }
 .dora-pocket.clip-outline:hover {
   top: -5%;
@@ -201,6 +212,7 @@
   display: grid;
   align-items: end;
   cursor: pointer;
+  contain: strict;
 }
 .dora-foot:last-child {
   transform: scaleX(-1);
