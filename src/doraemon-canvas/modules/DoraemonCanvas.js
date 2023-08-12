@@ -1,4 +1,8 @@
-import { DrawingCanvas, PaintFunction } from "../external-dependencies.js";
+import {
+  DrawingCanvas,
+  PaintFunction,
+  DrawingText,
+} from "../external-dependencies.js";
 import ToolPanel from "./ToolPanel.js";
 
 const DORA_FACE_ASPECT_RATIO = 0.8;
@@ -475,6 +479,9 @@ export default class DoraemonCanvas {
       this.mainToolPanelDiv
     );
     window.addEventListener("keydown", (e) => {
+      const paintFunction = this.getPaintFunction();
+      if (paintFunction instanceof DrawingText && paintFunction.draftInput)
+        return;
       switch (e.key) {
         case "Control":
           this.ctrlKeydown = true;
