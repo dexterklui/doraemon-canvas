@@ -32,6 +32,10 @@ body {
   grid-area: stack;
 }
 
+#tooltips {
+  grid-area: stack;
+}
+
 /*********************************/
 /*        Doraemon's hand        */
 /*********************************/

@@ -16,6 +16,7 @@
 .doraemon-canvas {
   height: 100%;
   aspect-ratio: 0.87;
+  position: relative;
   display: grid;
   grid-template:
     "." 1%
@@ -24,6 +25,7 @@
     "body" 21.743%;
   transition: height 1s ease-out, transform 1s ease-out;
   overflow: hidden;
+  contain: strict;
 }
 .dora-head {
   grid-area: head;
@@ -32,6 +34,7 @@
   aspect-ratio: 1.25;
   display: grid;
   align-items: end;
+  contain: strict;
 }
 .dora-skull {
   background: var(--doraemon-canvas-color-primary);
@@ -39,6 +42,7 @@
   width: 100%;
   grid-area: stack;
   clip-path: ellipse(50% 60% at 50% 60%);
+  contain: strict;
 }
 .dora-face {
   grid-area: stack;
@@ -48,6 +52,7 @@
   background-color: white;
   display: grid;
   grid-template-areas: "stack";
+  contain: strict;
 }
 .dora-eyes {
   height: 30%;
@@ -63,6 +68,7 @@
   position: relative;
   clip-path: ellipse(50% 50%);
   background: #dddddd;
+  contain: strict;
 }
 .dora-eye-white {
   position: absolute;
@@ -72,6 +78,7 @@
   width: calc(100% - 2px);
   clip-path: ellipse(50% 50%);
   background: white;
+  contain: strict;
 }
 .dora-eye-black {
   position: absolute;
@@ -79,17 +86,25 @@
   transform: translateY(-50%);
   height: 24%;
   width: 18%;
-  clip-path: ellipse(50% 50%);
+  clip-path: ellipse(50% 49%);
   background: #3f3e39;
   color: white;
+  contain: strict;
   display: grid;
   place-items: center;
-  font-size: 2rem;
+  font-size: 0.6rem;
+  cursor: pointer;
+}
+.dora-eye-black:hover {
+  background: #4f4e49;
+}
+.dora-eye-black:active {
+  background: #282828;
 }
 .dora-eye:first-child .dora-eye-black {
   right: 10%;
 }
-.dora-eye:nth-child(2) .dora-eye-black {
+.dora-eye:last-child .dora-eye-black {
   left: 10%;
 }
 .dora-face > .drawing-canvas-real,
@@ -110,6 +125,7 @@
   grid-area: collar;
   display: grid;
   grid-template-rows: 45% 55%;
+  contain: strict;
 }
 .dora-collar-strip {
   grid-row: 1 2;
@@ -124,6 +140,13 @@
   aspect-ratio: 1.75;
   background: #f3e82a;
   clip-path: ellipse(50% 88% at 50% 10%);
+  cursor: pointer;
+}
+.dora-collar-bell:hover {
+  background: #f9ee30;
+}
+.dora-collar-bell:active {
+  background: #ede224;
 }
 
 /*********************************/
@@ -136,6 +159,7 @@
   grid-area: body;
   display: grid;
   grid-template-areas: "stack";
+  contain: strict;
 }
 .dora-tummy {
   height: 80%;
@@ -146,6 +170,7 @@
   background: white;
   display: grid;
   grid-template-areas: "stack";
+  contain: strict;
 }
 .dora-pocket {
   height: calc(100% - 5px);
@@ -155,6 +180,7 @@
   top: 2px;
   left: 3px;
   background: white;
+  cursor: pointer;
 }
 .dora-pocket.clip-outline {
   height: 42%;
@@ -167,6 +193,7 @@
   background: #ccc;
   transition: height 0.2s ease-out, top 0.2s ease-out;
   animation: dora-pocket-shaking 2.5s ease-out infinite;
+  contain: strict;
 }
 .dora-pocket.clip-outline:hover {
   top: -5%;
@@ -191,6 +218,8 @@
   background: #fff;
   display: grid;
   align-items: end;
+  cursor: pointer;
+  contain: strict;
 }
 .dora-foot:last-child {
   transform: scaleX(-1);
@@ -212,6 +241,73 @@
   background: #fff;
   right: 0;
 }
+.dora-foot:hover,
+.dora-foot:hover .dora-foot-shadow-clip {
+  background: #b3e3ff;
+}
+.dora-foot:active,
+.dora-foot:active .dora-foot-shadow-clip {
+  background: #a3d3ef;
+}
+
+/**************************/
+/*        tooltips        */
+/**************************/
+
+.dora-tooltip {
+  padding: 0.3em;
+  border-radius: 0.6em;
+  z-index: 1;
+  position: absolute;
+  color: #4f4f4f;
+  background: #b3e3ff;
+  opacity: 0.82;
+  animation: tooltip 0.6s ease-in 3s forwards;
+}
+/* the pointer of the tooltip */
+.dora-tooltip::before {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  border: 1rem solid;
+  border-color: #b3e3ff #0000 #0000 #0000;
+  content: "";
+}
+.dora-tooltip-download-image {
+  bottom: 14%;
+}
+.dora-tooltip-undo {
+  bottom: 5.2%;
+  left: 32%;
+  transform: translateX(-50%);
+}
+.dora-tooltip-redo {
+  bottom: 5.2%;
+  left: 68%;
+  transform: translateX(-50%);
+}
+.dora-hover-tooltip {
+  padding: 0.3em;
+  border-radius: 0.6em;
+  z-index: 1;
+  position: absolute;
+  transform: translateX(-50%) translateY(-40px);
+  color: #5a5a5a;
+  background: white;
+  opacity: 0;
+  transition: opacity 0.3s ease-out, display 0.3s;
+  cursor: pointer;
+}
+.dora-hover-tooltip--active {
+  opacity: 0.82;
+}
+
+@keyframes tooltip {
+  100% {
+    opacity: 0;
+  }
+}
 
 /***************************/
 /*        animation        */
@@ -229,5 +325,31 @@
   }
   100% {
     transform: none;
+  }
+}
+
+/*****************************/
+/*        Media query        */
+/*****************************/
+@media screen and (height > 360) {
+  .dora-eye-black {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (height > 420px) {
+  .dora-eye-black {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (height > 620px) {
+  .dora-eye-black {
+    font-size: 1.2rem;
+  }
+}
+@media screen and (height > 860px) {
+  .dora-eye-black {
+    font-size: 1.5rem;
   }
 }

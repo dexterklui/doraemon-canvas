@@ -1,14 +1,35 @@
-import { DrawingCanvas, PaintFunction } from "../external-dependencies.js";
+import {
+  DrawingCanvas,
+  PaintFunction,
+  DrawingText,
+} from "../external-dependencies.js";
 import ToolPanel from "./ToolPanel.js";
 
 const DORA_FACE_ASPECT_RATIO = 0.8;
 const CANVAS_WIDTH_COEFFICIENT = 0.75;
+const DORA_BLUE = "#15a9ff";
 
 /** @type {Options} DEFAULT_OPTIONS */
 const DEFAULT_OPTIONS = {
   replace: false,
   keyboardShortcuts: false,
 };
+
+/**
+ * @returns {number} random integer inclusive between start and end
+ */
+function randomInt(start, end) {
+  start = Math.floor(start);
+  end = Math.floor(end);
+  return start + Math.floor((end - start + 1) * Math.random());
+}
+
+function randomRgbColorStr() {
+  const r = randomInt(0, 255);
+  const g = randomInt(0, 255);
+  const b = randomInt(0, 255);
+  return `rgb(${r}, ${g}, ${b})`;
+}
 
 /**
  * A Doraemon themed canvas that allows user to draw on it.
@@ -24,6 +45,7 @@ export default class DoraemonCanvas {
     this.#doraDiv = this.#createDoraemon();
     this.#toolPanel = this.#createToolPanel();
     this.#drawingCanvas = this.#createDrawingCanvas();
+    this.#tooltip = this.#createTooltip();
 
     if (options.replace) {
       this.#addHandlerToResize(parent.parentNode);
@@ -35,11 +57,13 @@ export default class DoraemonCanvas {
     if (options.keyboardShortcuts) this.#addKeyboardShortcuts();
 
     this.#addDoraClickHandlers();
+    this.#addHoverTooltipHandler();
+    this.#addTooltipHandler();
     window.addEventListener("resize", () => this.resizeCanvas());
     this.#doraDiv.addEventListener("transitionend", () => this.resizeCanvas());
 
     // @ts-ignore
-    this.toolMainPanelDiv.querySelector("#drawing-line").click();
+    this.mainToolPanelDiv.querySelector("#drawing-line").click();
   }
 
   /**
@@ -63,8 +87,16 @@ export default class DoraemonCanvas {
     return this.#doraDiv;
   }
 
-  get toolMainPanelDiv() {
+  get mainToolPanelDiv() {
     return this.#toolPanel.mainPanelDiv;
+  }
+
+  get toolPanelTooltipSpan() {
+    return this.#toolPanel.tooltipSpan;
+  }
+
+  get doraTooltipSpan() {
+    return this.#tooltip;
   }
 
   /** @returns {string} an png image data URL for the real canvas */
@@ -201,6 +233,17 @@ export default class DoraemonCanvas {
     this.#drawingCanvas.resizeCanvas(scale * width, scale * height);
   }
 
+  randomDoraColor() {
+    const color = randomRgbColorStr(); // @ts-ignore
+    this.#doraDiv.querySelector(".dora-skull").style.backgroundColor = color;
+  }
+
+  resetDoraColor() {
+    // @ts-ignore
+    this.#doraDiv.querySelector(".dora-skull").style.backgroundColor =
+      DORA_BLUE;
+  }
+
   /********************************************************/
   /*                    Private fields                    */
   /********************************************************/
@@ -222,6 +265,9 @@ export default class DoraemonCanvas {
 
   /** @type {ToolPanel} #toolPanel */
   #toolPanel;
+
+  /** @type {HTMLSpanElement} #tooltip */
+  #tooltip;
 
   /** @type {string} */
   get #ZOOM_HEIGHT() {
@@ -266,27 +312,36 @@ export default class DoraemonCanvas {
 </div>
 <div class="dora-collar">
   <div class="dora-collar-strip"></div>
-  <div class="dora-collar-bell"></div>
+  <div class="dora-collar-bell dora-interactive-part"></div>
 </div>
 <div class="dora-body">
   <div class="dora-tummy">
-    <div class="dora-pocket clip-outline">
+    <div class="dora-pocket clip-outline dora-interactive-part">
       <div class="dora-pocket"></div>
     </div>
   </div>
   <div class="dora-feet">
-    <div class="dora-foot">
+    <div class="dora-foot dora-interactive-part">
       <div class="dora-foot-shadow">
         <div class="dora-foot-shadow-clip"></div>
       </div>
     </div>
-    <div class="dora-foot">
+    <div class="dora-foot dora-interactive-part">
       <div class="dora-foot-shadow">
         <div class="dora-foot-shadow-clip"></div>
       </div>
     </div>
   </div>
 </div>
+<span class="dora-tooltip dora-tooltip-download-image">
+  Click me to download your drawings
+</span>
+<span class="dora-tooltip dora-tooltip-undo">
+  Click me to undo
+</span>
+<span class="dora-tooltip dora-tooltip-redo">
+  Click me to redo
+</span>
 `;
     return div;
   }
@@ -300,7 +355,7 @@ export default class DoraemonCanvas {
     const width = longerDimension * CANVAS_WIDTH_COEFFICIENT;
     const height = width * DORA_FACE_ASPECT_RATIO;
     const doraFace = this.#doraDiv.querySelector(".dora-face");
-    const toolMainPanel = this.toolMainPanelDiv;
+    const toolMainPanel = this.mainToolPanelDiv;
     return new DrawingCanvas(doraFace, {
       canvasWidth: width,
       canvasHeight: height,
@@ -318,6 +373,12 @@ export default class DoraemonCanvas {
           "#drawing-text-setting input[name='font-size']" // @ts-ignore
         ).value + "px arial",
     });
+  }
+
+  #createTooltip() {
+    const tooltip = document.createElement("span");
+    tooltip.classList.add("dora-hover-tooltip");
+    return tooltip;
   }
 
   /**
@@ -351,29 +412,138 @@ export default class DoraemonCanvas {
     this.#doraDiv
       .querySelector(".dora-foot:last-child")
       .addEventListener("click", () => this.redo());
+    this.#doraDiv
+      .querySelector(".dora-collar-bell")
+      .addEventListener("click", () => this.randomDoraColor());
+    this.#doraDiv
+      .querySelector(".dora-collar-bell")
+      .addEventListener("dblclick", () => this.resetDoraColor());
+    this.#doraDiv
+      .querySelector(".dora-eye:first-child")
+      .addEventListener("click", () => {
+        if (!this.#zoomFlag) this.toggleZoom();
+      });
+    this.#doraDiv
+      .querySelector(".dora-eye:last-child")
+      .addEventListener("click", () => {
+        if (this.#zoomFlag) this.toggleZoom();
+      });
+  }
+
+  #addHoverTooltipHandler() {
+    /** @type {HTMLDivElement} body */
+    const doraBody = this.#doraDiv.querySelector(".dora-body");
+    /** @type {HTMLSpanElement} tooltip */
+    const tooltip = this.#tooltip;
+    const pocket = doraBody.querySelector(".dora-pocket");
+    const leftFoot = doraBody.querySelector(".dora-foot:first-child");
+    const rightFoot = doraBody.querySelector(".dora-foot:last-child");
+    const activeClass = "dora-hover-tooltip--active";
+
+    doraBody.addEventListener("mousemove", (e) => {
+      const hoverDiv = doraBody.querySelector(".dora-interactive-part:hover");
+      switch (hoverDiv) {
+        case pocket:
+          tooltip.textContent = "Download drawing";
+          break;
+        case leftFoot:
+          tooltip.textContent = "Undo (Ctrl+Z)";
+          break;
+        case rightFoot:
+          tooltip.textContent = "Redo (Ctrl+Y)";
+          break;
+        default:
+          tooltip.classList.remove(activeClass);
+          tooltip.textContent = "";
+          return;
+      }
+      tooltip.style.left = e.clientX.toString() + "px";
+      tooltip.style.top = e.clientY.toString() + "px";
+      tooltip.classList.add(activeClass);
+    });
+
+    doraBody.addEventListener("mouseleave", () => {
+      tooltip.textContent = "";
+      tooltip.classList.remove(activeClass);
+    });
+  }
+
+  #addTooltipHandler() {
+    this.#doraDiv.querySelectorAll(".dora-tooltip").forEach((tooltip) => {
+      tooltip.addEventListener("animationend", () => tooltip.remove());
+    });
   }
 
   #addKeyboardShortcuts() {
+    const tool = this.mainToolPanelDiv.querySelector.bind(
+      this.mainToolPanelDiv
+    );
     window.addEventListener("keydown", (e) => {
+      const paintFunction = this.getPaintFunction();
+      if (paintFunction instanceof DrawingText && paintFunction.draftInput)
+        return;
       switch (e.key) {
         case "Control":
-          this.ctlKeydownFlag = true;
+          this.ctrlKeydown = true;
           break;
         case " ":
-          if (!this.ctlKeydownFlag) this.toggleZoom();
+          if (!this.ctrlKeydown) this.toggleZoom();
+          break;
+        case "a":
+          if (!this.ctrlKeydown) tool("#add-image").click();
+          break;
+        case "b":
+          if (!this.ctrlKeydown) tool("#drawing-bezier-curve").click();
+          break;
+        case "c":
+          if (!this.ctrlKeydown) tool("#drawing-circle").click();
+          if (this.ctrlKeydown) tool("#clear-canvas").click();
+          break;
+        case "e":
+          if (!this.ctrlKeydown) tool("#eraser").click();
+          break;
+        case "f":
+          if (!this.ctrlKeydown) tool("#drawing-line").click();
+          break;
+        case "i":
+          if (!this.ctrlKeydown) tool("#drawing-irregular-polygon").click();
+          break;
+        case "l":
+          if (!this.ctrlKeydown) tool("#drawing-ellipse").click();
+          break;
+        case "m":
+          if (!this.ctrlKeydown) tool("#select-move").click();
+          break;
+        case "r":
+          if (!this.ctrlKeydown) tool("#drawing-rectangle").click();
+          break;
+        case "t":
+          if (!this.ctrlKeydown) tool("#drawing-text").click();
+          break;
+        case "p":
+          if (!this.ctrlKeydown) tool("#drawing-regular-polygon").click();
+          break;
+        case "q":
+          if (!this.ctrlKeydown) tool("#drawing-quadratic-curve").click();
+          break;
+        case "s":
+          if (!this.ctrlKeydown) tool("#drawing-straight-line").click();
+          break;
+        case "u":
+          if (!this.ctrlKeydown) tool("#drawing-bezier-curve").click();
           break;
         case "z":
-          if (this.ctlKeydownFlag) this.undo();
+          if (this.ctrlKeydown) this.undo();
           break;
         case "y":
-          if (this.ctlKeydownFlag) this.redo();
+          if (this.ctrlKeydown) this.redo();
           break;
       }
     });
     window.addEventListener("keyup", (e) => {
       switch (e.key) {
         case "Control":
-          this.ctlKeydownFlag = false;
+          this.ctrlKeydown = false;
           break;
       }
     });
