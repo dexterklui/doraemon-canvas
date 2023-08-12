@@ -5,7 +5,7 @@
 :root {
   --tool-btn-width: 45px;
   --tool-btn-border: 1px solid rgb(170, 170, 170);
-  --tool-btn-border-radius: 8px;
+  --tool-btn-border-radius: 10px;
   --tool-btn-gap: 5px;
 }
 
@@ -14,8 +14,8 @@
 /******************************************************************************/
 
 .tools {
-  --margin: 10px;
-  --padding: 10px;
+  --margin: 15px;
+  --padding: 15px;
 
   box-sizing: border-box;
   width: calc(
@@ -29,7 +29,7 @@
   z-index: 1;
   padding: var(--padding);
   margin: var(--margin);
-  border-radius: 10px;
+  border-radius: 14px;
 
   container-type: inline-size;
   container-name: tools;
@@ -42,7 +42,7 @@
   gap: var(--tool-btn-gap);
 
   background-color: white;
-  box-shadow: 0 0 6px 6px rgba(0, 51, 92, 0.2);
+  box-shadow: 0 0 6px 6px rgba(78, 101, 119, 0.2);
 }
 
 .tool-with-title {
@@ -52,9 +52,10 @@
 }
 
 .tool-title {
-  font-size: small;
+  font-size: medium;
+  font-family: "Montserrat", sans-serif;
   font-weight: 800;
-  color: #007fff;
+  color: #8abced;
   margin: 0;
   max-width: calc(2 * var(--tool-btn-width));
   text-align: center;
@@ -72,6 +73,7 @@
   border-radius: var(--tool-btn-border-radius);
   background-color: white;
   cursor: pointer;
+  place-items: center;
 }
 
 .tool-btn:hover {

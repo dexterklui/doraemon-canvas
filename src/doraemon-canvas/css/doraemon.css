@@ -213,6 +213,30 @@
   right: 0;
 }
 
+.dora-hand {
+  top: 15%;
+  height: auto;
+  width: 14%;
+  min-width: 50px;
+  max-width: 500px;
+  overflow: hidden;
+  aspect-ratio: 1;
+  clip-path: ellipse(50% 50% at 50% 50%);
+
+  position: absolute;
+  background: white;
+  grid-area: stack;
+  transform: translate (-20px, -300px);
+}
+
+#dora-bighand-A {
+  left: -6%;
+}
+
+#dora-bighand-B {
+  right: -6%;
+}
+
 /***************************/
 /*        animation        */
 /***************************/
