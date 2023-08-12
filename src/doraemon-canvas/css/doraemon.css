@@ -86,18 +86,25 @@
   transform: translateY(-50%);
   height: 24%;
   width: 18%;
-  clip-path: ellipse(50% 50%);
+  clip-path: ellipse(50% 49%);
   background: #3f3e39;
   color: white;
+  contain: strict;
   display: grid;
   place-items: center;
-  font-size: 2rem;
-  contain: strict;
+  font-size: 0.6rem;
+  cursor: pointer;
+}
+.dora-eye-black:hover {
+  background: #4f4e49;
+}
+.dora-eye-black:active {
+  background: #282828;
 }
 .dora-eye:first-child .dora-eye-black {
   right: 10%;
 }
-.dora-eye:nth-child(2) .dora-eye-black {
+.dora-eye:last-child .dora-eye-black {
   left: 10%;
 }
 .dora-face > .drawing-canvas-real,
@@ -318,5 +325,31 @@
   }
   100% {
     transform: none;
+  }
+}
+
+/*****************************/
+/*        Media query        */
+/*****************************/
+@media screen and (height > 360) {
+  .dora-eye-black {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (height > 420px) {
+  .dora-eye-black {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (height > 620px) {
+  .dora-eye-black {
+    font-size: 1.2rem;
+  }
+}
+@media screen and (height > 860px) {
+  .dora-eye-black {
+    font-size: 1.5rem;
   }
 }

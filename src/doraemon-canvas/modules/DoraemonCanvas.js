@@ -414,6 +414,16 @@ export default class DoraemonCanvas {
     this.#doraDiv
       .querySelector(".dora-collar-bell")
       .addEventListener("dblclick", () => this.resetDoraColor());
+    this.#doraDiv
+      .querySelector(".dora-eye:first-child")
+      .addEventListener("click", () => {
+        if (!this.#zoomFlag) this.toggleZoom();
+      });
+    this.#doraDiv
+      .querySelector(".dora-eye:last-child")
+      .addEventListener("click", () => {
+        if (this.#zoomFlag) this.toggleZoom();
+      });
   }
 
   #addHoverTooltipHandler() {
