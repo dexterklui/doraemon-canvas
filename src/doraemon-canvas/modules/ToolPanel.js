@@ -348,12 +348,19 @@ export default class ToolPanel {
     const windowWidth = window.innerWidth;
 
     panel.addEventListener("mousemove", (e) => {
+      const cursorAtBottomRight = this.#cursorAtBottomRight(e);
       const hoverTool = panel.querySelector(".tool-btn:hover");
-      if (!hoverTool) {
+      if (!hoverTool && !cursorAtBottomRight) {
         tooltip.classList.remove(activeClass);
         return;
       }
-      tooltip.textContent = hoverTool.querySelector("img").getAttribute("alt");
+      if (cursorAtBottomRight) {
+        tooltip.textContent = "Drag to resize, double click to reset";
+      } else {
+        tooltip.textContent = hoverTool
+          .querySelector("img")
+          .getAttribute("alt");
+      }
       const tooltipWidth = tooltip.getBoundingClientRect().width;
       let xCoord;
       const yCoord = e.clientY.toString() + "px";
@@ -371,6 +378,17 @@ export default class ToolPanel {
       tooltip.classList.remove(activeClass);
       tooltip.textContent = "";
     });
+  }
+
+  /**
+   * Checks if cursor is near the bottom right corner of main tool panel.
+   * @param {MouseEvent} e
+   * @returns {boolean}
+   */
+  #cursorAtBottomRight(e) {
+    const { width, height } = this.#mainPanelDiv.getBoundingClientRect();
+    console.log("tool panel width, height:", width, height);
+    return width - e.offsetX < 10 && height - e.offsetY < 10;
   }
 
   /*************************************************************/
