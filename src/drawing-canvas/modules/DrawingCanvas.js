@@ -1,4 +1,8 @@
-import { PaintFunction } from "../external-dependencies.js";
+import {
+  PaintFunction,
+  CanvasItem,
+  CanvasProperties,
+} from "../external-dependencies.js";
 import UndoStack from "./UndoStack.js";
 
 /** @type {Options} DEFAULT_OPTIONS */
@@ -14,23 +18,6 @@ const DEFAULT_OPTIONS = {
   lineJoin: "round",
   miterLimit: 10.0,
 };
-
-/**
- * List of properties returned by method getCanvasProperties() and accepted by
- * method setCanvasProperties().
- * @type {string[]} DRAWING_CANVAS_PROPERTIES
- */
-const DRAWING_CANVAS_PROPERTIES = [
-  "font",
-  "strokeStyle",
-  "fillStyle",
-  "globalAlpha",
-  "lineWidth",
-  "lineCap",
-  "lineJoin",
-  "miterLimit",
-  "globalCompositeOperation",
-];
 
 /**
  * Allows user to paint on a given canvas under "2d" context using
@@ -54,7 +41,7 @@ export default class DrawingCanvas {
     this.#ctxReal = this.canvasReal.getContext("2d");
     this.#ctxDraft = this.canvasDraft.getContext("2d");
 
-    this.#undoStack = new UndoStack();
+    this.#undoStack = new UndoStack(this);
     this.writeUndo();
     this.setCanvasProperties(options);
     this.#setupHandlers();
@@ -134,29 +121,39 @@ export default class DrawingCanvas {
   /********************************************************/
 
   /**
-   * Sets certain property values for both real and draft canvas.
-   * @param {Object} options - Storing key-value pairs of supported properties
-   * @see {@link DRAWING_CANVAS_PROPERTIES}
+   * Sets property values for both real and draft canvas, or just the
+   * canvas of the given context.
+   * @param {Object} props
+   * @param {CanvasRenderingContext2D} [ctx]
    */
-  setCanvasProperties(options) {
-    for (const key of DRAWING_CANVAS_PROPERTIES) {
-      if (options[key] == null) continue;
-      this.#ctxReal[key] = options[key];
-      this.#ctxDraft[key] = options[key];
+  setCanvasProperties(props, ctx) {
+    for (const [key, value] of Object.entries(props)) {
+      if (props[key] == null) continue;
+      if (ctx) {
+        ctx[key] = value;
+        continue;
+      }
+      this.#ctxReal[key] = value;
+      this.#ctxDraft[key] = value;
     }
   }
 
   /**
    * Gets centain property values for only real canvas.
-   * @returns {Object.<string,any>}
-   * @see {@link DRAWING_CANVAS_PROPERTIES}
+   * @returns {CanvasProperties}
    */
   getCanvasProperties() {
-    const result = {};
-    for (const key of DRAWING_CANVAS_PROPERTIES) {
-      result[key] = this.#ctxReal[key];
-    }
-    return result;
+    return new CanvasProperties(this.#ctxReal);
+  }
+
+  /**
+   * Takes a snapshot of the whole real canvas.
+   * @returns {ImageData}
+   */
+  captureCanvasReal() {
+    const width = this.canvasReal.width;
+    const height = this.canvasReal.height;
+    return this.ctxReal.getImageData(0, 0, width, height);
   }
 
   /**
@@ -194,15 +191,45 @@ export default class DrawingCanvas {
     this.#clearCanvas(this.#ctxDraft);
   }
 
-  /** Clears all drawings on both real and draft canvas. */
+  /** Clears all drawings and items on both real and draft canvas. */
   clearAll() {
     this.#clearCanvas(this.#ctxDraft, this.#ctxReal);
   }
 
-  writeUndo() {
-    const width = this.canvasReal.width;
-    const height = this.canvasReal.height;
-    this.#undoStack.write(this.#ctxReal.getImageData(0, 0, width, height));
+  /**
+   * @param {CanvasItem[]} [canvasItems] - Default is current array of
+   *                       CanvasItem's on the undo stack
+   */
+  redrawCanvasItems(canvasItems) {
+    this.clearAll();
+    if (!canvasItems) canvasItems = this.#undoStack.canvasItems;
+    for (const canvasItem of canvasItems) canvasItem.draw(this.#ctxReal);
+  }
+
+  /**
+   * Checks if coord selects a CanvasItem on canvas. If yes, removes it from
+   * real canvas and returns it.
+   * @param {[number, number]} coord
+   * @returns {?CanvasItem} the removed CanvasItem or null
+   */
+  removeCanvasItem(coord) {
+    return this.#undoStack.removeCanvasItem(coord);
+  }
+
+  /**
+   * Writes a new state to undo stack with a given new CanvasItem.
+   * @param {CanvasItem} canvasItem - the new CanvasItem to be pushed.
+   */
+  writeUndo(canvasItem) {
+    this.#undoStack.write(canvasItem);
+  }
+
+  /**
+   * Pushes a new empty state of canvas to undo stack.
+   */
+  pushClearCanvas() {
+    this.clearAll();
+    this.#undoStack.pushClearState();
   }
 
   undo() {
@@ -258,7 +285,7 @@ export default class DrawingCanvas {
       canvas.width = width;
       canvas.height = height;
     }
-    this.#drawImageData(this.#undoStack.getCurrentData());
+    this.#drawImageData(this.#undoStack.snapshot);
     this.setCanvasProperties(styles);
     this.updateCoordCoefficient();
   }
@@ -459,4 +486,4 @@ export default class DrawingCanvas {
   };
 }
 
-export { DrawingCanvas, DRAWING_CANVAS_PROPERTIES };
+export { DrawingCanvas };

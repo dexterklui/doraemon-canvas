@@ -133,7 +133,7 @@ export default class ToolPanel {
   <img src="./assets/icons/icon_zoom_2.png" alt="Toggle zoom" />
 </div>
 <!-- but this is draw tool, just for layout sake it is here -->
-<div class="tool-btn draw-tool" id="object-move">
+<div class="tool-btn draw-tool" id="item-select">
   <img src="./assets/icons/icon_pointer.png" alt="Move item" />
 </div>
 <div class="tool-btn canvas-tool" id="clear-canvas">

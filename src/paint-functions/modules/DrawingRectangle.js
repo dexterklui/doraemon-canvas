@@ -1,4 +1,5 @@
 import PaintFunction from "./PaintFunction.js";
+import { BoundingRect, CanvasItem } from "../external-dependencies.js";
 
 /**
  * @param {CanvasRenderingContext2D} ctx
@@ -38,14 +39,18 @@ export default class DrawingRectangle extends PaintFunction {
   /** @param {[number, number]} coord */
   onMouseUp(coord) {
     this.clearDraft();
-    drawRect(
-      this.contextReal,
-      this.origX,
-      this.origY,
-      coord[0] - this.origX,
-      coord[1] - this.origY
-    );
-    this.writeUndoCb();
+    const x = Math.min(this.origX, coord[0]);
+    const y = Math.min(this.origY, coord[1]);
+    const w = Math.abs(coord[0] - this.origX);
+    const h = Math.abs(coord[1] - this.origY);
+    if (w === 0 && h === 0) return;
+    const path2d = new Path2D();
+    path2d.rect(x, y, w, h);
+    const rect = new BoundingRect(x, y, w, h);
+    const canvasItem = new CanvasItem(path2d, rect, this.getStyle());
+
+    canvasItem.draw(this.contextReal);
+    this.writeUndoCb(canvasItem);
   }
 }
 

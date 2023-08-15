@@ -1,4 +1,5 @@
 import PaintFunction from "./PaintFunction.js";
+import { BoundingRect, CanvasItem } from "../external-dependencies.js";
 
 /**
  * Functionality to draw a polygon with arbitrary sides.
@@ -18,14 +19,25 @@ export default class DrawingIrregularPolygon extends PaintFunction {
   }
 
   onMouseDown(coord) {
+    this.updateBoundingRectCoord(...coord);
     if (this.coords.length && this.distance(this.coords[0], coord) < 16) {
       this.clearDraft();
-      this.drawPartialPolygon(this.contextReal);
-      this.contextReal.closePath();
-      this.contextReal.fill();
-      this.contextReal.stroke();
-      this.writeUndoCb();
+      const x = this.smallX;
+      const y = this.smallY;
+      const w = this.bigX - this.smallX;
+      const h = this.bigY - this.smallY;
+      if (w === 0 && h === 0) {
+        this.clearBoundingRectCoord();
+        return;
+      }
+      const rect = new BoundingRect(x, y, w, h);
+      const path2d = new Path2D();
+      this.addPolygonPath(path2d);
+      const canvasItem = new CanvasItem(path2d, rect, this.getStyle());
+      canvasItem.draw(this.contextReal);
+      this.writeUndoCb(canvasItem);
       this.coords = [];
+      this.clearBoundingRectCoord();
       return;
     }
     this.coords.push(coord);
@@ -42,7 +54,9 @@ export default class DrawingIrregularPolygon extends PaintFunction {
   }
 
   /**
-   * Begin a new path a draw lines, but doesn't clear canvas nor stroke or fill.
+   * Begins a new path and draws a partial polygon, but doesn't clear canvas
+   * nor stroke or fill.
+   * @param {CanvasRenderingContext2D} context
    */
   drawPartialPolygon(context) {
     const coords = this.coords;
@@ -51,6 +65,19 @@ export default class DrawingIrregularPolygon extends PaintFunction {
     for (let i = 1; i < coords.length; ++i) {
       context.lineTo(coords[i][0], coords[i][1]);
     }
+  }
+
+  /**
+   * Add the polygon path saved to a Path2D instance.
+   * @param {Path2D} path
+   */
+  addPolygonPath(path) {
+    const coords = this.coords;
+    path.moveTo(coords[0][0], coords[0][1]);
+    for (let i = 1; i < coords.length; ++i) {
+      path.lineTo(coords[i][0], coords[i][1]);
+    }
+    path.closePath();
   }
 
   markOrigPoint() {

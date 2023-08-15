@@ -3,4 +3,5 @@ export * as paintFunctions from "../paint-functions/paint-functions.js";
 export {
   PaintFunction,
   DrawingText,
+  ItemSelect,
 } from "../paint-functions/paint-functions.js";

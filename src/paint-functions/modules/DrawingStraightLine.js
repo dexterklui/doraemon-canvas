@@ -1,4 +1,5 @@
 import PaintFunction from "./PaintFunction.js";
+import { BoundingRect, CanvasItem } from "../external-dependencies.js";
 
 /**
  * Drawing straight line functionality.
@@ -36,11 +37,24 @@ export default class DrawingStraightLine extends PaintFunction {
   onMouseUp(coord) {
     this.isDrawing = false;
 
-    this.contextReal.beginPath();
-    this.contextReal.moveTo(this.origX, this.origY);
-    this.contextReal.lineTo(coord[0], coord[1]);
-    this.contextReal.stroke();
-    this.writeUndoCb();
+    const x = Math.min(this.origX, coord[0]);
+    const y = Math.min(this.origY, coord[1]);
+    const w = Math.abs(coord[0] - this.origX);
+    const h = Math.abs(coord[1] - this.origY);
+    if (w === 0 && h === 0) return;
+    const path2d = new Path2D();
+    path2d.moveTo(this.origX, this.origY);
+    path2d.lineTo(coord[0], coord[1]);
+    const rect = new BoundingRect(x, y, w, h);
+    const canvasItem = new CanvasItem(
+      path2d,
+      rect,
+      this.getStyle(),
+      [0, 0],
+      "stroke"
+    );
+    canvasItem.draw(this.contextReal);
+    this.writeUndoCb(canvasItem);
   }
 }
 

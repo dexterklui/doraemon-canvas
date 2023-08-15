@@ -1,3 +1,5 @@
+import { CanvasProperties } from "../external-dependencies.js";
+
 /**
  * A superclass for painting functions that draws on a  under "2d"
  * context.
@@ -6,7 +8,7 @@ export default class PaintFunction {
   /**
    * @param {CanvasRenderingContext2D} contextReal
    * @param {CanvasRenderingContext2D} contextDraft
-   * @param {Function} [writeUndoCb] - Callback that writes current state of
+   * @param {Function} [writeUndoCb] - callback that writes current state of
    *                   real canvas to undo history
    */
   constructor(contextReal, contextDraft, writeUndoCb) {
@@ -66,6 +68,10 @@ export default class PaintFunction {
       this.#cursorVars();
     const svgStr = `<svg width="${svgWidth}" height="${svgWidth}" viewBox="0 0 ${svgWidth} ${svgWidth}" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="${halfSvgWidth}" cy="${halfSvgWidth}" r="${fillRadius}" stroke="${this.strokeStyle}" fill="${this.fillStyle}" stroke-width="${strokeWidth}"/><path d="M ${halfSvgWidth} 0 V ${svgWidth} M 0 ${halfSvgWidth} H ${svgWidth}" stroke="#333" stroke-width="1"/></svg>`;
     return `url(${this.#svgUrl(svgStr)}) ${halfSvgWidth} ${halfSvgWidth}, auto`;
+  }
+
+  getStyle(context = this.contextReal) {
+    return new CanvasProperties(context);
   }
 
   /**
@@ -128,6 +134,33 @@ export default class PaintFunction {
     // XXX: memory leak? When cursor no longer use this svg bolb?
     const blob = new Blob([svgStr], { type: "image/svg+xml" });
     return URL.createObjectURL(blob);
+  }
+
+  updateBoundingRectCoord(x, y) {
+    if (this.smallX == null) {
+      this.smallX = x;
+      this.smallY = y;
+      this.bigX = x;
+      this.bigY = y;
+      return;
+    }
+    if (x < this.smallX) {
+      this.smallX = x;
+    } else if (x > this.bigX) {
+      this.bigX = x;
+    }
+    if (y < this.smallY) {
+      this.smallY = y;
+    } else if (y > this.bigY) {
+      this.bigY = y;
+    }
+  }
+
+  clearBoundingRectCoord() {
+    this.smallX = null;
+    this.smallY = null;
+    this.bigX = null;
+    this.bigY = null;
   }
 }
 

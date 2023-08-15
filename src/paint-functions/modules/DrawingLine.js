@@ -1,4 +1,5 @@
 import PaintFunction from "./PaintFunction.js";
+import { BoundingRect, CanvasItem } from "../external-dependencies.js";
 
 /**
  * Free drawing functionality (like pencil function)
@@ -14,27 +15,38 @@ export default class DrawingLine extends PaintFunction {
   /** @param {[number, number]} coord */
   onMouseDown(coord) {
     this.draggingFlag = true;
-    this.contextReal.beginPath();
-    this.contextReal.moveTo(coord[0], coord[1]);
+    this.updateBoundingRectCoord(...coord);
+    this.path2d = new Path2D();
+    this.path2d.moveTo(...coord);
   }
 
   /** @param {[number, number]} coord */
   onDragging(coord) {
-    this.draw(coord[0], coord[1]);
+    this.updateBoundingRectCoord(...coord);
+    this.path2d.lineTo(...coord);
+    this.contextReal.stroke(this.path2d);
   }
 
   onMouseUp() {
     this.draggingFlag = false;
-    this.writeUndoCb();
-  }
-
-  /**
-   * @param {number} x
-   * @param {number} y
-   */
-  draw(x, y) {
-    this.contextReal.lineTo(x, y);
-    this.contextReal.stroke();
+    const x = this.smallX;
+    const y = this.smallY;
+    const w = this.bigX - this.smallX;
+    const h = this.bigY - this.smallY;
+    if (w === 0 && h === 0) {
+      this.clearBoundingRectCoord();
+      return;
+    }
+    const rect = new BoundingRect(x, y, w, h);
+    const canvasItem = new CanvasItem(
+      this.path2d,
+      rect,
+      this.getStyle(),
+      [0, 0],
+      "stroke"
+    );
+    this.writeUndoCb(canvasItem);
+    this.clearBoundingRectCoord();
   }
 }
 

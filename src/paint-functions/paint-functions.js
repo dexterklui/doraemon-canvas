@@ -12,3 +12,4 @@ export { DrawingIrregularPolygon } from "./modules/DrawingIrregularPolygon.js";
 export { DrawingText } from "./modules/DrawingText.js";
 export { Eraser } from "./modules/Eraser.js";
 export { SelectMove } from "./modules/SelectMove.js";
+export { ItemSelect } from "./modules/ItemSelect.js";

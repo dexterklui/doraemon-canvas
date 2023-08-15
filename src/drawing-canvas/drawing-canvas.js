@@ -1,5 +1,1 @@
-export {
-  DrawingCanvas,
-  DRAWING_CANVAS_PROPERTIES,
-} from "./modules/DrawingCanvas.js";
-export { UndoStack } from "./modules/UndoStack.js";
+export { DrawingCanvas } from "./modules/DrawingCanvas.js";

@@ -2,6 +2,7 @@ import {
   DrawingCanvas,
   PaintFunction,
   DrawingText,
+  ItemSelect,
 } from "../external-dependencies.js";
 import ToolPanel from "./ToolPanel.js";
 
@@ -146,11 +147,21 @@ export default class DoraemonCanvas {
     this.#drawingCanvas.paintFunction?.destructor();
     const ctxReal = this.#drawingCanvas.ctxReal;
     const ctxDraft = this.#drawingCanvas.ctxDraft;
-    const paintFunction = new PaintFunction(
-      ctxReal,
-      ctxDraft,
-      this.#drawingCanvas.writeUndo.bind(this.#drawingCanvas)
+    const writeUndoCb = this.#drawingCanvas.writeUndo.bind(this.#drawingCanvas);
+    const removeCanvasItemCb = this.#drawingCanvas.removeCanvasItem.bind(
+      this.#drawingCanvas
     );
+    let paintFunction;
+    if (PaintFunction === ItemSelect) {
+      paintFunction = new PaintFunction(
+        ctxReal,
+        ctxDraft,
+        writeUndoCb,
+        removeCanvasItemCb
+      );
+    } else {
+      paintFunction = new PaintFunction(ctxReal, ctxDraft, writeUndoCb);
+    }
     this.#drawingCanvas.paintFunction = paintFunction;
   }
 
@@ -200,11 +211,17 @@ export default class DoraemonCanvas {
 
   /** Undo previous draw operation */
   undo() {
+    // This calls the destructor to clear cache waiting to be applied to canvas
+    // @ts-ignore
+    this.setPaintFunction(this.getPaintFunction().constructor);
     this.#drawingCanvas.undo();
   }
 
   /** Redo previous undone draw operation */
   redo() {
+    // This calls the destructor to clear cache waiting to be applied to canvas
+    // @ts-ignore
+    this.setPaintFunction(this.getPaintFunction().constructor);
     this.#drawingCanvas.redo();
   }
 
@@ -213,8 +230,7 @@ export default class DoraemonCanvas {
     // This calls the destructor to clear cache waiting to be applied to canvas
     // @ts-ignore
     this.setPaintFunction(this.getPaintFunction().constructor);
-    this.#drawingCanvas.clearAll();
-    this.#drawingCanvas.writeUndo();
+    this.#drawingCanvas.pushClearCanvas();
   }
 
   /**

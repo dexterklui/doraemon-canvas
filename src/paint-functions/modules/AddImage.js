@@ -1,4 +1,5 @@
 import PaintFunction from "./PaintFunction.js";
+import { BoundingRect, CanvasItem } from "../external-dependencies.js";
 
 /**
  * Functionality to add an image to the canvas.
@@ -247,14 +248,15 @@ export default class AddImage extends PaintFunction {
    */
   #drawImageData() {
     if (!this.imageData) return false;
-    // Can't putImageData directly, otherwise transparent pixel becomes white
-    const canvas = document.createElement("canvas");
-    canvas.width = this.selectionWidth;
-    canvas.height = this.selectionHeight;
-    const ctx = canvas.getContext("2d");
-    ctx.putImageData(this.imageData, 0, 0);
-    this.contextReal.drawImage(canvas, this.smallerX, this.smallerY);
-    this.writeUndoCb();
+    const x = this.smallerX;
+    const y = this.smallerY;
+    const w = this.selectionWidth;
+    const h = this.selectionHeight;
+    if (w === 0 && h === 0) return true;
+    const rect = new BoundingRect(x, y, w, h);
+    const canvasItem = new CanvasItem(this.imageData, rect, this.getStyle());
+    canvasItem.draw(this.contextReal);
+    this.writeUndoCb(canvasItem);
     return true;
   }
 
