@@ -1,84 +1,30 @@
 ---
-title: 小畫家 project
-date: 2023-07-29
+title: Doraemon Canvas
+date: 2023-08-16
 ---
 
-# 主題
+This is a project assignment for "CA x Xccelerate Front-end Developer Bootcamp
+2023". The product is a Doraemon-themed drawing canvas.
 
-1. Draftopia 草圖邦 —— 小意念培植皿。您的線上草圖好幫手。
+# Keyboard Shortcuts
 
-目標對象：設計師、規劃者、科研團隊
-
-整體：
-
-- [ ] 自然柔和、實驗室、人性化、簡約
-
-2. Flowo 瘋宅窩 —— 啊宅，係時候展現真正嘅技術！
-
-目標對象：青少年、動畫愛好者
-
-整體：
-
-- [ ] 可愛、玩味休閒、遊戲、中二病啊
-
-3. Typobook 太婆汝簿 —— 上了年紀的悸動，揮毫落紙如雲煙。
-
-目標對象：長者、退休人士、舊物珍藏家、40 年後的我們
-
-整體：
-
-- [ ] 中式典雅、溫暖日常、文物、字畫專長練習
-
-4.  —— 解密揭秘、這是甚麼啟示？
-
-search：
-
-用家想要：
-
-# 功能：
-
-必備功能：
-
-圖形：
-
-- [ ] 選取移動
-- [ ] 幾何圖形生成
-- [ ] 直線、曲線
-- [ ] 多邊形
-- [ ] 印章：進階
-
-款式：
-
-- [ ] 顏色 預設值
-- [ ] 粗幼 font
-- [ ] 透明度
-- [ ] T：字型、字體
-- [ ] 明暗/對比/灰階/飽和度
-- [ ] 進階，例如：3 款不同筆觸：幼毛筆/ 特別圖章/
-
-功能設定：
-
-- [ ] 擦膠（進階：程度）
-- [ ] 顏色填充
-- [ ] 進階：複製格式功能
-- [ ] 選取移動
-
-檔案按鈕 ：
-
-- [ ] 復原
-- [ ] 重做
-- [ ] 儲存進度
-- [ ] 存檔
-- [ ] 進階：滾輪
-
-特色功能：
-
-- [ ] 切換網格模式 做底圖
-- [ ] 切換畫布顏色
-- [ ] 儲存檔案
-- [ ] 簡單表格：進階
-- [ ]
-
-高階功能：
-
-- [ ] 圖層概念
+| Shortcut  | Description             |
+| --------- | ----------------------- |
+| `<Space>` | Toggle zoom             |
+| `A`       | Add image               |
+| `B`       | Cubic bezier curve      |
+| `C`       | Circle                  |
+| `E`       | Eraser                  |
+| `F`       | Free drawing            |
+| `I`       | Irregular polygon       |
+| `L`       | Ellipse                 |
+| `M`       | Move a rectangular area |
+| `R`       | Rectangle               |
+| `T`       | Input text              |
+| `P`       | N-sided regular polygon |
+| `Q`       | Quadratic curve         |
+| `S`       | Straight line           |
+| `U`       | Cubic bezier curve      |
+| `Ctrl+C`  | Clear canvas            |
+| `Ctrl+Z`  | Undo                    |
+| `Ctrl+Y`  | Redo                    |
