@@ -123,14 +123,14 @@
   appearance: none;
   width: 20px;
   height: 18px;
-  background: url('/assets/icons/bell-01.png');
+  background: url('../../../assets/icons/bell-01.png');
   cursor: pointer;
 }
 
 .tools input[type="range"]::-moz-range-thumb {
   width: 20px;
   height: 18px;
-  background: url('/assets/icons/bell-01.png');
+  background: url('../../../assets/icons/bell-01.png');
   cursor: pointer;
 }
 
