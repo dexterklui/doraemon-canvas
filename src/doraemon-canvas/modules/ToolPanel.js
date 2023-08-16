@@ -391,7 +391,6 @@ export default class ToolPanel {
    */
   #cursorAtBottomRight(e) {
     const { width, height } = this.#mainPanelDiv.getBoundingClientRect();
-    console.log("tool panel width, height:", width, height);
     return width - e.offsetX < 10 && height - e.offsetY < 10;
   }
 
