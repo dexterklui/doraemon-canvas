@@ -1,6 +1,10 @@
 ---
 title: Doraemon Canvas
 date: 2023-08-16
+groupmates:
+  - Doreen (Kwok Mei Kwan)
+  - Kelsey (Wong Sze Wing)
+  - Dexter (Lui Ka On)
 ---
 
 This is a project assignment for "CA x Xccelerate Front-end Developer Bootcamp
